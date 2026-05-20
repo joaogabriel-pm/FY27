@@ -1,2382 +1,1666 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Comercial - Captação Self</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        /* Variáveis de Cores - Baseado na referência AnotaAI */
-        :root {
-            --ifood-red: #EA1D2C;
-            --ifood-dark-red: #B0121E;
-            --ifood-bg: #F7F7F7;
-            --text-primary: #333;
-            --text-secondary: #6b7280;
-            --border-gray: #e5e7eb;
-            --bg-white: #fff;
-            --bg-light-red: #fff5f5;
-            --bg-lighter-red: #ffebee;
-            --gray-50: #f9fafb;
-            --gray-100: #f3f4f6;
-            --gray-200: #e5e7eb;
-            --gray-300: #d1d5db;
-            --gray-400: #9ca3af;
-            --gray-500: #6b7280;
-            --gray-600: #4b5563;
-            --gray-700: #374151;
-            --gray-800: #1f2937;
-            --gray-900: #111827;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: var(--ifood-bg);
-            color: var(--text-primary);
-            line-height: 1.6;
-        }
-
-        /* Layout Principal */
-        .layout {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* Menu Lateral */
-        .sidebar {
-            width: 280px;
-            background-color: var(--bg-white);
-            border-right: 1px solid var(--border-gray);
-            padding: 0;
-            position: fixed;
-            height: 100vh;
-            overflow-y: auto;
-        }
-
-        .sidebar-header {
-            padding: 2rem 1.5rem 1.5rem;
-            border-bottom: 1px solid var(--border-gray);
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .logo {
-            width: 32px;
-            height: 32px;
-            background-color: var(--ifood-red);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 800;
-            font-size: 1.25rem;
-        }
-
-        .logo-text {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--gray-900);
-        }
-
-        .sidebar-title {
-            font-size: 1.125rem;
-            font-weight: 700;
-            color: var(--gray-900);
-            margin-bottom: 0.25rem;
-        }
-
-        .sidebar-subtitle {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            line-height: 1.4;
-        }
-
-        .menu-section {
-            padding: 1.5rem 0;
-        }
-
-        .menu-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.875rem 1.5rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            color: var(--gray-700);
-            font-weight: 500;
-            text-decoration: none;
-            font-size: 0.95rem;
-            border-left: 3px solid transparent;
-        }
-
-        .menu-item:hover {
-            background-color: var(--gray-50);
-            color: var(--ifood-red);
-        }
-
-        .menu-item.active {
-            background-color: var(--bg-lighter-red);
-            color: var(--ifood-red);
-            border-left-color: var(--ifood-red);
-            font-weight: 600;
-        }
-
-        .menu-item-content {
-            display: flex;
-            align-items: center;
-        }
-
-        .menu-badge {
-            background-color: var(--gray-200);
-            color: var(--gray-700);
-            font-size: 0.75rem;
-            font-weight: 600;
-            padding: 0.125rem 0.5rem;
-            border-radius: 12px;
-            margin-left: auto;
-        }
-
-        .submenu {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-            background-color: var(--gray-50);
-        }
-
-        .submenu.open {
-            max-height: 600px;
-        }
-
-        .submenu-item {
-            display: block;
-            padding: 0.75rem 1.5rem 0.75rem 3rem;
-            color: var(--gray-600);
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: all 0.2s ease;
-            border-left: 3px solid transparent;
-        }
-
-        .submenu-item:hover {
-            background-color: var(--bg-light-red);
-            color: var(--ifood-red);
-        }
-
-        .submenu-item.active {
-            background-color: var(--bg-lighter-red);
-            color: var(--ifood-red);
-            font-weight: 600;
-            border-left-color: var(--ifood-red);
-        }
-
-        /* Conteúdo Principal */
-        .main-content {
-            margin-left: 280px;
-            flex: 1;
-            padding: 0;
-            background-color: var(--ifood-bg);
-        }
-
-        /* Header da Página */
-        .page-header {
-            background: linear-gradient(135deg, var(--ifood-red) 0%, var(--ifood-dark-red) 100%);
-            color: white;
-            padding: 3rem 3rem 2rem;
-        }
-
-        .page-title-main {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
-        }
-
-        .page-subtitle-main {
-            font-size: 1.125rem;
-            opacity: 0.95;
-            font-weight: 400;
-        }
-
-        /* Welcome Section */
-        .welcome-section {
-            background-color: var(--bg-white);
-            margin: -1.5rem 3rem 2rem;
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
-        }
-
-        .welcome-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--gray-900);
-            margin-bottom: 0.5rem;
-        }
-
-        .welcome-text {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-
-        /* Stats Cards */
-        .stats-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
-        }
-
-        .stat-card {
-            background-color: var(--bg-white);
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-            border: 1px solid var(--border-gray);
-            transition: all 0.3s ease;
-        }
-
-        .stat-card:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .stat-label {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-value {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--ifood-red);
-            line-height: 1;
-        }
-
-        /* Content Section */
-        .content-section {
-            padding: 0 3rem 3rem;
-        }
-
-        /* Filtros */
-        .filters-container {
-            background-color: var(--bg-white);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-            border: 1px solid var(--border-gray);
-        }
-
-        .filters-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .filters-title {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--gray-900);
-        }
-
-        .clear-filters {
-            background: none;
-            border: none;
-            color: var(--ifood-red);
-            font-size: 0.875rem;
-            font-weight: 600;
-            cursor: pointer;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            transition: background-color 0.2s;
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        .clear-filters:hover {
-            background-color: var(--bg-lighter-red);
-        }
-
-        .filters-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .filter-label {
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--gray-700);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 0.5rem;
-        }
-
-        .filter-select {
-            padding: 0.875rem 1rem;
-            border: 1px solid var(--border-gray);
-            border-radius: 8px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.9rem;
-            color: var(--text-primary);
-            background-color: var(--bg-white);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-weight: 500;
-        }
-
-        .filter-select:hover {
-            border-color: var(--ifood-red);
-        }
-
-        .filter-select:focus {
-            outline: none;
-            border-color: var(--ifood-red);
-            box-shadow: 0 0 0 3px rgba(234, 29, 44, 0.1);
-        }
-
-        .active-filters {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            padding-top: 1rem;
-            border-top: 1px solid var(--border-gray);
-        }
-
-        .active-filters-label {
-            font-weight: 600;
-        }
-
-        /* Tabela de Resumo */
-        .table-container {
-            background-color: var(--bg-white);
-            border-radius: 12px;
-            padding: 0;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-            border: 1px solid var(--border-gray);
-            overflow: hidden;
-        }
-
-        .table-header {
-            font-size: 1.125rem;
-            font-weight: 700;
-            color: var(--gray-900);
-            padding: 1.5rem;
-            border-bottom: 1px solid var(--border-gray);
-            background-color: var(--gray-50);
-        }
-
-        .table-wrapper {
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        thead {
-            background-color: var(--bg-white);
-        }
-
-        th {
-            padding: 1rem 1.5rem;
-            text-align: left;
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--gray-700);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border-bottom: 2px solid var(--border-gray);
-        }
-
-        tbody tr {
-            border-bottom: 1px solid var(--border-gray);
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
-
-        tbody tr:last-child {
-            border-bottom: none;
-        }
-
-        tbody tr:hover {
-            background-color: var(--gray-50);
-        }
-
-        td {
-            padding: 1.25rem 1.5rem;
-            font-size: 0.9rem;
-            color: var(--gray-800);
-            font-weight: 500;
-        }
-
-        td:first-child {
-            font-weight: 600;
-        }
-
-        /* Status Badge */
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.375rem;
-            padding: 0.375rem 0.875rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-
-        .status-icon {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-        }
-
-        .status-em-testes {
-            background-color: #dbeafe;
-            color: #1e40af;
-        }
-
-        .status-em-testes .status-icon {
-            background-color: #1e40af;
-        }
-
-        .status-em-desenvolvimento {
-            background-color: #fef3c7;
-            color: #92400e;
-        }
-
-        .status-em-desenvolvimento .status-icon {
-            background-color: #92400e;
-        }
-
-        .status-aguardando-teste {
-            background-color: #fef3c7;
-            color: #d97706;
-        }
-
-        .status-aguardando-teste .status-icon {
-            background-color: #d97706;
-        }
-
-        .status-mapeada {
-            background-color: #e0e7ff;
-            color: #3730a3;
-        }
-
-        .status-mapeada .status-icon {
-            background-color: #3730a3;
-        }
-
-        .status-concluido {
-            background-color: #d1fae5;
-            color: #065f46;
-        }
-
-        .status-concluido .status-icon {
-            background-color: #065f46;
-        }
-
-        /* Cards de Canais */
-        .cards-section {
-            margin-bottom: 3rem;
-        }
-
-        .section-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1.5rem;
-        }
-
-        .section-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--gray-900);
-        }
-
-        .section-count {
-            background-color: var(--gray-100);
-            color: var(--gray-700);
-            font-size: 0.875rem;
-            font-weight: 700;
-            padding: 0.375rem 0.75rem;
-            border-radius: 20px;
-        }
-
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .card {
-            background-color: var(--bg-white);
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: 2px solid var(--border-gray);
-        }
-
-        .card:hover {
-            box-shadow: 0 8px 16px rgba(234, 29, 44, 0.12);
-            border-color: var(--ifood-red);
-            transform: translateY(-4px);
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-            margin-bottom: 1rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--border-gray);
-        }
-
-        .card-title {
-            font-size: 1.125rem;
-            font-weight: 700;
-            color: var(--gray-900);
-            margin-bottom: 0.5rem;
-        }
-
-        .card-canal {
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: var(--ifood-red);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .card-body {
-            margin-top: 1rem;
-        }
-
-        .card-field {
-            margin-bottom: 1rem;
-        }
-
-        .card-field:last-child {
-            margin-bottom: 0;
-        }
-
-        .card-field-label {
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 0.375rem;
-        }
-
-        .card-field-value {
-            font-size: 0.9rem;
-            color: var(--gray-800);
-            line-height: 1.6;
-            font-weight: 500;
-        }
-
-        .card-duration {
-            display: inline-flex;
-            align-items: center;
-            background-color: var(--gray-100);
-            padding: 0.375rem 0.75rem;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--gray-700);
-        }
-
-        /* Modal */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-            backdrop-filter: blur(4px);
-        }
-
-        .modal-overlay.active {
-            display: flex;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .modal {
-            background-color: var(--bg-white);
-            border-radius: 16px;
-            max-width: 1000px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            position: relative;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
-            animation: slideUp 0.3s ease;
-        }
-
-        @keyframes slideUp {
-            from { 
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to { 
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .modal-header {
-            position: sticky;
-            top: 0;
-            background: linear-gradient(135deg, var(--ifood-red) 0%, var(--ifood-dark-red) 100%);
-            color: white;
-            padding: 2rem 2.5rem;
-            border-radius: 16px 16px 0 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            z-index: 10;
-            gap: 2rem;
-        }
-
-        .modal-header-content {
-            flex: 1;
-        }
-
-        .modal-title {
-            font-size: 1.75rem;
-            font-weight: 700;
-            margin-bottom: 0.75rem;
-            line-height: 1.3;
-        }
-
-        .modal-meta {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .modal-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.375rem;
-            padding: 0.375rem 0.875rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            background-color: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .modal-canal-badge {
-            background-color: rgba(255, 255, 255, 0.15);
-            color: white;
-            padding: 0.375rem 0.875rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .modal-close {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            font-weight: 300;
-            flex-shrink: 0;
-        }
-
-        .modal-close:hover {
-            background-color: rgba(255, 255, 255, 0.3);
-            transform: scale(1.1);
-        }
-
-        .modal-body {
-            padding: 2.5rem;
-        }
-
-        .modal-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .modal-section {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .modal-section-title {
-            font-size: 0.875rem;
-            font-weight: 700;
-            color: var(--ifood-red);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--ifood-red);
-        }
-
-        .modal-field {
-            margin-bottom: 1.5rem;
-        }
-
-        .modal-field:last-child {
-            margin-bottom: 0;
-        }
-
-        .modal-field-label {
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--gray-600);
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .modal-field-icon {
-            font-size: 1rem;
-        }
-
-        .modal-field-value {
-            font-size: 0.95rem;
-            color: var(--gray-800);
-            line-height: 1.7;
-            padding: 1rem 1.25rem;
-            background-color: var(--gray-50);
-            border-radius: 8px;
-            border-left: 3px solid var(--ifood-red);
-        }
-
-        .modal-field-value.empty {
-            color: var(--gray-400);
-            font-style: italic;
-            border-left-color: var(--gray-300);
-        }
-
-        .modal-full-width {
-            grid-column: 1 / -1;
-        }
-
-        .modal-links {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .modal-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--ifood-red);
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
-            background-color: var(--bg-light-red);
-            border: 1px solid var(--border-gray);
-        }
-
-        .modal-link:hover {
-            background-color: var(--bg-lighter-red);
-            border-color: var(--ifood-red);
-            transform: translateX(4px);
-        }
-
-        .modal-link::before {
-            content: '→';
-            font-size: 1.25rem;
-        }
-
-        .modal-dates {
-            display: flex;
-            gap: 1.5rem;
-        }
-
-        .modal-date-item {
-            flex: 1;
-        }
-
-        /* Responsividade do Modal */
-        @media (max-width: 768px) {
-            .modal {
-                max-width: 100%;
-                margin: 1rem;
-            }
-
-            .modal-header {
-                padding: 1.5rem;
-            }
-
-            .modal-title {
-                font-size: 1.25rem;
-            }
-
-            .modal-body {
-                padding: 1.5rem;
-            }
-
-            .modal-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-
-            .modal-dates {
-                flex-direction: column;
-                gap: 1rem;
-            }
-        }
-
-
-        /* Página de Canal - Novo Design */
-        .canal-header {
-            background-color: var(--bg-white);
-            padding: 2rem 3rem;
-            border-bottom: 1px solid var(--border-gray);
-        }
-
-        .canal-title {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--gray-900);
-            margin-bottom: 0.5rem;
-        }
-
-        .canal-subtitle {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            font-weight: 400;
-        }
-
-        /* Tabs de Navegação */
-        .canal-tabs {
-            display: flex;
-            gap: 0;
-            background-color: var(--bg-white);
-            padding: 0 3rem;
-            border-bottom: 2px solid var(--border-gray);
-            overflow-x: auto;
-        }
-
-        .canal-tab {
-            padding: 1rem 1.5rem;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--gray-600);
-            background: none;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border-bottom: 3px solid transparent;
-            margin-bottom: -2px;
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .canal-tab:hover {
-            color: var(--ifood-red);
-            background-color: var(--bg-light-red);
-        }
-
-        .canal-tab.active {
-            color: var(--ifood-red);
-            border-bottom-color: var(--ifood-red);
-        }
-
-        .canal-tab-icon {
-            font-size: 1rem;
-        }
-
-        .canal-tab-count {
-            background-color: var(--gray-200);
-            color: var(--gray-700);
-            font-size: 0.75rem;
-            font-weight: 700;
-            padding: 0.125rem 0.5rem;
-            border-radius: 12px;
-            min-width: 20px;
-            text-align: center;
-        }
-
-        .canal-tab.active .canal-tab-count {
-            background-color: var(--ifood-red);
-            color: white;
-        }
-
-        /* Conteúdo das Tabs */
-        .canal-tab-content {
-            display: none;
-            padding: 2rem 3rem;
-        }
-
-        .canal-tab-content.active {
-            display: block;
-        }
-
-        /* Cards do Canal - Novo Design */
-        .canal-cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .canal-card {
-            background-color: var(--bg-white);
-            border: 1px solid var(--border-gray);
-            border-radius: 12px;
-            padding: 1.75rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .canal-card:hover {
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            border-color: var(--ifood-red);
-            transform: translateY(-4px);
-        }
-
-        .canal-card-header {
-            margin-bottom: 1.25rem;
-        }
-
-        .canal-card-title {
-            font-size: 1.125rem;
-            font-weight: 700;
-            color: var(--gray-900);
-            margin-bottom: 0.75rem;
-            line-height: 1.4;
-        }
-
-        .canal-card-meta {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .canal-card-status {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.375rem;
-            padding: 0.375rem 0.875rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-
-        .canal-card-status.em-testes {
-            background-color: #dbeafe;
-            color: #1e40af;
-        }
-
-        .canal-card-status.em-desenvolvimento {
-            background-color: #fef3c7;
-            color: #92400e;
-        }
-
-        .canal-card-status.mapeada {
-            background-color: #e0e7ff;
-            color: #3730a3;
-        }
-
-        .canal-card-status.aguardando-teste {
-            background-color: #fef3c7;
-            color: #d97706;
-        }
-
-        .canal-card-status.concluido {
-            background-color: #d1fae5;
-            color: #065f46;
-        }
-
-        .canal-card-canal {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--gray-600);
-        }
-
-        .canal-card-body {
-            padding-top: 1rem;
-            border-top: 1px solid var(--border-gray);
-        }
-
-        .canal-card-field {
-            margin-bottom: 0.875rem;
-        }
-
-        .canal-card-field:last-child {
-            margin-bottom: 0;
-        }
-
-        .canal-card-field-label {
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--gray-600);
-            margin-bottom: 0.375rem;
-        }
-
-        .canal-card-field-value {
-            font-size: 0.9rem;
-            color: var(--gray-800);
-            line-height: 1.6;
-        }
-
-        /* Empty State */
-        .canal-empty-state {
-            text-align: center;
-            padding: 4rem 2rem;
-        }
-
-        .canal-empty-state-text {
-            font-size: 1rem;
-            color: var(--text-secondary);
-        }
-
-        /* Página vazia */
-        .empty-state {
-            text-align: center;
-            padding: 4rem 2rem;
-            color: var(--text-secondary);
-        }
-
-        .empty-state-text {
-            font-size: 1.125rem;
-            font-weight: 500;
-        }
-
-        /* Utilitários */
-        .hidden {
-            display: none !important;
-        }
-
-        /* Responsividade */
-        @media (max-width: 1024px) {
-            .sidebar {
-                width: 260px;
-            }
-
-            .main-content {
-                margin-left: 260px;
-            }
-
-            .page-header {
-                padding: 2rem;
-            }
-
-            .welcome-section {
-                margin: -1rem 2rem 2rem;
-            }
-
-            .content-section {
-                padding: 0 2rem 2rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 100%;
-                position: relative;
-                height: auto;
-            }
-
-            .main-content {
-                margin-left: 0;
-            }
-
-            .page-header {
-                padding: 1.5rem;
-            }
-
-            .page-title-main {
-                font-size: 1.75rem;
-            }
-
-            .welcome-section {
-                margin: -1rem 1.5rem 1.5rem;
-                padding: 1.5rem;
-            }
-
-            .content-section {
-                padding: 0 1.5rem 1.5rem;
-            }
-
-            .cards-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .filters-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .stats-container {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 480px) {
-            .stats-container {
-                grid-template-columns: 1fr;
-            }
-
-            .stat-value {
-                font-size: 2rem;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Captação Self — Iniciativas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ═══════════════════════════════════════════════════════════
+       TOKENS — DS CUMBUCA (Abril 2026)
+       ═══════════════════════════════════════════════════════════ */
+    :root {
+      /* Brand */
+      --brand-default:      #0098FC;
+      --brand-hover:        #0188E0;
+      --brand-pressed:      #005C9E;
+      --brand-bg:           #0188E0;
+      --brand-tint:         #E6F2FA;
+
+      /* Accent */
+      --accent-highlight:   #7449B3;
+
+      /* Neutral / Surface */
+      --surface-bg:         #FFFFFF;
+      --page-bg:            #F6F7F8;
+      --surface-subtle-bg:  #EDEFF3;
+      --neutral-border:     #E2E6EC;
+      --neutral-subtle:     #D1D7DF;
+
+      /* Text */
+      --text-primary:       #1F2937;
+      --text-secondary:     #4B5563;
+      --text-tertiary:      #6B7280;
+      --text-disabled:      #94A0AF;
+
+      /* Feedback */
+      --success-default:    #157132;
+      --success-bg-soft:    #E6F9EB;
+      --warning-default:    #F7B13C;
+      --warning-bg-soft:    #FFF5E0;
+      --danger-default:     #C03939;
+      --danger-bg-soft:     #F8E8E8;
+      --info-default:       #005C9E;
+      --info-bg-soft:       #E6F2FA;
+
+      /* Spacing */
+      --space-xs:  4px;
+      --space-s:   8px;
+      --space-sm:  12px;
+      --space-m:   16px;
+      --space-l:   20px;
+      --space-xl:  24px;
+      --space-2xl: 32px;
+      --space-3xl: 40px;
+      --space-4xl: 48px;
+
+      /* Layout */
+      --page-margin:       40px;
+      --layout-gap:        24px;
+      --container-padding: 32px;
+      --content-max-width: 1280px;
+
+      /* Border Radius */
+      --radius-none:  0px;
+      --radius-xs:    2px;
+      --radius-s:     4px;
+      --radius-m:     8px;
+      --radius-l:     12px;
+      --radius-xl:    16px;
+      --radius-2xl:   40px;
+      --radius-full:  9999px;
+
+      /* Shadows */
+      --shadow-surface:  0 1px 3px rgba(31,41,55,0.10), 0 1px 2px rgba(31,41,55,0.06);
+      --shadow-elevated: 0 4px 6px rgba(31,41,55,0.08), 0 2px 4px rgba(31,41,55,0.06);
+      --shadow-modal:    0 20px 25px rgba(31,41,55,0.12), 0 10px 10px rgba(31,41,55,0.04);
+    }
+
+    /* ─── RESET ─────────────────────────────────────────────── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: var(--page-bg);
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    /* ─── TIPOGRAFIA ─────────────────────────────────────────── */
+    .display-d4   { font-size: 24px; font-weight: 700; line-height: 30px; }
+    .heading-h1   { font-size: 20px; font-weight: 700; line-height: 30px; }
+    .heading-h2   { font-size: 18px; font-weight: 700; line-height: 28px; }
+    .heading-h3   { font-size: 16px; font-weight: 700; line-height: 24px; }
+    .heading-h4   { font-size: 14px; font-weight: 700; line-height: 20px; }
+    .body-l       { font-size: 16px; font-weight: 400; line-height: 24px; }
+    .body-m       { font-size: 14px; font-weight: 400; line-height: 20px; }
+    .body-s       { font-size: 12px; font-weight: 400; line-height: 18px; }
+    .body-semibold-m { font-size: 14px; font-weight: 600; line-height: 20px; }
+    .caption-regular { font-size: 10px; font-weight: 400; line-height: 16px; }
+    .caption-semibold { font-size: 10px; font-weight: 600; line-height: 16px; }
+
+    /* ─── LAYOUT ─────────────────────────────────────────────── */
+    .layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ─── SIDEBAR (MELHORIA 5) ───────────────────────────────── */
+    .sidebar {
+      width: 280px;
+      background-color: var(--brand-pressed);
+      border-right: none;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      z-index: 100;
+    }
+
+    .sidebar-header {
+      padding: var(--space-2xl) var(--space-xl) var(--space-xl);
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .sidebar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: var(--space-s);
+    }
+    .sidebar-brand-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: #FFFFFF;
+      letter-spacing: -0.3px;
+    }
+
+
+    .sidebar-logo {
+      font-size: 20px;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: var(--space-s);
+      display: flex;
+      align-items: center;
+      gap: var(--space-s);
+    }
+
+    .sidebar-subtitle {
+      font-size: 12px;
+      color: rgba(255,255,255,0.7);
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      padding: var(--space-l) 0;
+    }
+
+    .nav-section {
+      margin-bottom: var(--space-xl);
+    }
+
+    .nav-section-title {
+      padding: var(--space-s) var(--space-xl);
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .nav-item {
+      padding: var(--space-sm) var(--space-xl);
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: var(--space-s);
+      font-size: 14px;
+      transition: all 0.2s;
+      border-left: 3px solid transparent;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .nav-item:hover {
+      background-color: rgba(255,255,255,0.1);
+      color: #FFFFFF;
+    }
+
+    .nav-item.active {
+      background-color: rgba(255,255,255,0.15);
+      color: #FFFFFF;
+      font-weight: 600;
+      border-left-color: #FFFFFF;
+    }
+
+    /* Accordion sub-itens */
+    .nav-accordion-content {
+      display: none;
+    }
+
+    .nav-accordion-content.open {
+      display: block;
+    }
+
+    .nav-sub-item {
+      padding: var(--space-s) var(--space-xl) var(--space-s) 52px;
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      font-size: 13px;
+      transition: all 0.2s;
+      border-left: 3px solid transparent;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .nav-sub-item:hover {
+      background-color: rgba(255,255,255,0.1);
+      color: #FFFFFF;
+    }
+
+    .nav-sub-item.active {
+      background-color: rgba(255,255,255,0.2);
+      color: #FFFFFF;
+      font-weight: 600;
+      border-left-color: var(--brand-tint);
+    }
+
+    .nav-separator {
+      height: 1px;
+      background-color: rgba(255,255,255,0.15);
+      margin: var(--space-s) var(--space-xl);
+    }
+
+    .nav-chevron {
+      margin-left: auto;
+      font-size: 10px;
+      transition: transform 0.2s;
+      color: rgba(255,255,255,0.6);
+    }
+
+    .nav-chevron.rotated {
+      transform: rotate(180deg);
+    }
+
+    /* ─── MAIN CONTENT ───────────────────────────────────────── */
+    .main-content {
+      flex: 1;
+      margin-left: 280px;
+      padding: var(--page-margin);
+      min-width: 0;
+    }
+
+    /* ─── BADGE ──────────────────────────────────────────────── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-full);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .badge-sm {
+      height: 18px;
+      padding: 0 var(--space-s);
+      font-size: 10px;
+      line-height: 16px;
+    }
+
+    .badge-md {
+      height: 24px;
+      padding: 0 var(--space-sm);
+      font-size: 12px;
+      line-height: 18px;
+    }
+
+    .badge-primary-soft { background-color: var(--brand-tint); color: var(--brand-default); }
+    .badge-success-soft { background-color: var(--success-bg-soft); color: var(--success-default); }
+    .badge-warning-soft { background-color: var(--warning-bg-soft); color: #8B6708; }
+    .badge-danger-soft  { background-color: var(--danger-bg-soft); color: var(--danger-default); }
+    .badge-info-soft    { background-color: var(--info-bg-soft); color: var(--info-default); }
+    .badge-accent-soft  { background-color: #F3EEFF; color: var(--accent-highlight); }
+    .badge-neutral-soft { background-color: var(--surface-subtle-bg); color: var(--text-tertiary); }
+
+    /* ─── CARD ───────────────────────────────────────────────── */
+    .card {
+      background-color: var(--surface-bg);
+      border: 1px solid var(--neutral-border);
+      border-radius: var(--radius-m);
+      padding: var(--space-xl);
+      box-shadow: var(--shadow-surface);
+    }
+
+    /* ─── BUTTON ─────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-s);
+      border: none;
+      border-radius: var(--radius-m);
+      font-family: 'Roboto', sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .btn-sm { height: 32px; padding: 0 var(--space-m); font-size: 12px; }
+    .btn-md { height: 40px; padding: 0 var(--space-l); font-size: 14px; }
+
+    .btn-primary {
+      background-color: var(--brand-default);
+      color: var(--surface-bg);
+    }
+    .btn-primary:hover { background-color: var(--brand-hover); }
+
+    .btn-secondary {
+      background-color: var(--surface-bg);
+      color: var(--brand-default);
+      border: 1px solid var(--neutral-border);
+    }
+    .btn-secondary:hover { background-color: var(--brand-tint); border-color: var(--brand-default); }
+
+    /* ─── TABLE (MELHORIA 5) ─────────────────────────────────── */
+    .table-wrapper {
+      overflow-x: auto;
+      border: 1px solid var(--neutral-border);
+      border-radius: var(--radius-m);
+      background-color: var(--surface-bg);
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .table thead {
+      background-color: var(--brand-pressed);
+    }
+
+    .table th {
+      padding: var(--space-sm) var(--space-m);
+      text-align: left;
+      font-weight: 600;
+      color: #FFFFFF;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+      white-space: nowrap;
+    }
+
+    .table td {
+      padding: var(--space-sm) var(--space-m);
+      border-bottom: 1px solid var(--neutral-border);
+      color: var(--text-secondary);
+    }
+
+    .table tbody tr:last-child td { border-bottom: none; }
+
+    .table tbody tr:nth-child(odd)  { background-color: var(--surface-bg); }
+    .table tbody tr:nth-child(even) { background-color: #F8FAFC; }
+
+    .table tbody tr:hover {
+      background-color: var(--brand-tint);
+      cursor: pointer;
+    }
+
+    /* ─── INPUT / SELECT ─────────────────────────────────────── */
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-s);
+    }
+
+    .input-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .input, select.input {
+      width: 100%;
+      border: 1px solid var(--neutral-border);
+      border-radius: var(--radius-m);
+      font-family: 'Roboto', sans-serif;
+      font-size: 14px;
+      color: var(--text-primary);
+      background-color: var(--surface-bg);
+      transition: all 0.2s;
+      height: 40px;
+      padding: 0 var(--space-m);
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236B7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 36px;
+      cursor: pointer;
+    }
+
+    .input:focus, select.input:focus {
+      outline: none;
+      border-color: var(--brand-default);
+      box-shadow: 0 0 0 3px var(--brand-tint);
+    }
+
+    .input:hover, select.input:hover { border-color: var(--neutral-subtle); }
+
+    /* ─── PAGE HEADER (MELHORIA 5) ───────────────────────────── */
+    .page-header {
+      margin-bottom: var(--space-2xl);
+      padding-bottom: var(--space-l);
+      border-bottom: 2px solid var(--brand-default);
+    }
+
+    .section-block {
+      margin-bottom: var(--space-4xl);
+    }
+
+    /* ─── FILTERS (MELHORIA 5) ───────────────────────────────── */
+    .filters-bar {
+      display: flex;
+      gap: var(--space-xl);
+      align-items: flex-end;
+      flex-wrap: wrap;
+    }
+
+    .filters-bar .input-group {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .filters-container {
+      background-color: var(--surface-bg);
+      border: 1px solid var(--neutral-border);
+      border-radius: var(--radius-m);
+      padding: var(--space-xl);
+      box-shadow: var(--shadow-surface);
+      margin-bottom: var(--space-xl);
+    }
+
+    /* ─── INITIATIVE CARDS GRID ──────────────────────────────── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: var(--space-xl);
+    }
+
+    .initiative-card {
+      background-color: var(--surface-bg);
+      border: 1px solid var(--neutral-border);
+      border-radius: var(--radius-m);
+      padding: var(--space-xl);
+      box-shadow: var(--shadow-surface);
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    .initiative-card:hover {
+      box-shadow: var(--shadow-elevated);
+      transform: translateY(-2px);
+      border-color: var(--neutral-subtle);
+    }
+
+    .initiative-card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.4;
+    }
+
+    .initiative-card-badges {
+      display: flex;
+      gap: var(--space-s);
+      flex-wrap: wrap;
+    }
+
+    .initiative-card-metric {
+      font-size: 12px;
+      color: var(--text-secondary);
+      border-top: 1px solid var(--neutral-border);
+      padding-top: var(--space-sm);
+      margin-top: auto;
+    }
+
+    .initiative-card-metric strong {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    /* ─── STATUS TABS (MELHORIA 3) ───────────────────────────── */
+    .status-tabs-bar {
+      display: flex;
+      gap: var(--space-s);
+      flex-wrap: wrap;
+      margin-bottom: var(--space-xl);
+    }
+
+    .status-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-s);
+      padding: var(--space-s) var(--space-m);
+      border-radius: var(--radius-m);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 1px solid var(--neutral-border);
+      background-color: var(--surface-subtle-bg);
+      color: var(--text-secondary);
+      user-select: none;
+    }
+
+    .status-tab:hover:not([data-disabled="true"]) {
+      background-color: var(--neutral-border);
+      color: var(--text-primary);
+    }
+
+    .status-tab[data-disabled="true"] {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .status-tab-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 5px;
+      border-radius: var(--radius-full);
+      font-size: 10px;
+      font-weight: 700;
+      background-color: rgba(0,0,0,0.12);
+      color: inherit;
+    }
+
+    /* ── Tabs de status — estado ATIVO ─────────────────────────── */
+    .status-tab.active-em-testes {
+      background-color: var(--danger-default);   /* #C03939 */
+      color: var(--surface-bg);
+      border-color: var(--danger-default);
+    }
+    .status-tab.active-em-desenvolvimento {
+      background-color: var(--brand-default);    /* #0098FC */
+      color: var(--surface-bg);
+      border-color: var(--brand-default);
+    }
+    .status-tab.active-aguardando-testes {
+      background-color: var(--warning-default);  /* #F7B13C */
+      color: var(--text-primary);                /* escuro para contraste */
+      border-color: var(--warning-default);
+    }
+    .status-tab.active-iniciativas-mapeadas {
+      background-color: var(--accent-highlight); /* #7449B3 */
+      color: var(--surface-bg);
+      border-color: var(--accent-highlight);
+    }
+    .status-tab.active-concluido {
+      background-color: var(--success-default);  /* #157132 */
+      color: var(--surface-bg);
+      border-color: var(--success-default);
+    }
+    .status-tab.active-arquivadas {
+      background-color: var(--text-secondary);   /* #4B5563 */
+      color: var(--surface-bg);
+      border-color: var(--text-secondary);
+    }
+
+    /* Badge interno da tab ativa */
+    .status-tab.active .status-tab-badge {
+      background-color: rgba(255, 255, 255, 0.25);
+      color: inherit;
+    }
+
+    /* ── Tabs INATIVAS ─────────────────────────────────────────── */
+    .status-tab:not(.active-em-testes):not(.active-em-desenvolvimento):not(.active-aguardando-testes):not(.active-iniciativas-mapeadas):not(.active-concluido):not(.active-arquivadas) {
+      background-color: var(--surface-bg);
+      color: var(--text-secondary);
+      border: 1px solid var(--neutral-border);
+    }
+    .status-tab:not([data-disabled="true"]):hover {
+      background-color: var(--surface-subtle-bg);
+      border-color: var(--neutral-subtle);
+    }
+
+    .canal-content-area {
+      min-height: 200px;
+    }
+
+    /* ─── EMPTY STATE ────────────────────────────────────────── */
+    .empty-state {
+      text-align: center;
+      padding: var(--space-4xl) var(--space-xl);
+      color: var(--text-tertiary);
+      font-size: 14px;
+    }
+
+    .empty-state-icon {
+      font-size: 32px;
+      margin-bottom: var(--space-m);
+    }
+
+    /* ─── MODAL (MELHORIA 4) ─────────────────────────────────── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(31,41,55,0.6);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-xl);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+
+    .modal-overlay.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal {
+      background-color: var(--surface-bg);
+      border-radius: var(--radius-l);
+      box-shadow: var(--shadow-modal);
+      width: 100%;
+      max-width: 800px;
+      max-height: 90vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      transform: translateY(20px);
+      transition: transform 0.2s;
+    }
+
+    .modal-overlay.visible .modal {
+      transform: translateY(0);
+    }
+
+    /* MELHORIA 4 — Header sem vermelho */
+    .modal-header {
+      background-color: var(--surface-bg);
+      padding: var(--space-xl) var(--space-2xl);
+      border-radius: var(--radius-l) var(--radius-l) 0 0;
+      border-bottom: 1px solid var(--neutral-border);
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-m);
+    }
+
+    .modal-header-info {
+      flex: 1;
+    }
+
+    .modal-header-title {
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--text-primary);
+      margin-bottom: var(--space-s);
+    }
+
+    .modal-header-badges {
+      display: flex;
+      gap: var(--space-s);
+      flex-wrap: wrap;
+    }
+
+    .modal-close-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-tertiary);
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-m);
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+
+    .modal-close-btn:hover {
+      color: var(--text-primary);
+      background-color: var(--surface-subtle-bg);
+    }
+
+    .modal-body {
+      padding: var(--space-2xl);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-2xl);
+    }
+
+    /* MELHORIA 4 — Títulos de seção azul DS */
+    .modal-section-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--brand-default);
+      margin-bottom: var(--space-m);
+      padding-bottom: var(--space-s);
+      border-bottom: 1px solid var(--neutral-border);
+    }
+
+    .modal-field {
+      margin-bottom: var(--space-m);
+    }
+
+    .modal-field-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--text-tertiary);
+      margin-bottom: var(--space-xs);
+    }
+
+    .modal-field-value {
+      font-size: 14px;
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+
+    .modal-field-value.empty {
+      color: var(--text-disabled);
+      font-style: italic;
+    }
+
+    .modal-period-boxes {
+      display: flex;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-m);
+    }
+
+    .modal-period-box {
+      flex: 1;
+      border: 1px solid var(--neutral-border);
+      border-radius: var(--radius-m);
+      padding: var(--space-sm) var(--space-m);
+      background-color: var(--surface-subtle-bg);
+    }
+
+    .modal-period-box-label {
+      font-size: 10px;
+      color: var(--text-tertiary);
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .modal-period-box-value {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-top: 2px;
+    }
+
+    /* MELHORIA 4 — Bordas azul DS */
+    .modal-bordered-field {
+      border-left: 3px solid var(--brand-default);
+      padding-left: var(--space-sm);
+      margin-bottom: var(--space-m);
+    }
+
+    .modal-icon-field {
+      display: flex;
+      gap: var(--space-sm);
+      align-items: flex-start;
+      margin-bottom: var(--space-m);
+    }
+
+    .modal-icon-field-icon {
+      font-size: 16px;
+      margin-top: 1px;
+      flex-shrink: 0;
+    }
+
+    .modal-footer {
+      padding: var(--space-xl) var(--space-2xl);
+      border-top: 1px solid var(--neutral-border);
+      background-color: var(--surface-subtle-bg);
+      border-radius: 0 0 var(--radius-l) var(--radius-l);
+    }
+
+    /* MELHORIA 4 — Footer title azul DS */
+    .modal-footer-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--brand-default);
+      margin-bottom: var(--space-sm);
+      padding-bottom: var(--space-s);
+      border-bottom: 1px solid var(--neutral-border);
+    }
+
+    .modal-link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-s);
+      padding: var(--space-sm) var(--space-m);
+      background-color: var(--brand-default);
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: var(--radius-m);
+      font-size: 13px;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .modal-link-btn:hover { background-color: var(--brand-hover); }
+
+    /* ─── DIVIDER ────────────────────────────────────────────── */
+    .divider {
+      height: 1px;
+      background-color: var(--neutral-border);
+      border: none;
+      margin: var(--space-xl) 0;
+    }
+
+    /* ─── TABLE SECTION HEADER ───────────────────────────────── */
+    .table-section-header {
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-xs);
+    }
+
+    .table-caption {
+      font-size: 13px;
+      color: var(--text-tertiary);
+      margin-bottom: var(--space-m);
+    }
+
+    /* ─── UTILITIES ──────────────────────────────────────────── */
+    .text-secondary { color: var(--text-secondary); }
+    .text-danger    { color: var(--danger-default); }
+    .mt-s  { margin-top: var(--space-s); }
+    .mt-m  { margin-top: var(--space-m); }
+    .mt-l  { margin-top: var(--space-l); }
+    .mt-xl { margin-top: var(--space-xl); }
+    .mb-m  { margin-bottom: var(--space-m); }
+    .mb-xl { margin-bottom: var(--space-xl); }
+    .mb-2xl{ margin-bottom: var(--space-2xl); }
+    .gap-s { gap: var(--space-s); }
+    .flex  { display: flex; }
+    .flex-wrap { flex-wrap: wrap; }
+    .items-center { align-items: center; }
+
+    @media (max-width: 900px) {
+      .modal-body { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
+<div class="layout">
 
-    <div class="layout">
-        <!-- Menu Lateral -->
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <div class="logo-container">
-                    <div class="logo">A</div>
-                    <div class="logo-text">AnotaAi</div>
-                </div>
-                <div class="sidebar-title">Captação Self</div>
-                <div class="sidebar-subtitle">Panorama geral das iniciativas de captação self</div>
-            </div>
-            <nav class="menu-section">
-                <a href="#" class="menu-item active" data-page="inicio">
-                    <span class="menu-item-content">Início</span>
-                </a>
-                <div class="menu-item" id="canais-menu">
-                    <span class="menu-item-content">Canais</span>
-                </div>
-                <div class="submenu" id="canais-submenu">
-                    <a href="#" class="submenu-item" data-page="trial" data-canal="Trial">Trial</a>
-                    <a href="#" class="submenu-item" data-page="self-checkout" data-canal="Self Checkout">Self Checkout</a>
-                    <a href="#" class="submenu-item" data-page="mozart" data-canal="Mozart">Mozart</a>
-                    <a href="#" class="submenu-item" data-page="livechat" data-canal="Livechat">Livechat</a>
-                    <a href="#" class="submenu-item" data-page="ssi" data-canal="SSI">SSI</a>
-                    <a href="#" class="submenu-item" data-page="vitrine" data-canal="Vitrine">Vitrine</a>
-                    <a href="#" class="submenu-item" data-page="sofia" data-canal="SofIA">SofIA</a>
-                    <a href="#" class="submenu-item" data-page="outros" data-canal="Outros">Outros</a>
-                </div>
-            </nav>
-        </aside>
-
-        <!-- Conteúdo Principal -->
-        <main class="main-content">
-            <!-- Página Início -->
-            <div id="page-inicio" class="page-content">
-                <div class="page-header">
-                    <h1 class="page-title-main">Captação Self</h1>
-                    <p class="page-subtitle-main">Panorama Geral das iniciativas de captação self.</p>
-                </div>
-
-                <div class="content-section">
-                    <!-- Filtros Avançados -->
-                    <div class="filters-container">
-                        <div class="filters-header">
-                            <h3 class="filters-title">Filtros Avançados</h3>
-                            <button class="clear-filters" id="clear-filters">✕ Limpar todos</button>
-                        </div>
-                        <div class="filters-grid">
-                            <div class="filter-group">
-                                <label class="filter-label">Canal</label>
-                                                            <select class="filter-select" id="filter-canal">
-                                <option value="">Todos os canais</option>
-                                <option value="Trial">Trial</option>
-                                <option value="Self Checkout">Self Checkout</option>
-                                <option value="Mozart">Mozart</option>
-                                <option value="Livechat">Livechat</option>
-                                <option value="SSI">SSI</option>
-                                <option value="Vitrine">Vitrine</option>
-                                <option value="SofIA">SofIA</option>
-                                <option value="Outros">Outros</option>
-                            </select>
-                            </div>
-                            <div class="filter-group">
-                                <label class="filter-label">Mês</label>
-                                <select class="filter-select" id="filter-mes">
-                                    <option value="">Todos os meses</option>
-                                    <option value="Abril/26">Abr/26</option>
-                                    <option value="Maio/26">Mai/26</option>
-                                    <option value="Junho/26">Jun/26</option>
-                                    <option value="Julho/26">Jul/26</option>
-                                    <option value="Agosto/26">Ago/26</option>
-                                    <option value="Setembro/26">Set/26</option>
-                                    <option value="Outubro/26">Out/26</option>
-                                    <option value="Novembro/26">Nov/26</option>
-                                    <option value="Dezembro/26">Dez/26</option>
-                                    <option value="Janeiro/27">Jan/27</option>
-                                    <option value="Fevereiro/27">Fev/27</option>
-                                    <option value="Março/27">Mar/27</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="active-filters" id="active-filters">
-                            <span class="active-filters-label">Filtros ativos:</span>
-                            <span id="active-filters-text">Nenhum</span>
-                        </div>
-                    </div>
-
-                    <!-- Tabela de Resumo -->
-                    <div class="table-container">
-                        <h2 class="table-header">Ações Ativas do Mês</h2>
-                        <div class="table-wrapper">
-                            <table id="resumo-table">
-                                <thead>
-                                    <tr>
-                                        <th>Canal</th>
-                                        <th>Nome da Ação</th>
-                                        <th>Status</th>
-                                        <th>Mês</th>
-                                        <th>Data de Início</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="resumo-tbody">
-                                    <!-- Dados serão inseridos via JavaScript -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Páginas de Canais (Template) -->
-            <div id="page-canal" class="page-content hidden">
-                <div class="canal-header">
-                    <h1 class="canal-title" id="canal-title">Canal</h1>
-                    <p class="canal-subtitle" id="canal-subtitle">Acompanhamento de testes do canal</p>
-                </div>
-
-                <!-- Tabs de Navegação -->
-                <div class="canal-tabs">
-                    <button class="canal-tab active" data-tab="em-testes">
-                        <span class="canal-tab-icon">!</span>
-                        <span>Em Testes</span>
-                        <span class="canal-tab-count" id="tab-count-em-testes">0</span>
-                    </button>
-                    <button class="canal-tab" data-tab="em-desenvolvimento">
-                        <span class="canal-tab-icon">&lt;/&gt;</span>
-                        <span>Em Desenvolvimento</span>
-                        <span class="canal-tab-count" id="tab-count-em-desenvolvimento">0</span>
-                    </button>
-                    <button class="canal-tab" data-tab="aguardando-teste">
-                        <span class="canal-tab-icon">⏳</span>
-                        <span>Aguardando Teste</span>
-                        <span class="canal-tab-count" id="tab-count-aguardando-teste">0</span>
-                    </button>
-                    <button class="canal-tab" data-tab="mapeadas">
-                        <span>Iniciativas Mapeadas</span>
-                        <span class="canal-tab-count" id="tab-count-mapeadas">0</span>
-                    </button>
-                    <button class="canal-tab" data-tab="historico">
-                        <span>Histórico</span>
-                        <span class="canal-tab-count" id="tab-count-historico">0</span>
-                    </button>
-                </div>
-
-                <!-- Conteúdo das Tabs -->
-                <div class="canal-tab-content active" id="tab-content-em-testes">
-                    <div class="canal-cards-grid" id="cards-em-testes">
-                        <!-- Cards serão inseridos via JavaScript -->
-                    </div>
-                </div>
-
-                <div class="canal-tab-content" id="tab-content-em-desenvolvimento">
-                    <div class="canal-cards-grid" id="cards-em-desenvolvimento">
-                        <!-- Cards serão inseridos via JavaScript -->
-                    </div>
-                </div>
-
-                <div class="canal-tab-content" id="tab-content-aguardando-teste">
-                    <div class="canal-cards-grid" id="cards-aguardando-teste">
-                        <!-- Cards serão inseridos via JavaScript -->
-                    </div>
-                </div>
-
-                <div class="canal-tab-content" id="tab-content-mapeadas">
-                    <div class="canal-cards-grid" id="cards-mapeadas">
-                        <!-- Cards serão inseridos via JavaScript -->
-                    </div>
-                </div>
-
-                <div class="canal-tab-content" id="tab-content-historico">
-                    <div class="canal-cards-grid" id="cards-historico">
-                        <!-- Cards serão inseridos via JavaScript -->
-                    </div>
-                </div>
-            </div>
-        </main>
+  <!-- ═══ SIDEBAR ═══ -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-brand">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="32" height="32" rx="8" fill="#E53935"/>
+          <text x="16" y="23" font-family="Roboto, sans-serif" font-size="20" font-weight="700" fill="white" text-anchor="middle">A</text>
+        </svg>
+        <span class="sidebar-brand-name">AnotaAi</span>
+      </div>
+      <div class="sidebar-logo">Captação Self</div>
+      <div class="sidebar-subtitle">Área de Captação</div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal-overlay" id="modal-overlay">
-        <div class="modal">
-            <div class="modal-header">
-                <h2 class="modal-title" id="modal-title">Detalhes da Ação</h2>
-                <button class="modal-close" id="modal-close">✕</button>
-            </div>
-            <div class="modal-body" id="modal-body">
-                <!-- Conteúdo será inserido via JavaScript -->
-            </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-section-title">Navegação</div>
+
+        <div class="nav-item" id="nav-home" onclick="navigate('home')">
+          Início
         </div>
+
+        <div class="nav-separator"></div>
+
+        <div class="nav-item" id="nav-canais-toggle" onclick="toggleCanaisAccordion()">
+          Canais
+          <span class="nav-chevron rotated" id="nav-canais-chevron">▼</span>
+        </div>
+
+        <div class="nav-accordion-content open" id="nav-canais-content">
+          <div class="nav-sub-item" id="nav-trial"           onclick="navigate('canal-trial')">Trial</div>
+          <div class="nav-sub-item" id="nav-self-checkout"   onclick="navigate('canal-self-checkout')">Self Checkout</div>
+          <div class="nav-sub-item" id="nav-mozart"          onclick="navigate('canal-mozart')">Mozart</div>
+          <div class="nav-sub-item" id="nav-livechat"        onclick="navigate('canal-livechat')">Livechat</div>
+          <div class="nav-sub-item" id="nav-contratar-agora" onclick="navigate('canal-contratar-agora')">Contratar Agora</div>
+          <div class="nav-sub-item" id="nav-ssi"             onclick="navigate('canal-ssi')">SSI</div>
+          <div class="nav-sub-item" id="nav-middleware"      onclick="navigate('canal-middleware')">Middleware</div>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- ═══ MAIN CONTENT ═══ -->
+  <main class="main-content" id="main-content">
+    <!-- Renderizado por JS -->
+  </main>
+</div>
+
+<!-- ═══ MODAL ═══ -->
+<div class="modal-overlay" id="modal-overlay" onclick="handleOverlayClick(event)">
+  <div class="modal" id="modal-box">
+    <div class="modal-header" id="modal-header">
+      <div class="modal-header-info">
+        <div class="modal-header-title heading-h2" id="modal-title"></div>
+        <div class="modal-header-badges" id="modal-badges"></div>
+      </div>
+      <button class="modal-close-btn" onclick="closeModal()">✕</button>
     </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer" id="modal-footer"></div>
+  </div>
+</div>
 
-    <script>
-        // Dados de exemplo (Em produção, viriam de uma API)
-        // Removido: duplicata de const acoes
-
-
-        // Calcular meses abrangidos entre data início e data fim
-        function calcularMesesAbrangidos(dataInicio, dataFim) {
-            const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 
-                          'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
-            
-            // Converter datas DD/MM/YYYY para Date
-            const [diaI, mesI, anoI] = dataInicio.split('/');
-            const [diaF, mesF, anoF] = dataFim.split('/');
-            
-            const inicio = new Date(parseInt(anoI), parseInt(mesI) - 1, parseInt(diaI));
-            const fim = new Date(parseInt(anoF), parseInt(mesF) - 1, parseInt(diaF));
-            
-            const mesesAbrangidos = [];
-            const dataAtual = new Date(inicio.getFullYear(), inicio.getMonth(), 1);
-            
-            while (dataAtual <= fim) {
-                const mesNome = meses[dataAtual.getMonth()];
-                const anoSufixo = String(dataAtual.getFullYear()).slice(2);
-                mesesAbrangidos.push(`${mesNome}/${anoSufixo}`);
-                
-                // Próximo mês
-                dataAtual.setMonth(dataAtual.getMonth() + 1);
-            }
-            
-            return mesesAbrangidos;
-        }
-
-        // Estado da aplicação
-        let currentPage = 'inicio';
-        let currentCanal = '';
-        let filteredData = [...acoes];
-
-        // Elementos do DOM
-        const menuItems = document.querySelectorAll('.menu-item[data-page]');
-        const submenuItems = document.querySelectorAll('.submenu-item');
-        const canaisMenu = document.getElementById('canais-menu');
-        const canaisSubmenu = document.getElementById('canais-submenu');
-        const pageInicio = document.getElementById('page-inicio');
-        const pageCanal = document.getElementById('page-canal');
-        const modalOverlay = document.getElementById('modal-overlay');
-        const modalClose = document.getElementById('modal-close');
-        const filterCanal = document.getElementById('filter-canal');
-        const filterMes = document.getElementById('filter-mes');
-        const clearFilters = document.getElementById('clear-filters');
-
-        // Inicialização
-        document.addEventListener('DOMContentLoaded', () => {
-            
-            renderResumoTable();
-            setupEventListeners();
-        });
-
-        // Event Listeners
-        function setupEventListeners() {
-            // Menu Início
-            menuItems.forEach(item => {
-                item.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const page = item.dataset.page;
-                    navigateToPage(page);
-                });
-            });
-
-            // Menu Canais
-            canaisMenu.addEventListener('click', () => {
-                canaisSubmenu.classList.toggle('open');
-            });
-
-            // Submenu Canais
-            submenuItems.forEach(item => {
-                item.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const canal = item.dataset.canal;
-                    navigateToCanal(canal);
-                });
-            });
-
-            // Filtros
-            filterCanal.addEventListener('change', applyFilters);
-            filterMes.addEventListener('change', applyFilters);
-            clearFilters.addEventListener('click', resetFilters);
-
-            // Modal
-            modalClose.addEventListener('click', closeModal);
-            modalOverlay.addEventListener('click', (e) => {
-                if (e.target === modalOverlay) {
-                    closeModal();
-                }
-            });
-        }
-
-        // Navegação
-        function navigateToPage(page) {
-            currentPage = page;
-            
-            // Atualizar menu
-            menuItems.forEach(item => {
-                if (item.dataset.page === page) {
-                    item.classList.add('active');
-                } else {
-                    item.classList.remove('active');
-                }
-            });
-            
-            submenuItems.forEach(item => item.classList.remove('active'));
-
-            // Mostrar página correta
-            if (page === 'inicio') {
-                pageInicio.classList.remove('hidden');
-                pageCanal.classList.add('hidden');
-                canaisSubmenu.classList.remove('open');
-            }
-        }
-
-        function navigateToCanal(canal) {
-            currentPage = 'canal';
-            currentCanal = canal;
-
-            // Atualizar menu
-            menuItems.forEach(item => item.classList.remove('active'));
-            submenuItems.forEach(item => {
-                if (item.dataset.canal === canal) {
-                    item.classList.add('active');
-                } else {
-                    item.classList.remove('active');
-                }
-            });
-
-            // Mostrar página do canal
-            pageInicio.classList.add('hidden');
-            pageCanal.classList.remove('hidden');
-            canaisSubmenu.classList.add('open');
-
-            // Atualizar título
-            document.getElementById('canal-title').textContent = canal;
-
-            // Renderizar cards do canal
-            renderCanalCards(canal);
-        }
-
-        
-
-        // Filtros
-        function applyFilters() {
-            const canalFilter = filterCanal.value;
-            const mesFilter = filterMes.value;
-
-            filteredData = acoes.filter(acao => {
-                const canalMatch = !canalFilter || acao.canal === canalFilter;
-                
-                // Nova lógica: verificar se o mês filtrado está entre os meses abrangidos pela ação
-                let mesMatch = !mesFilter;
-                if (mesFilter && acao.dataInicio && acao.dataFim) {
-                    const mesesAbrangidos = calcularMesesAbrangidos(acao.dataInicio, acao.dataFim);
-                    mesMatch = mesesAbrangidos.includes(mesFilter);
-                } else if (mesFilter) {
-                    // Fallback para ações sem data de fim
-                    mesMatch = acao.mes === mesFilter;
-                }
-                
-                const statusMatch = acao.status === 'Em Testes' || acao.status === 'Em Desenvolvimento';
-                return canalMatch && mesMatch && statusMatch;
-            });
-
-            updateActiveFilters();
-            renderResumoTable();
-        }
-
-        function resetFilters() {
-            filterCanal.value = '';
-            filterMes.value = '';
-            applyFilters();
-        }
-
-        function updateActiveFilters() {
-            const activeFiltersText = document.getElementById('active-filters-text');
-            const filters = [];
-            
-            if (filterCanal.value) filters.push(filterCanal.value);
-            if (filterMes.value) filters.push(filterMes.value);
-            
-            activeFiltersText.textContent = filters.length > 0 ? filters.join(', ') : 'Nenhum';
-        }
-
-        // Renderizar Tabela de Resumo
-        function renderResumoTable() {
-            const tbody = document.getElementById('resumo-tbody');
-            tbody.innerHTML = '';
-
-            const resumoData = filteredData.filter(acao => 
-                acao.status === 'Em Testes' || acao.status === 'Em Desenvolvimento'
-            );
-
-            if (resumoData.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="5" style="text-align: center; padding: 3rem; color: var(--text-secondary);">
-                            Nenhuma ação encontrada com os filtros aplicados
-                        </td>
-                    </tr>
-                `;
-                return;
-            }
-
-            resumoData.forEach(acao => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td><strong>${acao.canal}</strong></td>
-                    <td>${acao.nome}</td>
-                    <td>${renderStatusBadge(acao.status)}</td>
-                    <td>${acao.mes}</td>
-                    <td>${acao.dataInicio}</td>
-                `;
-                tr.addEventListener('click', () => openModal(acao));
-                tbody.appendChild(tr);
-            });
-        }
-
-        // Renderizar Cards do Canal
-        function renderCanalCards(canal) {
-            const canalAcoes = acoes.filter(acao => acao.canal === canal);
-
-            // Atualizar subtítulo
-            document.getElementById('canal-subtitle').textContent = `Acompanhamento de testes do canal ${canal}`;
-
-            // Em Testes
-            const emTestes = canalAcoes.filter(a => a.status === 'Em Testes');
-            renderCanalCardsList('cards-em-testes', emTestes);
-            document.getElementById('tab-count-em-testes').textContent = emTestes.length;
-
-            // Em Desenvolvimento
-            const emDesenvolvimento = canalAcoes.filter(a => a.status === 'Em Desenvolvimento');
-            renderCanalCardsList('cards-em-desenvolvimento', emDesenvolvimento);
-            document.getElementById('tab-count-em-desenvolvimento').textContent = emDesenvolvimento.length;
-
-            // Aguardando Teste
-            const aguardandoTeste = canalAcoes.filter(a => a.status === 'Aguardando Teste');
-            renderCanalCardsList('cards-aguardando-teste', aguardandoTeste);
-            document.getElementById('tab-count-aguardando-teste').textContent = aguardandoTeste.length;
-
-            // Mapeadas
-            const mapeadas = canalAcoes.filter(a => a.status === 'Mapeada');
-            renderCanalCardsList('cards-mapeadas', mapeadas);
-            document.getElementById('tab-count-mapeadas').textContent = mapeadas.length;
-
-            // Histórico (Concluído)
-            const historico = canalAcoes.filter(a => a.status === 'Concluído');
-            renderCanalCardsList('cards-historico', historico);
-            document.getElementById('tab-count-historico').textContent = historico.length;
-
-            // Setup tabs
-            setupCanalTabs();
-        }
-
-        function renderCanalCardsList(containerId, acoes) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = '';
-
-            if (acoes.length === 0) {
-                container.innerHTML = `
-                    <div class="canal-empty-state">
-                        <div class="canal-empty-state-text">Nenhuma ação nesta categoria</div>
-                    </div>
-                `;
-                return;
-            }
-
-            acoes.forEach(acao => {
-                const card = document.createElement('div');
-                card.className = 'canal-card';
-                card.innerHTML = `
-                    <div class="canal-card-header">
-                        <h3 class="canal-card-title">${acao.nome}</h3>
-                        <div class="canal-card-meta">
-                            <span class="canal-card-status ${getStatusClass(acao.status).replace('status-', '')}">${acao.status.toUpperCase()}</span>
-                            <span class="canal-card-canal">${acao.canal}</span>
-                        </div>
-                    </div>
-                    <div class="canal-card-body">
-                        <div class="canal-card-field">
-                            <div class="canal-card-field-label">Hipótese:</div>
-                            <div class="canal-card-field-value">${acao.hipotese}</div>
-                        </div>
-                    </div>
-                `;
-                card.addEventListener('click', () => openModal(acao));
-                container.appendChild(card);
-            });
-        }
-
-        // Setup Canal Tabs
-        function setupCanalTabs() {
-            const tabs = document.querySelectorAll('.canal-tab');
-            const tabContents = document.querySelectorAll('.canal-tab-content');
-
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    const tabName = tab.dataset.tab;
-
-                    // Remove active de todas as tabs
-                    tabs.forEach(t => t.classList.remove('active'));
-                    tabContents.forEach(tc => tc.classList.remove('active'));
-
-                    // Adiciona active na tab clicada
-                    tab.classList.add('active');
-                    document.getElementById(`tab-content-${tabName}`).classList.add('active');
-                });
-            });
-        }
-
-        // Renderizar Status Badge
-        function renderStatusBadge(status) {
-            const statusClass = getStatusClass(status);
-            return `<span class="status-badge ${statusClass}">
-                        <span class="status-icon"></span>
-                        ${status}
-                    </span>`;
-        }
-
-        // Modal
-        function openModal(acao) {
-            const modalTitle = document.getElementById('modal-title');
-            const modalBody = document.getElementById('modal-body');
-            
-            // Atualizar header do modal
-            const modalHeader = document.querySelector('.modal-header');
-            modalHeader.innerHTML = `
-                <div class="modal-header-content">
-                    <h2 class="modal-title">${acao.nome}</h2>
-                    <div class="modal-meta">
-                        <span class="modal-badge">${acao.status.toUpperCase()}</span>
-                        <span class="modal-canal-badge">${acao.canal}</span>
-                    </div>
-                </div>
-                <button class="modal-close" id="modal-close">✕</button>
-            `;
-
-            // Atualizar body com layout em grid
-            modalBody.innerHTML = `
-                <div class="modal-grid">
-                    <!-- Coluna 1: Informações Básicas -->
-                    <div class="modal-section">
-                        <h3 class="modal-section-title">Informações Gerais</h3>
-                        
-                        <div class="modal-field">
-                            <div class="modal-field-label">📅 Período</div>
-                            <div class="modal-dates">
-                                <div class="modal-date-item">
-                                    <div class="modal-field-value">
-                                        <strong>Início:</strong> ${acao.dataInicio}
-                                    </div>
-                                </div>
-                                ${acao.dataFim ? `
-                                <div class="modal-date-item">
-                                    <div class="modal-field-value">
-                                        <strong>Fim:</strong> ${acao.dataFim}
-                                    </div>
-                                </div>
-                                ` : ''}
-                            </div>
-                        </div>
-
-                        <div class="modal-field">
-                            <div class="modal-field-label">⏱️ Duração</div>
-                            <div class="modal-field-value">${acao.duracao || 'Não informado'}</div>
-                        </div>
-
-                        <div class="modal-field">
-                            <div class="modal-field-label">📊 Modelo do Teste</div>
-                            <div class="modal-field-value ${!acao.modeloTeste ? 'empty' : ''}">${acao.modeloTeste || 'Não informado'}</div>
-                        </div>
-
-                        <div class="modal-field">
-                            <div class="modal-field-label">🎯 Métrica de Sucesso</div>
-                            <div class="modal-field-value ${!acao.metricaSucesso ? 'empty' : ''}">${acao.metricaSucesso || 'Não informado'}</div>
-                        </div>
-                    </div>
-
-                    <!-- Coluna 2: Detalhes do Teste -->
-                    <div class="modal-section">
-                        <h3 class="modal-section-title">Detalhes do Teste</h3>
-                        
-                        <div class="modal-field">
-                            <div class="modal-field-label">💡 Hipótese Testada</div>
-                            <div class="modal-field-value ${!acao.hipotese ? 'empty' : ''}">${acao.hipotese || 'Não informado'}</div>
-                        </div>
-
-                        <div class="modal-field">
-                            <div class="modal-field-label">⚡ Ação Executada</div>
-                            <div class="modal-field-value ${!acao.acaoExecutada ? 'empty' : ''}">${acao.acaoExecutada || 'Não informado'}</div>
-                        </div>
-
-                        <div class="modal-field">
-                            <div class="modal-field-label">📝 Descrição</div>
-                            <div class="modal-field-value ${!acao.descricao ? 'empty' : ''}">${acao.descricao || 'Não informado'}</div>
-                        </div>
-                    </div>
-
-                    <!-- Links (Full Width) -->
-                    ${acao.links && acao.links.length > 0 ? `
-                    <div class="modal-section modal-full-width">
-                        <h3 class="modal-section-title">Links Importantes</h3>
-                        <div class="modal-links">
-                            ${acao.links.map(link => `
-                                <a href="${link.url}" class="modal-link" target="_blank">
-                                    ${link.texto}
-                                </a>
-                            `).join('')}
-                        </div>
-                    </div>
-                    ` : ''}
-                </div>
-            `;
-
-            // Reaplicar o event listener do botão close
-            document.getElementById('modal-close').addEventListener('click', closeModal);
-
-            modalOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal() {
-            modalOverlay.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        // Utilidades
-        function getStatusClass(status) {
-            const statusMap = {
-                'Em Testes': 'status-em-testes',
-                'Em Desenvolvimento': 'status-em-desenvolvimento',
-                'Aguardando Teste': 'status-aguardando-teste',
-                'Mapeada': 'status-mapeada',
-                'Concluído': 'status-concluido'
-            };
-            return statusMap[status] || '';
-        }
-
-        // Atalhos de teclado
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeModal();
-            }
-        });
-    </script>
-
-    
-    <script>
-        // INICIO_DADOS_JSON
-const acoes = [
+<script>
+// ===== BASE DE DADOS =====
+// Última atualização: Google Sheets "[FY27] Anota AI - Iniciativas de Self"
+// Para atualizar: substitua o array abaixo com os dados exportados da planilha.
+const INICIATIVAS_DATA = [
   {
-    "canal": "Mozart",
-    "nome": "Recuperação de PIX gerado e expirado",
-    "status": "Em Testes",
-    "mes": "Abril/26",
-    "dataInicio": "14/04/2026"
+    "Nome da Ação": "Recuperação de PIX gerado e expirado",
+    "Canal": "Mozart",
+    "Status": "Em Testes",
+    "Data de Início": "23/04/2026",
+    "Data de Fim": "30/04/2026",
+    "Duração": "16 dias",
+    "Hipótese Testada": "Pix expirou — o QR Code do Pix tem validade de 8 minutos. O lead pode ter gerado e não pago a tempo. Abandono intencional temporário — gerou o Pix, saiu para \'pagar depois\' e esqueceu.",
+    "Ação Executada": "O disparo ocorrerá 38 minutos após a geração do PIX, pois hoje o PIX expira em 8 minutos e temos até 30 minutos para liquidar o pagamento do parceiro.",
+    "Modelo do teste": "100% dos leads que gerarem o PIX no período.",
+    "Métrica de Sucesso": "Conversão Self",
+    "Links": ""
   },
   {
-    "canal": "Livechat",
-    "nome": "Middleware do Livechat para todos os leads \"Livechat\"",
-    "status": "Em Testes",
-    "mes": "Abril/26",
-    "dataInicio": "14/04/2026"
+    "Nome da Ação": "Middleware do Livechat para todos os leads \"Livechat\"",
+    "Canal": "Livechat",
+    "Status": "Em Testes",
+    "Data de Início": "14/04/2026",
+    "Data de Fim": "30/04/2026",
+    "Duração": "16 dias",
+    "Hipótese Testada": "Possibilitar novas frentes de captação self para leads Livechat impacta positivamente o total de captados sem diminuir a captação de leads em SofIA.",
+    "Ação Executada": "",
+    "Modelo do teste": "50% dos leads Livechat alocados para a SofIA",
+    "Métrica de Sucesso": "Conversão Global, Conversão Self e % Ativados",
+    "Links": ""
   },
   {
-    "canal": "Self Checkout",
-    "nome": "Represamento de Leads Contrate Agora pelo sistema de Pontuação",
-    "status": "Em Testes",
-    "mes": "Abril/26",
-    "dataInicio": "08/04/2026"
+    "Nome da Ação": "Represamento de Leads Contrate Agora pelo sistema de Pontuação",
+    "Canal": "Self Checkout",
+    "Status": "Em Testes",
+    "Data de Início": "08/04/2026",
+    "Data de Fim": "30/04/2026",
+    "Duração": "22 dias",
+    "Hipótese Testada": "Quanto maior a qualidade dos leads, maior o indicativo em converter de maneira self.",
+    "Ação Executada": "Represamento dos leads P0 e P1 em 5horas, P2 em 30 minutos e P3 sempre represado. O AS-IS do represamento é 30 minutos para todos os leads do Tipo Self Checkout.",
+    "Modelo do teste": "50% dos leads no novo período de represamento e 50% no AS-IS.",
+    "Métrica de Sucesso": "Conversão Global, Conversão Self e % Ativados",
+    "Links": "https://docs.google.com/presentation/d/1J2P7aGtBIeRRGSfwfEcQHHjTbmPNYu4MPYprje33q1A/edit?slide=id.g38b3a6a77ee_4_11"
   },
   {
-    "canal": "Trial",
-    "nome": "Represamento de Leads Testar Grátis pelo sistema de Pontuação",
-    "status": "Em Testes",
-    "mes": "Abril/26",
-    "dataInicio": "08/04/2026"
+    "Nome da Ação": "Represamento de Leads Testar Grátis pelo sistema de Pontuação",
+    "Canal": "Trial",
+    "Status": "Em Testes",
+    "Data de Início": "08/04/2026",
+    "Data de Fim": "30/04/2026",
+    "Duração": "22 dias",
+    "Hipótese Testada": "Quanto maior a qualidade dos leads, maior o indicativo em converter de maneira self.",
+    "Ação Executada": "Represamento dos leads P0 em 120horas, P1 e P2 em 5 horas e P3 sempre represado. O AS-IS do represamento é 120 minutos (2h) para todos os leads do Tipo Contratar Agora.",
+    "Modelo do teste": "50% dos leads no novo período de represamento e 50% no AS-IS.",
+    "Métrica de Sucesso": "Conversão Global, Conversão Self e % Ativados",
+    "Links": "https://docs.google.com/presentation/d/1J2P7aGtBIeRRGSfwfEcQHHjTbmPNYu4MPYprje33q1A/edit?slide=id.g38b3a6a77ee_4_11"
   },
   {
-    "canal": "Self Checkout",
-    "nome": "Personalização da apresentação dos planos de acordo com o perfil",
-    "status": "Em Testes",
-    "mes": "Abril/26",
-    "dataInicio": "14/04/2026"
+    "Nome da Ação": "Personalização da apresentação dos planos de acordo com o perfil",
+    "Canal": "Self Checkout",
+    "Status": "Em Testes",
+    "Data de Início": "14/04/2026",
+    "Data de Fim": "30/04/2026",
+    "Duração": "16 dias",
+    "Hipótese Testada": "Personalizar a recomendação para o parceiro de acordo com o seu perfil terá impacto positivo na conversão ao direcionar o lead para o plano correto, evitando possíveis objeções de preço e funcionalidades.",
+    "Ação Executada": "Personalização da apresentação dos planos de acordo com o preenchimento do formulário. Leads receberão a recomendação de planos de Start caso preencham o faturamento no formulário de até R$20.000,00. Faturamento acima de R$20,000,00 receberão o plano Gestão Avançada como recomendação.",
+    "Modelo do teste": "50% dos leads que passarem pelo fluxo de Selfcheckout",
+    "Métrica de Sucesso": "Conversão Self e Share de Leads de Gestão Avançada",
+    "Links": ""
   },
   {
-    "canal": "Trial",
-    "nome": "Incentivo ao Pedido Real Trial",
-    "status": "Em Testes",
-    "mes": "Março/26",
-    "dataInicio": "23/03/2026"
+    "Nome da Ação": "Incentivo ao Pedido Real Trial",
+    "Canal": "Trial",
+    "Status": "Em Testes",
+    "Data de Início": "23/03/2026",
+    "Data de Fim": "14/04/2026",
+    "Duração": "22 dias",
+    "Hipótese Testada": "Exibir um modal de incentivo logo após o onboarding inicial aumentará a taxa de usuários que recebem o primeiro pedido real, pois: (i) Reduz fricção ao dar próximos passos claros, (ii) Cria urgência e foco imediato e (iii) Oferece suporte/incentivo no momento de maior engajamento",
+    "Ação Executada": "",
+    "Modelo do teste": "50% dos leads que criam conta receberão o banner construído via UserPilot",
+    "Métrica de Sucesso": "Conversão Self e Conversão Global",
+    "Links": "https://docs.google.com/presentation/d/1J2P7aGtBIeRRGSfwfEcQHHjTbmPNYu4MPYprje33q1A/edit?slide=id.g3d5109d2a72_2_1613"
   },
   {
-    "canal": "Trial",
-    "nome": "Incentivo a acesso de planos via Menu do Admin",
-    "status": "Em Testes",
-    "mes": "Maio/26",
-    "dataInicio": "04/05/2026"
+    "Nome da Ação": "Incentivo a acesso de planos via Menu do Admin",
+    "Canal": "Trial",
+    "Status": "Em Testes",
+    "Data de Início": "04/05/2026",
+    "Data de Fim": "19/05/2026",
+    "Duração": "15 dias",
+    "Hipótese Testada": "A tela de planos da Anota está atualmente escondida no Menu, dificultando o acesso dos leads para visualização de planos.",
+    "Ação Executada": "",
+    "Modelo do teste": "Teste A/B com 50% dos leads que criam conta",
+    "Métrica de Sucesso": "Conversão após o clique no botão + Conversão Geral",
+    "Links": "https://docs.google.com/presentation/d/1J2P7aGtBIeRRGSfwfEcQHHjTbmPNYu4MPYprje33q1A/edit?slide=id.g38b3a6a77ee_4_17"
   },
   {
-    "canal": "Trial",
-    "nome": "Incentivo à Contratação após o Onboarding",
-    "status": "Aguardando Teste",
-    "mes": "Abril/26",
-    "dataInicio": "15/04/2026"
+    "Nome da Ação": "Incentivo à Contratação após o Onboarding",
+    "Canal": "Trial",
+    "Status": "Aguardando Testes",
+    "Data de Início": "15/04/2026",
+    "Data de Fim": "30/04/2026",
+    "Duração": "15 dias",
+    "Hipótese Testada": "O final do Onboarding é o período que o lead identificou o momento \'AHA\' do parceiro e é nesse momento que precisamos incentivar o parceiro a contratar e, com isso, aumentar a conversão self desse canal.",
+    "Ação Executada": "",
+    "Modelo do teste": "50% dos leads que criarem conta.",
+    "Métrica de Sucesso": "Conversão Self",
+    "Links": ""
   },
   {
-    "canal": "Trial",
-    "nome": "Incentivo a utilização do Robô em Desktop & Mobile",
-    "status": "Em Desenvolvimento",
-    "mes": "Maio/26",
-    "dataInicio": "12/05/2026"
+    "Nome da Ação": "Incentivo a utilização do Robô em Desktop & Mobile",
+    "Canal": "Trial",
+    "Status": "Em Desenvolvimento",
+    "Data de Início": "12/05/2026",
+    "Data de Fim": "20/05/2026",
+    "Duração": "8 dias",
+    "Hipótese Testada": "",
+    "Ação Executada": "",
+    "Modelo do teste": "50% dos leads que acessarem a jornada de Trial",
+    "Métrica de Sucesso": "Conversão Self",
+    "Links": ""
   },
   {
-    "canal": "Trial",
-    "nome": "Implementar Recomendação de Plano Personalizada",
-    "status": "Em Desenvolvimento",
-    "mes": "Maio/26",
-    "dataInicio": "12/05/2026"
+    "Nome da Ação": "Implementar Recomendação de Plano Personalizada",
+    "Canal": "Trial",
+    "Status": "Em Desenvolvimento",
+    "Data de Início": "12/05/2026",
+    "Data de Fim": "30/05/2026",
+    "Duração": "18 dias",
+    "Hipótese Testada": "Personalizar a recomendação para o parceiro de acordo com o seu perfil terá impacto positivo na conversão ao direcionar o lead para o plano correto, evitando possíveis objeções de preço e funcionalidades.",
+    "Ação Executada": "Personalização da apresentação dos planos de acordo com o preenchimento do formulário. Leads receberão a recomendação de planos de Start caso preencham o faturamento no formulário de até R$20.000,00. Faturamento acima de R$20,000,00 receberão o plano Gestão Avançada como recomendação.",
+    "Modelo do teste": "50% dos leads cadastrados no sistema",
+    "Métrica de Sucesso": "Conversão Self",
+    "Links": ""
   },
   {
-    "canal": "Self Checkout",
-    "nome": "Retirada da etapa de Download do Cadastro",
-    "status": "Em Desenvolvimento",
-    "mes": "Maio/26",
-    "dataInicio": "11/05/2026"
+    "Nome da Ação": "Retirada da etapa de Download do Cadastro",
+    "Canal": "Self Checkout",
+    "Status": "Em Desenvolvimento",
+    "Data de Início": "11/05/2026",
+    "Data de Fim": "20/05/2026",
+    "Duração": "9 dias",
+    "Hipótese Testada": "",
+    "Ação Executada": "",
+    "Modelo do teste": "50% dos leads que se cadastrarem no período",
+    "Métrica de Sucesso": "Taxa de 1º Login",
+    "Links": ""
   },
   {
-    "canal": "Trial",
-    "nome": "Perguntas iniciais na Jornada Trial",
-    "status": "Em Testes",
-    "mes": "Abril/26",
-    "dataInicio": "20/04/2026"
-  },
-  {
-    "canal": "",
-    "nome": "",
-    "status": "",
-    "mes": "",
-    "dataInicio": ""
+    "Nome da Ação": "Perguntas iniciais na Jornada Trial",
+    "Canal": "Trial",
+    "Status": "Em Testes",
+    "Data de Início": "20/04/2026",
+    "Data de Fim": "05/05/2026",
+    "Duração": "15 dias",
+    "Hipótese Testada": "Atualmente, todos os novos restaurantes parceiros passam pelo mesmo fluxo de onboarding, sem personalização baseada no tipo de negócio ou necessidade específica. Isso resulta em uma experiência genérica que não demonstra o valor imediato do sistema para cada perfil de estabelecimento. Sem entender o contexto e objetivo do parceiro desde o início, perdemos a oportunidade de: (i) Personalizar a jornada de captação e ativação do usuário; (ii) Direcionar funcionalidades mais relevantes para cada perfil com foco em conversão; (iii) Reduzir o tempo até o 1pdd real e conversão em pagante.",
+    "Ação Executada": "",
+    "Modelo do teste": "50% dos leads cadastrados no período",
+    "Métrica de Sucesso": "Medir taxa de abandono e engajamento comparando as bases",
+    "Links": ""
   }
 ];
-            // FIM_DADOS_JSON
+
+// ===== CONFIGURAÇÃO =====
+const CANAIS = ["Trial", "Self Checkout", "Mozart", "Livechat", "Contratar Agora", "SSI", "Middleware"];
+const STATUS_ORDER = [
+  "Em Testes",
+  "Em Desenvolvimento",
+  "Aguardando Testes",
+  "Iniciativas Mapeadas",
+  "Concluído",
+  "Arquivadas"
+];
+const STATUS_ICONS = {
+  "Em Testes":           "🔬",
+  "Em Desenvolvimento":  "⚙️",
+  "Aguardando Testes":   "⏳",
+  "Iniciativas Mapeadas":"🗺️",
+  "Concluído":           "✅",
+  "Arquivadas":          "📁"
+};
+
+// Mapeia status para chave de classe CSS de tab ativa
+const STATUS_ACTIVE_CLASS = {
+  "Em Testes":           "active-em-testes",
+  "Em Desenvolvimento":  "active-em-desenvolvimento",
+  "Aguardando Testes":   "active-aguardando-testes",
+  "Iniciativas Mapeadas":"active-iniciativas-mapeadas",
+  "Concluído":           "active-concluido",
+  "Arquivadas":          "active-arquivadas"
+};
+
+// ===== UTILITÁRIOS =====
+function getStatusBadgeClass(status) {
+  const map = {
+    "Em Testes":           "badge-danger-soft",
+    "Em Desenvolvimento":  "badge-primary-soft",
+    "Aguardando Testes":   "badge-warning-soft",
+    "Iniciativas Mapeadas":"badge-accent-soft",
+    "Concluído":           "badge-success-soft",
+    "Arquivadas":          "badge-neutral-soft"
+  };
+  return map[status] || "badge-neutral-soft";
+}
+
+function getCanalBadgeClass(canal) {
+  const map = {
+    "Trial":           "badge-primary-soft",
+    "Contratar Agora": "badge-success-soft",
+    "SSI":             "badge-warning-soft",
+    "Mozart":          "badge-accent-soft",
+    "Livechat":        "badge-info-soft",
+    "Middleware":      "badge-neutral-soft",
+    "Self Checkout":   "badge-info-soft"
+  };
+  return map[canal] || "badge-neutral-soft";
+}
+
+function parseMonthYear(dataInicio) {
+  if (!dataInicio) return null;
+  const parts = dataInicio.split('/');
+  if (parts.length < 3) return null;
+  return { month: parseInt(parts[1], 10), year: parseInt(parts[2], 10) };
+}
+
+function monthYearMatchesFilter(dataInicio, filterValue) {
+  if (!filterValue) return true;
+  const parsed = parseMonthYear(dataInicio);
+  if (!parsed) return false;
+  const [filterMonth, filterYear] = filterValue.split('-').map(Number);
+  return parsed.month === filterMonth && parsed.year === filterYear;
+}
+
+function renderBadge(text, cls, size = 'md') {
+  return `<span class="badge badge-${size} ${cls}">${text}</span>`;
+}
+
+function safeText(val) {
+  if (!val || val.trim() === '') return null;
+  return val;
+}
+
+// ===== ESTADO =====
+let currentView = 'home';
+let filterCanal = '';
+let filterMes = '';
+let accordionOpen = true;
+// Estado das tabs de canal: { [canalKey]: statusSelecionado }
+const canalTabState = {};
+
+// ===== NAVEGAÇÃO =====
+const HASH_MAP = {
+  '':                   'home',
+  '#':                  'home',
+  '#home':              'home',
+  '#trial':             'canal-trial',
+  '#self-checkout':     'canal-self-checkout',
+  '#contratar-agora':   'canal-contratar-agora',
+  '#ssi':               'canal-ssi',
+  '#mozart':            'canal-mozart',
+  '#livechat':          'canal-livechat',
+  '#middleware':        'canal-middleware'
+};
+
+const VIEW_HASH = {
+  'home':               '#home',
+  'canal-trial':        '#trial',
+  'canal-self-checkout': '#self-checkout',
+  'canal-contratar-agora': '#contratar-agora',
+  'canal-ssi':          '#ssi',
+  'canal-mozart':       '#mozart',
+  'canal-livechat':     '#livechat',
+  'canal-middleware':   '#middleware'
+};
+
+function getViewFromHash() {
+  const hash = window.location.hash.toLowerCase();
+  return HASH_MAP[hash] || 'home';
+}
+
+function navigate(view) {
+  currentView = view;
+  const hash = VIEW_HASH[view] || '#home';
+  history.pushState(null, '', hash);
+  render();
+  updateSidebarActive();
+}
+
+window.addEventListener('hashchange', () => {
+  currentView = getViewFromHash();
+  render();
+  updateSidebarActive();
+});
+
+function toggleCanaisAccordion() {
+  accordionOpen = !accordionOpen;
+  const content = document.getElementById('nav-canais-content');
+  const chevron = document.getElementById('nav-canais-chevron');
+  content.classList.toggle('open', accordionOpen);
+  chevron.classList.toggle('rotated', accordionOpen);
+}
+
+function updateSidebarActive() {
+  // Limpa tudo
+  document.querySelectorAll('.nav-item, .nav-sub-item').forEach(el => el.classList.remove('active'));
+
+  if (currentView === 'home') {
+    document.getElementById('nav-home')?.classList.add('active');
+  } else if (currentView.startsWith('canal-')) {
+    document.getElementById('nav-canais-toggle')?.classList.add('active');
+    const canalId = 'nav-' + currentView.replace('canal-', '');
+    document.getElementById(canalId)?.classList.add('active');
+    // Abre accordion
+    accordionOpen = true;
+    document.getElementById('nav-canais-content')?.classList.add('open');
+    document.getElementById('nav-canais-chevron')?.classList.add('rotated');
+  }
+}
+
+// ===== RENDER PRINCIPAL =====
+function render() {
+  const main = document.getElementById('main-content');
+  if (currentView === 'home') {
+    main.innerHTML = renderHome();
+  } else if (currentView.startsWith('canal-')) {
+    const canal = getCanalFromView(currentView);
+    main.innerHTML = renderCanal(canal);
+  }
+}
+
+function getCanalFromView(view) {
+  const map = {
+    'canal-trial':           'Trial',
+    'canal-self-checkout':   'Self Checkout',
+    'canal-contratar-agora': 'Contratar Agora',
+    'canal-ssi':             'SSI',
+    'canal-mozart':          'Mozart',
+    'canal-livechat':        'Livechat',
+    'canal-middleware':      'Middleware'
+  };
+  return map[view] || '';
+}
+
+// ===== PÁGINA HOME =====
+// MELHORIA 2: filtros não navegam — apenas filtram a tabela
+function renderHome() {
+  const ativas = INICIATIVAS_DATA.filter(i => i['Status'] === 'Em Testes');
+  const acoesAtivas = applyFilters(ativas, filterCanal, filterMes);
+
+  return `
+    <div class="page-header">
+      <h1 class="display-d4">Captação Self</h1>
+      <p class="body-l text-secondary mt-s">Panorama Geral das Iniciativas Self</p>
+    </div>
+
+    <div class="section-block">
+      <h2 class="heading-h3 mb-xl">Filtros Avançados</h2>
+      <div class="filters-container">
+        <div class="filters-bar">
+          <div class="input-group">
+            <label class="input-label" for="filter-canal">Canal</label>
+            <select class="input" id="filter-canal" onchange="onCanalFilterChange(this.value)">
+              <option value="">Todos os canais</option>
+              ${CANAIS.map(c => `<option value="${c}" ${filterCanal === c ? 'selected' : ''}>${c}</option>`).join('')}
+            </select>
+          </div>
+          <div class="input-group">
+            <label class="input-label" for="filter-mes">Mês</label>
+            <select class="input" id="filter-mes" onchange="onMesFilterChange(this.value)">
+              <option value="">Todos os meses</option>
+              <option value="3-2026"  ${filterMes==='3-2026'  ?'selected':''}>Março/26</option>
+              <option value="4-2026"  ${filterMes==='4-2026'  ?'selected':''}>Abril/26</option>
+              <option value="5-2026"  ${filterMes==='5-2026'  ?'selected':''}>Maio/26</option>
+              <option value="6-2026"  ${filterMes==='6-2026'  ?'selected':''}>Junho/26</option>
+              <option value="7-2026"  ${filterMes==='7-2026'  ?'selected':''}>Julho/26</option>
+              <option value="8-2026"  ${filterMes==='8-2026'  ?'selected':''}>Agosto/26</option>
+              <option value="9-2026"  ${filterMes==='9-2026'  ?'selected':''}>Setembro/26</option>
+              <option value="10-2026" ${filterMes==='10-2026' ?'selected':''}>Outubro/26</option>
+              <option value="11-2026" ${filterMes==='11-2026' ?'selected':''}>Novembro/26</option>
+              <option value="12-2026" ${filterMes==='12-2026' ?'selected':''}>Dezembro/26</option>
+              <option value="1-2027"  ${filterMes==='1-2027'  ?'selected':''}>Janeiro/27</option>
+              <option value="2-2027"  ${filterMes==='2-2027'  ?'selected':''}>Fevereiro/27</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-block">
+      <div class="table-section-header">
+        <h2 class="heading-h2">Ações Ativas</h2>
+        ${renderBadge(acoesAtivas.length, 'badge-danger-soft')}
+      </div>
+      <p class="table-caption">Iniciativas com status Em Testes</p>
+
+      <div class="table-wrapper">
+        ${renderAtivasTable(acoesAtivas)}
+      </div>
+    </div>
+  `;
+}
+
+function applyFilters(data, canal, mes) {
+  return data.filter(i => {
+    const canalOk = !canal || i['Canal'] === canal;
+    const mesOk   = !mes   || monthYearMatchesFilter(i['Data de Início'], mes);
+    return canalOk && mesOk;
+  });
+}
+
+function renderAtivasTable(rows) {
+  if (rows.length === 0) {
+    return `
+      <div class="empty-state">
+        <div class="empty-state-icon">🔍</div>
+        <p>Nenhuma iniciativa ativa encontrada para os filtros selecionados</p>
+      </div>
+    `;
+  }
+
+  return `
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nome da Ação</th>
+          <th>Canal</th>
+          <th>Data de Início</th>
+          <th>Data de Fim</th>
+          <th>Duração</th>
+          
+        </tr>
+      </thead>
+      <tbody>
+        ${rows.map((row) => `
+          <tr onclick="openModal(${INICIATIVAS_DATA.indexOf(row)})" style="cursor:pointer;">
+            <td><strong style="color:var(--text-primary);font-weight:600;">${row['Nome da Ação']}</strong></td>
+            <td>${renderBadge(row['Canal'], getCanalBadgeClass(row['Canal']), 'sm')}</td>
+            <td>${row['Data de Início'] || '—'}</td>
+            <td>${row['Data de Fim'] || '—'}</td>
+            <td>${row['Duração'] || '—'}</td>
+
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+// MELHORIA 2: onCanalFilterChange — apenas filtra tabela, nunca navega
+function onCanalFilterChange(val) {
+  filterCanal = val;
+  // Apenas re-renderiza a home com os filtros aplicados
+  render();
+}
+
+function onMesFilterChange(val) {
+  filterMes = val;
+  render();
+}
+
+// ===== PÁGINA CANAL (MELHORIA 3 — tabs de status) =====
+function renderCanal(canal) {
+  const canalKey = canal;
+  const canalData = INICIATIVAS_DATA.filter(i => i['Canal'] === canal);
+
+  // Conta por status
+  const countByStatus = {};
+  STATUS_ORDER.forEach(s => {
+    countByStatus[s] = canalData.filter(i => i['Status'] === s).length;
+  });
+
+  // Determina tab selecionada: manter estado ou primeiro com count > 0
+  if (!canalTabState[canalKey] || countByStatus[canalTabState[canalKey]] === 0) {
+    const firstWithItems = STATUS_ORDER.find(s => countByStatus[s] > 0);
+    canalTabState[canalKey] = firstWithItems || STATUS_ORDER[0];
+  }
+  const selectedStatus = canalTabState[canalKey];
+
+  // Gera tabs HTML
+  const tabsHTML = STATUS_ORDER.map(status => {
+    const count = countByStatus[status];
+    const isDisabled = count === 0;
+    const isActive = status === selectedStatus;
+    const activeClass = isActive ? STATUS_ACTIVE_CLASS[status] + ' active' : '';
+    const disabledAttr = isDisabled ? 'data-disabled="true"' : '';
+
+    return `
+      <div
+        class="status-tab ${activeClass}"
+        ${disabledAttr}
+        onclick="selectCanalTab('${canalKey}', '${status}')"
+        title="${status} (${count})"
+      >
+        <span>${STATUS_ICONS[status]}</span>
+        <span>${status}</span>
+        <span class="status-tab-badge">${count}</span>
+      </div>
+    `;
+  }).join('');
+
+  // Cards do status selecionado
+  const selectedItems = canalData.filter(i => i['Status'] === selectedStatus);
+  let contentHTML;
+  if (selectedItems.length === 0) {
+    contentHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">📭</div>
+        <p>Nenhuma iniciativa neste status para este canal.</p>
+      </div>
+    `;
+  } else {
+    contentHTML = `<div class="cards-grid">${selectedItems.map(item => renderInitiativeCard(item)).join('')}</div>`;
+  }
+
+  const hasAny = canalData.length > 0;
+
+  return `
+    <div class="page-header">
+      <h1 class="display-d4">${canal}</h1>
+      <p class="body-l text-secondary mt-s">Acompanhamento de testes do canal ${canal}</p>
+    </div>
+
+    ${!hasAny ? `
+      <div class="empty-state">
+        <div class="empty-state-icon">📭</div>
+        <p>Nenhuma iniciativa cadastrada para este canal.</p>
+      </div>
+    ` : `
+      <div class="status-tabs-bar" id="tabs-${canalKey.replace(/\s+/g,'-')}">
+        ${tabsHTML}
+      </div>
+      <div class="canal-content-area" id="canal-content-${canalKey.replace(/\s+/g,'-')}">
+        ${contentHTML}
+      </div>
+    `}
+  `;
+}
+
+function selectCanalTab(canalKey, status) {
+  canalTabState[canalKey] = status;
+  // Re-renderiza a view do canal sem mudar a view global
+  const canal = canalKey;
+  const canalData = INICIATIVAS_DATA.filter(i => i['Canal'] === canal);
+
+  const countByStatus = {};
+  STATUS_ORDER.forEach(s => {
+    countByStatus[s] = canalData.filter(i => i['Status'] === s).length;
+  });
+
+  const safeKey = canalKey.replace(/\s+/g, '-');
+
+  // Atualiza tabs
+  const tabsContainer = document.getElementById('tabs-' + safeKey);
+  if (tabsContainer) {
+    const tabs = tabsContainer.querySelectorAll('.status-tab');
+    tabs.forEach(tab => {
+      // Remove todas as classes ativas
+      Object.values(STATUS_ACTIVE_CLASS).forEach(cls => tab.classList.remove(cls));
+      tab.classList.remove('active');
+
+      const tabText = tab.querySelectorAll('span')[1]?.textContent?.trim();
+      if (tabText === status) {
+        tab.classList.add(STATUS_ACTIVE_CLASS[status]);
+        tab.classList.add('active');
+      }
+    });
+  }
+
+  // Atualiza conteúdo
+  const contentArea = document.getElementById('canal-content-' + safeKey);
+  if (contentArea) {
+    const selectedItems = canalData.filter(i => i['Status'] === status);
+    if (selectedItems.length === 0) {
+      contentArea.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-state-icon">📭</div>
+          <p>Nenhuma iniciativa neste status para este canal.</p>
+        </div>
+      `;
+    } else {
+      contentArea.innerHTML = `<div class="cards-grid">${selectedItems.map(item => renderInitiativeCard(item)).join('')}</div>`;
+    }
+  }
+}
+
+function renderInitiativeCard(item) {
+  const idx = INICIATIVAS_DATA.indexOf(item);
+  const metrica = item['Métrica de Sucesso'];
+  return `
+    <div class="initiative-card" onclick="openModal(${idx})">
+      <div class="initiative-card-title">${item['Nome da Ação']}</div>
+      <div class="initiative-card-badges">
+        ${renderBadge(item['Status'], getStatusBadgeClass(item['Status']), 'sm')}
+        ${renderBadge(item['Canal'], getCanalBadgeClass(item['Canal']), 'sm')}
+      </div>
+      ${item['Data de Início'] ? `
+        <div class="body-s text-secondary">
+          📅 ${item['Data de Início']} → ${item['Data de Fim'] || '?'} &nbsp;·&nbsp; ${item['Duração'] || ''}
+        </div>
+      ` : ''}
+      ${metrica ? `
+        <div class="initiative-card-metric">
+          <strong>Métrica:</strong> ${metrica}
+        </div>
+      ` : ''}
+    </div>
+  `;
+}
+
+// ===== MODAL (MELHORIA 4) =====
+function openModal(idx) {
+  const item = INICIATIVAS_DATA[idx];
+  if (!item) return;
+
+  // Header — sem vermelho, usa cores do DS
+  document.getElementById('modal-title').textContent = item['Nome da Ação'];
+  document.getElementById('modal-badges').innerHTML =
+    renderBadge(item['Status'], getStatusBadgeClass(item['Status']), 'md') +
+    renderBadge(item['Canal'], getCanalBadgeClass(item['Canal']), 'md');
+
+  // Body
+  const hipotese     = safeText(item['Hipótese Testada']);
+  const acao         = safeText(item['Ação Executada']);
+  const modelo       = safeText(item['Modelo do teste']);
+  const metrica      = safeText(item['Métrica de Sucesso']);
+  const dataInicio   = safeText(item['Data de Início']);
+  const dataFim      = safeText(item['Data de Fim']);
+  const duracao      = safeText(item['Duração']);
+  const links        = safeText(item['Links']);
+
+  document.getElementById('modal-body').innerHTML = `
+    <!-- Coluna Esquerda -->
+    <div>
+      <div class="modal-section-title">INFORMAÇÕES GERAIS</div>
+
+      <div class="modal-field-label">PERÍODO</div>
+      <div class="modal-period-boxes">
+        <div class="modal-period-box">
+          <div class="modal-period-box-label">Início</div>
+          <div class="modal-period-box-value">${dataInicio || '—'}</div>
+        </div>
+        <div class="modal-period-box">
+          <div class="modal-period-box-label">Fim</div>
+          <div class="modal-period-box-value">${dataFim || '—'}</div>
+        </div>
+      </div>
+
+      <div class="modal-field">
+        <div class="modal-field-label">DURAÇÃO</div>
+        <div class="modal-field-value">${duracao || '—'}</div>
+      </div>
+
+      <div class="modal-field">
+        <div class="modal-field-label">MODELO DO TESTE</div>
+        <div class="modal-bordered-field">
+          <div class="modal-field-value ${!modelo ? 'empty' : ''}">${modelo || 'Não informado'}</div>
+        </div>
+      </div>
+
+      <div class="modal-field">
+        <div class="modal-field-label">MÉTRICA DE SUCESSO</div>
+        <div class="modal-bordered-field">
+          <div class="modal-field-value ${!metrica ? 'empty' : ''}">${metrica || 'Não informado'}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Coluna Direita -->
+    <div>
+      <div class="modal-section-title">DETALHES DO TESTE</div>
+
+      <div class="modal-field-label">HIPÓTESE TESTADA</div>
+      <div class="modal-icon-field mb-m">
         
+        <div class="modal-field-value ${!hipotese ? 'empty' : ''}">${hipotese || 'Não informado'}</div>
+      </div>
 
-        // Dados de exemplo (Em produção, viriam de uma API)
-        // Removido: duplicata de const acoes
-
-
-        // Calcular meses abrangidos entre data início e data fim
-        function calcularMesesAbrangidos(dataInicio, dataFim) {
-            const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 
-                          'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
-            
-            // Converter datas DD/MM/YYYY para Date
-            const [diaI, mesI, anoI] = dataInicio.split('/');
-            const [diaF, mesF, anoF] = dataFim.split('/');
-            
-            const inicio = new Date(parseInt(anoI), parseInt(mesI) - 1, parseInt(diaI));
-            const fim = new Date(parseInt(anoF), parseInt(mesF) - 1, parseInt(diaF));
-            
-            const mesesAbrangidos = [];
-            const dataAtual = new Date(inicio.getFullYear(), inicio.getMonth(), 1);
-            
-            while (dataAtual <= fim) {
-                const mesNome = meses[dataAtual.getMonth()];
-                const anoSufixo = String(dataAtual.getFullYear()).slice(2);
-                mesesAbrangidos.push(`${mesNome}/${anoSufixo}`);
-                
-                // Próximo mês
-                dataAtual.setMonth(dataAtual.getMonth() + 1);
-            }
-            
-            return mesesAbrangidos;
-        }
-
-        // Estado da aplicação
-        let currentPage = 'inicio';
-        let currentCanal = '';
-        let filteredData = [...acoes];
-
-        // Elementos do DOM
-        const menuItems = document.querySelectorAll('.menu-item[data-page]');
-        const submenuItems = document.querySelectorAll('.submenu-item');
-        const canaisMenu = document.getElementById('canais-menu');
-        const canaisSubmenu = document.getElementById('canais-submenu');
-        const pageInicio = document.getElementById('page-inicio');
-        const pageCanal = document.getElementById('page-canal');
-        const modalOverlay = document.getElementById('modal-overlay');
-        const modalClose = document.getElementById('modal-close');
-        const filterCanal = document.getElementById('filter-canal');
-        const filterMes = document.getElementById('filter-mes');
-        const clearFilters = document.getElementById('clear-filters');
-
-        // Inicialização
-        document.addEventListener('DOMContentLoaded', () => {
-            
-            renderResumoTable();
-            setupEventListeners();
-        });
-
-        // Event Listeners
-        function setupEventListeners() {
-            // Menu Início
-            menuItems.forEach(item => {
-                item.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const page = item.dataset.page;
-                    navigateToPage(page);
-                });
-            });
-
-            // Menu Canais
-            canaisMenu.addEventListener('click', () => {
-                canaisSubmenu.classList.toggle('open');
-            });
-
-            // Submenu Canais
-            submenuItems.forEach(item => {
-                item.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const canal = item.dataset.canal;
-                    navigateToCanal(canal);
-                });
-            });
-
-            // Filtros
-            filterCanal.addEventListener('change', applyFilters);
-            filterMes.addEventListener('change', applyFilters);
-            clearFilters.addEventListener('click', resetFilters);
-
-            // Modal
-            modalClose.addEventListener('click', closeModal);
-            modalOverlay.addEventListener('click', (e) => {
-                if (e.target === modalOverlay) {
-                    closeModal();
-                }
-            });
-        }
-
-        // Navegação
-        function navigateToPage(page) {
-            currentPage = page;
-            
-            // Atualizar menu
-            menuItems.forEach(item => {
-                if (item.dataset.page === page) {
-                    item.classList.add('active');
-                } else {
-                    item.classList.remove('active');
-                }
-            });
-            
-            submenuItems.forEach(item => item.classList.remove('active'));
-
-            // Mostrar página correta
-            if (page === 'inicio') {
-                pageInicio.classList.remove('hidden');
-                pageCanal.classList.add('hidden');
-                canaisSubmenu.classList.remove('open');
-            }
-        }
-
-        function navigateToCanal(canal) {
-            currentPage = 'canal';
-            currentCanal = canal;
-
-            // Atualizar menu
-            menuItems.forEach(item => item.classList.remove('active'));
-            submenuItems.forEach(item => {
-                if (item.dataset.canal === canal) {
-                    item.classList.add('active');
-                } else {
-                    item.classList.remove('active');
-                }
-            });
-
-            // Mostrar página do canal
-            pageInicio.classList.add('hidden');
-            pageCanal.classList.remove('hidden');
-            canaisSubmenu.classList.add('open');
-
-            // Atualizar título
-            document.getElementById('canal-title').textContent = canal;
-
-            // Renderizar cards do canal
-            renderCanalCards(canal);
-        }
-
+      <div class="modal-field-label">AÇÃO EXECUTADA</div>
+      <div class="modal-icon-field">
         
+        <div class="modal-bordered-field" style="flex:1;">
+          <div class="modal-field-value ${!acao ? 'empty' : ''}">${acao || 'Não informado'}</div>
+        </div>
+      </div>
+    </div>
+  `;
 
-        // Filtros
-        function applyFilters() {
-            const canalFilter = filterCanal.value;
-            const mesFilter = filterMes.value;
+  // Footer
+  document.getElementById('modal-footer').innerHTML = `
+    <div class="modal-footer-title">LINKS IMPORTANTES</div>
+    ${links
+      ? `<a class="modal-link-btn" href="${isURL(links) ? links : '#'}" target="_blank" rel="noopener">
+          ${links.length > 60 ? links.substring(0, 57) + '...' : links} &rarr;
+        </a>`
+      : `<p class="body-m" style="color:var(--text-tertiary);">Nenhum link disponível</p>`
+    }
+  `;
 
-            filteredData = acoes.filter(acao => {
-                const canalMatch = !canalFilter || acao.canal === canalFilter;
-                
-                // Nova lógica: verificar se o mês filtrado está entre os meses abrangidos pela ação
-                let mesMatch = !mesFilter;
-                if (mesFilter && acao.dataInicio && acao.dataFim) {
-                    const mesesAbrangidos = calcularMesesAbrangidos(acao.dataInicio, acao.dataFim);
-                    mesMatch = mesesAbrangidos.includes(mesFilter);
-                } else if (mesFilter) {
-                    // Fallback para ações sem data de fim
-                    mesMatch = acao.mes === mesFilter;
-                }
-                
-                const statusMatch = acao.status === 'Em Testes' || acao.status === 'Em Desenvolvimento';
-                return canalMatch && mesMatch && statusMatch;
-            });
+  document.getElementById('modal-overlay').classList.add('visible');
+  document.body.style.overflow = 'hidden';
+}
 
-            updateActiveFilters();
-            renderResumoTable();
-        }
+function isURL(str) {
+  return str.startsWith('http://') || str.startsWith('https://');
+}
 
-        function resetFilters() {
-            filterCanal.value = '';
-            filterMes.value = '';
-            applyFilters();
-        }
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('visible');
+  document.body.style.overflow = '';
+}
 
-        function updateActiveFilters() {
-            const activeFiltersText = document.getElementById('active-filters-text');
-            const filters = [];
-            
-            if (filterCanal.value) filters.push(filterCanal.value);
-            if (filterMes.value) filters.push(filterMes.value);
-            
-            activeFiltersText.textContent = filters.length > 0 ? filters.join(', ') : 'Nenhum';
-        }
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('modal-overlay')) {
+    closeModal();
+  }
+}
 
-        // Renderizar Tabela de Resumo
-        function renderResumoTable() {
-            const tbody = document.getElementById('resumo-tbody');
-            tbody.innerHTML = '';
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
 
-            const resumoData = filteredData.filter(acao => 
-                acao.status === 'Em Testes' || acao.status === 'Em Desenvolvimento'
-            );
-
-            if (resumoData.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="5" style="text-align: center; padding: 3rem; color: var(--text-secondary);">
-                            Nenhuma ação encontrada com os filtros aplicados
-                        </td>
-                    </tr>
-                `;
-                return;
-            }
-
-            resumoData.forEach(acao => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td><strong>${acao.canal}</strong></td>
-                    <td>${acao.nome}</td>
-                    <td>${renderStatusBadge(acao.status)}</td>
-                    <td>${acao.mes}</td>
-                    <td>${acao.dataInicio}</td>
-                `;
-                tr.addEventListener('click', () => openModal(acao));
-                tbody.appendChild(tr);
-            });
-        }
-
-        // Renderizar Cards do Canal
-        function renderCanalCards(canal) {
-            const canalAcoes = acoes.filter(acao => acao.canal === canal);
-
-            // Atualizar subtítulo
-            document.getElementById('canal-subtitle').textContent = `Acompanhamento de testes do canal ${canal}`;
-
-            // Em Testes
-            const emTestes = canalAcoes.filter(a => a.status === 'Em Testes');
-            renderCanalCardsList('cards-em-testes', emTestes);
-            document.getElementById('tab-count-em-testes').textContent = emTestes.length;
-
-            // Em Desenvolvimento
-            const emDesenvolvimento = canalAcoes.filter(a => a.status === 'Em Desenvolvimento');
-            renderCanalCardsList('cards-em-desenvolvimento', emDesenvolvimento);
-            document.getElementById('tab-count-em-desenvolvimento').textContent = emDesenvolvimento.length;
-
-            // Aguardando Teste
-            const aguardandoTeste = canalAcoes.filter(a => a.status === 'Aguardando Teste');
-            renderCanalCardsList('cards-aguardando-teste', aguardandoTeste);
-            document.getElementById('tab-count-aguardando-teste').textContent = aguardandoTeste.length;
-
-            // Mapeadas
-            const mapeadas = canalAcoes.filter(a => a.status === 'Mapeada');
-            renderCanalCardsList('cards-mapeadas', mapeadas);
-            document.getElementById('tab-count-mapeadas').textContent = mapeadas.length;
-
-            // Histórico (Concluído)
-            const historico = canalAcoes.filter(a => a.status === 'Concluído');
-            renderCanalCardsList('cards-historico', historico);
-            document.getElementById('tab-count-historico').textContent = historico.length;
-
-            // Setup tabs
-            setupCanalTabs();
-        }
-
-        function renderCanalCardsList(containerId, acoes) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = '';
-
-            if (acoes.length === 0) {
-                container.innerHTML = `
-                    <div class="canal-empty-state">
-                        <div class="canal-empty-state-text">Nenhuma ação nesta categoria</div>
-                    </div>
-                `;
-                return;
-            }
-
-            acoes.forEach(acao => {
-                const card = document.createElement('div');
-                card.className = 'canal-card';
-                card.innerHTML = `
-                    <div class="canal-card-header">
-                        <h3 class="canal-card-title">${acao.nome}</h3>
-                        <div class="canal-card-meta">
-                            <span class="canal-card-status ${getStatusClass(acao.status).replace('status-', '')}">${acao.status.toUpperCase()}</span>
-                            <span class="canal-card-canal">${acao.canal}</span>
-                        </div>
-                    </div>
-                    <div class="canal-card-body">
-                        <div class="canal-card-field">
-                            <div class="canal-card-field-label">Hipótese:</div>
-                            <div class="canal-card-field-value">${acao.hipotese}</div>
-                        </div>
-                    </div>
-                `;
-                card.addEventListener('click', () => openModal(acao));
-                container.appendChild(card);
-            });
-        }
-
-        // Setup Canal Tabs
-        function setupCanalTabs() {
-            const tabs = document.querySelectorAll('.canal-tab');
-            const tabContents = document.querySelectorAll('.canal-tab-content');
-
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    const tabName = tab.dataset.tab;
-
-                    // Remove active de todas as tabs
-                    tabs.forEach(t => t.classList.remove('active'));
-                    tabContents.forEach(tc => tc.classList.remove('active'));
-
-                    // Adiciona active na tab clicada
-                    tab.classList.add('active');
-                    document.getElementById(`tab-content-${tabName}`).classList.add('active');
-                });
-            });
-        }
-
-        // Renderizar Status Badge
-        function renderStatusBadge(status) {
-            const statusClass = getStatusClass(status);
-            return `<span class="status-badge ${statusClass}">
-                        <span class="status-icon"></span>
-                        ${status}
-                    </span>`;
-        }
-
-        // Modal
-        function openModal(acao) {
-            const modalTitle = document.getElementById('modal-title');
-            const modalBody = document.getElementById('modal-body');
-            
-            // Atualizar header do modal
-            const modalHeader = document.querySelector('.modal-header');
-            modalHeader.innerHTML = `
-                <div class="modal-header-content">
-                    <h2 class="modal-title">${acao.nome}</h2>
-                    <div class="modal-meta">
-                        <span class="modal-badge">${acao.status.toUpperCase()}</span>
-                        <span class="modal-canal-badge">${acao.canal}</span>
-                    </div>
-                </div>
-                <button class="modal-close" id="modal-close">✕</button>
-            `;
-
-            // Atualizar body com layout em grid
-            modalBody.innerHTML = `
-                <div class="modal-grid">
-                    <!-- Coluna 1: Informações Básicas -->
-                    <div class="modal-section">
-                        <h3 class="modal-section-title">Informações Gerais</h3>
-                        
-                        <div class="modal-field">
-                            <div class="modal-field-label">📅 Período</div>
-                            <div class="modal-dates">
-                                <div class="modal-date-item">
-                                    <div class="modal-field-value">
-                                        <strong>Início:</strong> ${acao.dataInicio}
-                                    </div>
-                                </div>
-                                ${acao.dataFim ? `
-                                <div class="modal-date-item">
-                                    <div class="modal-field-value">
-                                        <strong>Fim:</strong> ${acao.dataFim}
-                                    </div>
-                                </div>
-                                ` : ''}
-                            </div>
-                        </div>
-
-                        <div class="modal-field">
-                            <div class="modal-field-label">⏱️ Duração</div>
-                            <div class="modal-field-value">${acao.duracao || 'Não informado'}</div>
-                        </div>
-
-                        <div class="modal-field">
-                            <div class="modal-field-label">📊 Modelo do Teste</div>
-                            <div class="modal-field-value ${!acao.modeloTeste ? 'empty' : ''}">${acao.modeloTeste || 'Não informado'}</div>
-                        </div>
-
-                        <div class="modal-field">
-                            <div class="modal-field-label">🎯 Métrica de Sucesso</div>
-                            <div class="modal-field-value ${!acao.metricaSucesso ? 'empty' : ''}">${acao.metricaSucesso || 'Não informado'}</div>
-                        </div>
-                    </div>
-
-                    <!-- Coluna 2: Detalhes do Teste -->
-                    <div class="modal-section">
-                        <h3 class="modal-section-title">Detalhes do Teste</h3>
-                        
-                        <div class="modal-field">
-                            <div class="modal-field-label">💡 Hipótese Testada</div>
-                            <div class="modal-field-value ${!acao.hipotese ? 'empty' : ''}">${acao.hipotese || 'Não informado'}</div>
-                        </div>
-
-                        <div class="modal-field">
-                            <div class="modal-field-label">⚡ Ação Executada</div>
-                            <div class="modal-field-value ${!acao.acaoExecutada ? 'empty' : ''}">${acao.acaoExecutada || 'Não informado'}</div>
-                        </div>
-
-                        <div class="modal-field">
-                            <div class="modal-field-label">📝 Descrição</div>
-                            <div class="modal-field-value ${!acao.descricao ? 'empty' : ''}">${acao.descricao || 'Não informado'}</div>
-                        </div>
-                    </div>
-
-                    <!-- Links (Full Width) -->
-                    ${acao.links && acao.links.length > 0 ? `
-                    <div class="modal-section modal-full-width">
-                        <h3 class="modal-section-title">Links Importantes</h3>
-                        <div class="modal-links">
-                            ${acao.links.map(link => `
-                                <a href="${link.url}" class="modal-link" target="_blank">
-                                    ${link.texto}
-                                </a>
-                            `).join('')}
-                        </div>
-                    </div>
-                    ` : ''}
-                </div>
-            `;
-
-            // Reaplicar o event listener do botão close
-            document.getElementById('modal-close').addEventListener('click', closeModal);
-
-            modalOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal() {
-            modalOverlay.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        // Utilidades
-        function getStatusClass(status) {
-            const statusMap = {
-                'Em Testes': 'status-em-testes',
-                'Em Desenvolvimento': 'status-em-desenvolvimento',
-                'Aguardando Teste': 'status-aguardando-teste',
-                'Mapeada': 'status-mapeada',
-                'Concluído': 'status-concluido'
-            };
-            return statusMap[status] || '';
-        }
-
-        // Atalhos de teclado
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeModal();
-            }
-        });
-    
-    </script>
+// ===== INICIALIZAÇÃO =====
+(function init() {
+  currentView = getViewFromHash() || 'home';
+  render();
+  updateSidebarActive();
+})();
+</script>
 </body>
 </html>
