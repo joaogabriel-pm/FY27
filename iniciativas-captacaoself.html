@@ -590,31 +590,23 @@
       color: inherit;
     }
 
-    /* ── Tabs de status — estado ATIVO (azul primário Anota) ───── */
-    .status-tab.active-em-testes,
-    .status-tab.active-em-desenvolvimento,
-    .status-tab.active-aguardando-testes,
-    .status-tab.active-iniciativas-mapeadas,
-    .status-tab.active-concluido,
-    .status-tab.active-arquivadas {
-      background-color: var(--brand-default);   /* #0098FC — azul primário Anota */
-      color: var(--surface-bg);
-      border-color: var(--brand-default);
+    /* ── Tab ATIVA — azul primário Anota ──────────────────────── */
+    .status-tab.active {
+      background-color: var(--brand-default) !important;
+      color: var(--surface-bg) !important;
+      border-color: var(--brand-default) !important;
     }
-
-    /* Badge interno da tab ativa */
     .status-tab.active .status-tab-badge {
       background-color: rgba(255, 255, 255, 0.25);
-      color: inherit;
+      color: #fff;
     }
-
-    /* ── Tabs INATIVAS ─────────────────────────────────────────── */
-    .status-tab:not(.active-em-testes):not(.active-em-desenvolvimento):not(.active-aguardando-testes):not(.active-iniciativas-mapeadas):not(.active-concluido):not(.active-arquivadas) {
+    /* ── Tab INATIVA ────────────────────────────────────────────── */
+    .status-tab:not(.active) {
       background-color: var(--surface-bg);
       color: var(--text-secondary);
       border: 1px solid var(--neutral-border);
     }
-    .status-tab:not([data-disabled="true"]):hover {
+    .status-tab:not(.active):not([data-disabled="true"]):hover {
       background-color: var(--surface-subtle-bg);
       border-color: var(--neutral-subtle);
     }
@@ -1539,7 +1531,7 @@ function renderCanal(canal) {
     const count = countByStatus[status];
     const isDisabled = count === 0;
     const isActive = status === selectedStatus;
-    const activeClass = isActive ? STATUS_ACTIVE_CLASS[status] + ' active' : '';
+    const activeClass = isActive ? 'active' : '';
     const disabledAttr = isDisabled ? 'data-disabled="true"' : '';
 
     return `
