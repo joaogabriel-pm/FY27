@@ -125,18 +125,6 @@
       border-bottom: 1px solid rgba(255,255,255,0.15);
     }
 
-    .sidebar-brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: var(--space-s);
-    }
-    .sidebar-brand-name {
-      font-size: 16px;
-      font-weight: 700;
-      color: #FFFFFF;
-      letter-spacing: -0.3px;
-    }
 
 
     .sidebar-logo {
@@ -874,13 +862,7 @@
   <!-- ═══ SIDEBAR ═══ -->
   <aside class="sidebar">
     <div class="sidebar-header">
-      <div class="sidebar-brand">
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="32" height="32" rx="8" fill="#E53935"/>
-          <text x="16" y="23" font-family="Roboto, sans-serif" font-size="20" font-weight="700" fill="white" text-anchor="middle">A</text>
-        </svg>
-        <span class="sidebar-brand-name">AnotaAi</span>
-      </div>
+
       <div class="sidebar-logo">Captação Self</div>
       <div class="sidebar-subtitle">Área de Captação</div>
     </div>
@@ -927,7 +909,7 @@
         <div class="modal-header-title heading-h2" id="modal-title"></div>
         <div class="modal-header-badges" id="modal-badges"></div>
       </div>
-      <button class="modal-close-btn" onclick="closeModal()">✕</button>
+      <button class="modal-close-btn" onclick="closeModal()"></button>
     </div>
     <div class="modal-body" id="modal-body"></div>
     <div class="modal-footer" id="modal-footer"></div>
@@ -1108,6 +1090,8 @@ const INICIATIVAS_DATA = [
   }
 ];
 
+const ULTIMA_ATUALIZACAO = '25/05/2026 14:33 (Brasília)';
+
 // ===== CONFIGURAÇÃO =====
 const CANAIS = ["Trial", "Self Checkout", "Mozart", "Livechat", "Contratar Agora", "SSI", "Middleware"];
 const STATUS_ORDER = [
@@ -1119,12 +1103,12 @@ const STATUS_ORDER = [
   "Arquivadas"
 ];
 const STATUS_ICONS = {
-  "Em Testes":           "🔬",
-  "Em Desenvolvimento":  "⚙️",
-  "Aguardando Testes":   "⏳",
-  "Iniciativas Mapeadas":"🗺️",
-  "Concluído":           "✅",
-  "Arquivadas":          "📁"
+  "Em Testes":           "",
+  "Em Desenvolvimento":  "",
+  "Aguardando Testes":   "",
+  "Iniciativas Mapeadas":"",
+  "Concluído":           "",
+  "Arquivadas":          ""
 };
 
 // Mapeia status para chave de classe CSS de tab ativa
@@ -1306,6 +1290,9 @@ function renderHome() {
     <div class="page-header">
       <h1 class="display-d4">Captação Self</h1>
       <p class="body-l text-secondary mt-s">Panorama Geral das Iniciativas Self</p>
+      <div style="font-size:13px; color: var(--text-tertiary); margin-bottom: var(--space-xl); padding: var(--space-s) var(--space-m); background: var(--surface-subtle-bg); border-radius: var(--radius-s); display: inline-block;">
+        Última atualização: <strong style="color: var(--text-secondary);">${ULTIMA_ATUALIZACAO}</strong>
+      </div>
     </div>
 
     <div class="section-block">
@@ -1367,7 +1354,7 @@ function renderAtivasTable(rows) {
   if (rows.length === 0) {
     return `
       <div class="empty-state">
-        <div class="empty-state-icon">🔍</div>
+        <div class="empty-state-icon"></div>
         <p>Nenhuma iniciativa ativa encontrada para os filtros selecionados</p>
       </div>
     `;
@@ -1446,7 +1433,7 @@ function renderCanal(canal) {
         onclick="selectCanalTab('${canalKey}', '${status}')"
         title="${status} (${count})"
       >
-        <span>${STATUS_ICONS[status]}</span>
+        ${STATUS_ICONS[status] ? `<span>${STATUS_ICONS[status]}</span>` : ``}
         <span>${status}</span>
         <span class="status-tab-badge">${count}</span>
       </div>
@@ -1459,7 +1446,7 @@ function renderCanal(canal) {
   if (selectedItems.length === 0) {
     contentHTML = `
       <div class="empty-state">
-        <div class="empty-state-icon">📭</div>
+        <div class="empty-state-icon"></div>
         <p>Nenhuma iniciativa neste status para este canal.</p>
       </div>
     `;
@@ -1477,7 +1464,7 @@ function renderCanal(canal) {
 
     ${!hasAny ? `
       <div class="empty-state">
-        <div class="empty-state-icon">📭</div>
+        <div class="empty-state-icon"></div>
         <p>Nenhuma iniciativa cadastrada para este canal.</p>
       </div>
     ` : `
@@ -1528,7 +1515,7 @@ function selectCanalTab(canalKey, status) {
     if (selectedItems.length === 0) {
       contentArea.innerHTML = `
         <div class="empty-state">
-          <div class="empty-state-icon">📭</div>
+          <div class="empty-state-icon"></div>
           <p>Nenhuma iniciativa neste status para este canal.</p>
         </div>
       `;
@@ -1550,7 +1537,7 @@ function renderInitiativeCard(item) {
       </div>
       ${item['Data de Início'] ? `
         <div class="body-s text-secondary">
-          📅 ${item['Data de Início']} → ${item['Data de Fim'] || '?'} &nbsp;·&nbsp; ${item['Duração'] || ''}
+           ${item['Data de Início']} → ${item['Data de Fim'] || '?'} &nbsp;·&nbsp; ${item['Duração'] || ''}
         </div>
       ` : ''}
       ${metrica ? `
