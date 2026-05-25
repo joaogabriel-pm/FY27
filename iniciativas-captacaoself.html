@@ -237,7 +237,36 @@
       transform: rotate(180deg);
     }
 
-    .nav-category-header {
+    .leads-filter-bar {
+  display: flex;
+  gap: var(--space-s);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-xl);
+}
+.leads-filter-btn {
+  padding: var(--space-s) var(--space-m);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--neutral-border);
+  background: var(--surface-bg);
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: 'Roboto', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.leads-filter-btn:hover {
+  background: var(--surface-subtle-bg);
+  border-color: var(--neutral-subtle);
+}
+.leads-filter-btn.active {
+  background: var(--brand-default);
+  color: #fff;
+  border-color: var(--brand-default);
+  font-weight: 600;
+}
+
+.nav-category-header {
       padding: var(--space-s) var(--space-xl);
       font-size: 11px;
       font-weight: 700;
@@ -561,36 +590,16 @@
       color: inherit;
     }
 
-    /* ── Tabs de status — estado ATIVO ─────────────────────────── */
-    .status-tab.active-em-testes {
-      background-color: var(--danger-default);   /* #C03939 */
-      color: var(--surface-bg);
-      border-color: var(--danger-default);
-    }
-    .status-tab.active-em-desenvolvimento {
-      background-color: var(--brand-default);    /* #0098FC */
+    /* ── Tabs de status — estado ATIVO (azul primário Anota) ───── */
+    .status-tab.active-em-testes,
+    .status-tab.active-em-desenvolvimento,
+    .status-tab.active-aguardando-testes,
+    .status-tab.active-iniciativas-mapeadas,
+    .status-tab.active-concluido,
+    .status-tab.active-arquivadas {
+      background-color: var(--brand-default);   /* #0098FC — azul primário Anota */
       color: var(--surface-bg);
       border-color: var(--brand-default);
-    }
-    .status-tab.active-aguardando-testes {
-      background-color: var(--warning-default);  /* #F7B13C */
-      color: var(--text-primary);                /* escuro para contraste */
-      border-color: var(--warning-default);
-    }
-    .status-tab.active-iniciativas-mapeadas {
-      background-color: var(--accent-highlight); /* #7449B3 */
-      color: var(--surface-bg);
-      border-color: var(--accent-highlight);
-    }
-    .status-tab.active-concluido {
-      background-color: var(--success-default);  /* #157132 */
-      color: var(--surface-bg);
-      border-color: var(--success-default);
-    }
-    .status-tab.active-arquivadas {
-      background-color: var(--text-secondary);   /* #4B5563 */
-      color: var(--surface-bg);
-      border-color: var(--text-secondary);
     }
 
     /* Badge interno da tab ativa */
@@ -1154,14 +1163,19 @@ function buildSidebarCategories() {
 `;
     canais.forEach(canal => {
       const cSlug = canalToSlug(canal);
-      html += `  <div class="nav-sub-item" onclick="navigateToCanal('${cSlug}')" id="nav-${cSlug}-${catSlug}">${canal}</div>\n`;
+      html += `  <div class="nav-sub-item" onclick="navigateToCanal('${cSlug}', '${cat}')" id="nav-${cSlug}-${catSlug}">${canal}</div>\n`;
     });
     html += `</div>\n`;
   });
   return html;
 }
 
-function navigateToCanal(canalSlug) {
+function navigateToCanal(canalSlug, leadsFilter) {
+  if (leadsFilter) {
+    activeLeadsFilter = leadsFilter.trim();
+  } else {
+    activeLeadsFilter = null;
+  }
   navigate('canal-' + canalSlug);
   openCategoryContaining(canalSlug);
 }
@@ -1260,6 +1274,8 @@ let filterMes = '';
 let accordionOpen = true;
 // Estado das tabs de canal: { [canalKey]: statusSelecionado }
 const canalTabState = {};
+let activeLeadsFilter = null;       // categoria vinda do clique no sidebar
+const canalLeadsFilterState = {};   // filtro de leads persistido por canal
 
 // ===== NAVEGAÇÃO =====
 const HASH_MAP = {
@@ -1485,7 +1501,25 @@ function onMesFilterChange(val) {
 // ===== PÁGINA CANAL (MELHORIA 3 — tabs de status) =====
 function renderCanal(canal) {
   const canalKey = canal;
-  const canalData = INICIATIVAS_DATA.filter(i => i['Canal'] === canal);
+  const allCanalData = INICIATIVAS_DATA.filter(i => i['Canal'] === canal);
+
+  // Inicializar filtro de leads: usar activeLeadsFilter se vier do sidebar, senão manter estado anterior
+  if (activeLeadsFilter !== null) {
+    canalLeadsFilterState[canalKey] = activeLeadsFilter;
+    activeLeadsFilter = null; // consumir o filtro
+  }
+  if (!canalLeadsFilterState[canalKey]) {
+    canalLeadsFilterState[canalKey] = 'Todos';
+  }
+  const selectedLeads = canalLeadsFilterState[canalKey];
+
+  // Filtrar por leads
+  const canalData = selectedLeads === 'Todos'
+    ? allCanalData
+    : allCanalData.filter(i => (i['Leads'] || '').trim() === selectedLeads);
+
+  // Categorias disponíveis para este canal
+  const leadsCategories = [...new Set(allCanalData.map(i => (i['Leads'] || '').trim()).filter(Boolean))];
 
   // Conta por status
   const countByStatus = {};
@@ -1538,11 +1572,24 @@ function renderCanal(canal) {
 
   const hasAny = canalData.length > 0;
 
+  // Gera HTML do filtro de leads
+  const leadsFilterHTML = leadsCategories.length > 0 ? `
+    <div class="leads-filter-bar" id="leads-filter-${canalKey.replace(/\s+/g,'-')}">
+      <button class="leads-filter-btn ${selectedLeads === 'Todos' ? 'active' : ''}"
+              onclick="selectLeadsFilter('${canalKey}', 'Todos')">Todos</button>
+      ${leadsCategories.map(cat => `
+        <button class="leads-filter-btn ${selectedLeads === cat ? 'active' : ''}"
+                onclick="selectLeadsFilter('${canalKey}', '${cat}')">${cat}</button>
+      `).join('')}
+    </div>
+  ` : '';
+
   return `
     <div class="page-header">
       <h1 class="display-d4">${canal}</h1>
       <p class="body-l text-secondary mt-s">Acompanhamento de testes do canal ${canal}</p>
     </div>
+    ${leadsFilterHTML}
 
     ${!hasAny ? `
       <div class="empty-state">
@@ -1560,11 +1607,25 @@ function renderCanal(canal) {
   `;
 }
 
+function selectLeadsFilter(canalKey, leadsFilter) {
+  canalLeadsFilterState[canalKey] = leadsFilter;
+  // Reset tab state para este canal (para pegar o primeiro com items no novo filtro)
+  delete canalTabState[canalKey];
+  // Re-renderizar a view completa do canal
+  const canal = getCanalFromView(currentView);
+  if (canal) {
+    document.getElementById('main-content').innerHTML = renderCanal(canal);
+  }
+}
+
 function selectCanalTab(canalKey, status) {
   canalTabState[canalKey] = status;
   // Re-renderiza a view do canal sem mudar a view global
   const canal = canalKey;
-  const canalData = INICIATIVAS_DATA.filter(i => i['Canal'] === canal);
+  const selectedLeads = canalLeadsFilterState[canalKey] || 'Todos';
+  const canalData = selectedLeads === 'Todos'
+    ? INICIATIVAS_DATA.filter(i => i['Canal'] === canal)
+    : INICIATIVAS_DATA.filter(i => i['Canal'] === canal && (i['Leads'] || '').trim() === selectedLeads);
 
   const countByStatus = {};
   STATUS_ORDER.forEach(s => {
