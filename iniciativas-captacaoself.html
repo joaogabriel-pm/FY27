@@ -1095,7 +1095,7 @@ const INICIATIVAS_DATA = [
     "Métrica de Sucesso": "Conversão Self", "Links": "", "Resultado": "", "Leads": "Self Sign-in"
   }
 ];
-const ULTIMA_ATUALIZACAO = '25/05/2026 18:45 (Brasília)';
+const ULTIMA_ATUALIZACAO = '25/05/2026 19:21 (Brasília)';
 
 // ===== MAPEAMENTO CATEGORIA → CANAIS (derivado dos dados) =====
 function buildCategoryMap() {
@@ -1620,51 +1620,10 @@ function selectLeadsFilter(canalKey, leadsFilter) {
 
 function selectCanalTab(canalKey, status) {
   canalTabState[canalKey] = status;
-  // Re-renderiza a view do canal sem mudar a view global
-  const canal = canalKey;
-  const selectedLeads = canalLeadsFilterState[canalKey] || 'Todos';
-  const canalData = selectedLeads === 'Todos'
-    ? INICIATIVAS_DATA.filter(i => i['Canal'] === canal)
-    : INICIATIVAS_DATA.filter(i => i['Canal'] === canal && (i['Leads'] || '').trim() === selectedLeads);
-
-  const countByStatus = {};
-  STATUS_ORDER.forEach(s => {
-    countByStatus[s] = canalData.filter(i => normalizeStatus(i['Status']) === s).length;
-  });
-
-  const safeKey = canalKey.replace(/\s+/g, '-');
-
-  // Atualiza tabs
-  const tabsContainer = document.getElementById('tabs-' + safeKey);
-  if (tabsContainer) {
-    const tabs = tabsContainer.querySelectorAll('.status-tab');
-    tabs.forEach(tab => {
-      // Remove todas as classes ativas
-      Object.values(STATUS_ACTIVE_CLASS).forEach(cls => tab.classList.remove(cls));
-      tab.classList.remove('active');
-
-      const tabText = tab.querySelectorAll('span')[1]?.textContent?.trim();
-      if (tabText === status) {
-        tab.classList.add(STATUS_ACTIVE_CLASS[status]);
-        tab.classList.add('active');
-      }
-    });
-  }
-
-  // Atualiza conteúdo
-  const contentArea = document.getElementById('canal-content-' + safeKey);
-  if (contentArea) {
-    const selectedItems = canalData.filter(i => i['Status'] === status);
-    if (selectedItems.length === 0) {
-      contentArea.innerHTML = `
-        <div class="empty-state">
-          <div class="empty-state-icon"></div>
-          <p>Nenhuma iniciativa neste status para este canal.</p>
-        </div>
-      `;
-    } else {
-      contentArea.innerHTML = `<div class="cards-grid">${selectedItems.map(item => renderInitiativeCard(item)).join('')}</div>`;
-    }
+  // Re-renderiza a view completa do canal (mais confiável que manipulação DOM)
+  const canal = getCanalFromView(currentView);
+  if (canal) {
+    document.getElementById('main-content').innerHTML = renderCanal(canal);
   }
 }
 
