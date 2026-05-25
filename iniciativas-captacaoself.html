@@ -1570,6 +1570,8 @@ function openModal(idx) {
   const duracao      = safeText(item['Duração']);
   const links        = safeText(item['Links']);
 
+  const resultado = safeText(item['Resultado']);
+
   document.getElementById('modal-body').innerHTML = `
     <!-- Coluna Esquerda -->
     <div>
@@ -1624,12 +1626,17 @@ function openModal(idx) {
           <div class="modal-field-value ${!acao ? 'empty' : ''}">${acao || 'Não informado'}</div>
         </div>
       </div>
+
+      ${resultado ? `
+      <div style="margin-top: var(--space-l);">
+        <div class="modal-field-label" style="color: var(--success-default); font-weight: 700;">RESULTADO</div>
+        <div class="modal-field-value" style="border-left: 3px solid var(--success-default); padding-left: 12px; white-space: pre-line; margin-top: var(--space-s);">${safeText(item['Resultado'])}</div>
+      </div>
+      ` : ''}
     </div>
   `;
 
   // Footer
-  const resultado = safeText(item['Resultado']);
-
   document.getElementById('modal-footer').innerHTML = `
     <div class="modal-footer-title">LINKS IMPORTANTES</div>
     ${links
@@ -1638,13 +1645,7 @@ function openModal(idx) {
         </a>`
       : `<p class="body-m" style="color:var(--text-tertiary);">Nenhum link disponível</p>`
     }
-    ${resultado ? `
-    <div class="modal-section" style="margin-top: 16px;">
-      <div class="modal-section-title" style="color: var(--success-default);">RESULTADO</div>
-      <hr class="modal-divider"/>
-      <div class="modal-field-value" style="border-left: 3px solid var(--success-default); padding-left: 12px; white-space: pre-line;">${safeText(item['Resultado'])}</div>
-    </div>
-    ` : ''}
+
   `;
 
   document.getElementById('modal-overlay').classList.add('visible');
