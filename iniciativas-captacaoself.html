@@ -940,14 +940,14 @@
 
 <script>
 // ===== BASE DE DADOS =====
-// Última atualização: 25/05/2026 15:49 (Brasília)
+// Última atualização: 25/05/2026 20:18 (Brasília)
 // Fonte: Google Sheets "[FY27] Anota AI - Iniciativas de Self"
 const INICIATIVAS_DATA = [
   {
     "Nome da Ação": "Recuperação de PIX gerado e expirado",
     "Canal": "Mozart", "Status": "Em Testes",
     "Data de Início": "23/04/2026", "Data de Fim": "05/06/2026", "Duração": "43 dias",
-    "Hipótese Testada": "Pix expirou — o QR Code do Pix tem validade de 8 minutos. O lead pode ter gerado e não pago a tempo. Abandono intencional temporário — gerou o Pix, saiu para \'pagar depois\' e esqueceu.",
+    "Hipótese Testada": "Pix expirou — o QR Code do Pix tem validade de 8 minutos. O lead pode ter gerado e não pago a tempo. Abandono intencional temporário — gerou o Pix, saiu para 'pagar depois' e esqueceu.",
     "Ação Executada": "O disparo ocorrerá 38 minutos após a geração do PIX, pois hoje o PIX expira em 8 minutos e temos até 30 minutos para liquidar o pagamento do parceiro.",
     "Modelo do teste": "100% dos leads que gerarem o PIX no período.",
     "Métrica de Sucesso": "Conversão Self", "Links": "", "Resultado": "", "Leads": "Inbound Anota"
@@ -955,7 +955,7 @@ const INICIATIVAS_DATA = [
   {
     "Nome da Ação": "Middleware do Livechat para todos os leads \"Livechat\"",
     "Canal": "Livechat", "Status": "Concluído",
-    "Data de Início": "14/04/2026", "Data de Fim": "30/04/2026", "Duração": "16 dias",
+    "Data de Início": "01/05/2026", "Data de Fim": "10/05/2026", "Duração": "9 dias",
     "Hipótese Testada": "Possibilitar novas frentes de captação self para leads Livechat impacta positivamente o total de captados sem diminuir a captação de leads em SofIA.",
     "Ação Executada": "Inclusão do Middleware Livechat para todos os leads.",
     "Modelo do teste": "50% dos leads Livechat alocados para a SofIA",
@@ -1005,7 +1005,14 @@ const INICIATIVAS_DATA = [
     "Modelo do teste": "50% dos leads que criam conta receberão o banner construído via UserPilot",
     "Métrica de Sucesso": "Conversão Self e Conversão Global",
     "Links": "Incremento Esperado: [Anota AI] Jornadas | Produto MB1FY27",
-    "Resultado": "Rollout Realizado.\n\nPedido Trial: 15,3% Controle vs 8,6% Variante (-6,7p.p)\nCaptação Geral: 34,9% Controle vs 69,1% Variante (+34,3p.p)\nCaptação Self: 23,7% Controle vs 27,2% Variante (+3,4p.p)\n1º pdd pós ganho: 88% Controle vs 94,6% Variante (+6,6p.p).\n\nNão identificamos impacto na realização de pedidos trial, porém um aumento expressivo na conversão. Por isso, testaremos uma versão nativa para confirmar o teste",
+    "Resultado": "Rollout Realizado.
+
+Pedido Trial: 15,3% Controle vs 8,6% Variante (-6,7p.p)
+Captação Geral: 34,9% Controle vs 69,1% Variante (+34,3p.p)
+Captação Self: 23,7% Controle vs 27,2% Variante (+3,4p.p)
+1º pdd pós ganho: 88% Controle vs 94,6% Variante (+6,6p.p).
+
+Não identificamos impacto na realização de pedidos trial, porém um aumento expressivo na conversão. Por isso, testaremos uma versão nativa para confirmar o teste",
     "Leads": "Inbound Anota"
   },
   {
@@ -1039,7 +1046,7 @@ const INICIATIVAS_DATA = [
   },
   {
     "Nome da Ação": "Retirada da etapa de Download do Cadastro",
-    "Canal": "Self Checkout", "Status": "Em Testes",
+    "Canal": "Trial", "Status": "Em Testes",
     "Data de Início": "15/05/2026", "Data de Fim": "29/05/2026", "Duração": "14 dias",
     "Hipótese Testada": "A retirada da etapa de Download proporciona um volume maior de lead que acessam a ferramenta da Anota, proporcionando mais leads acessando o sistema da Anota.",
     "Ação Executada": "Retirada da etapa de Download do sistema na jornada Trial",
@@ -1078,16 +1085,27 @@ const INICIATIVAS_DATA = [
     "Leads": "Inbound Anota"
   },
   {
-    "Nome da Ação": "Incentivar a contratação via Régua de Comunicação",
+    "Nome da Ação": "Incentivar a contratação via Régua de Comunicação para leads SSI",
     "Canal": "Mozart", "Status": "Iniciativas Mapeadas",
     "Data de Início": "11/05/2026", "Data de Fim": "30/06/2026", "Duração": "50 dias",
     "Hipótese Testada": "Utilizar o Mozart como um Plano B para a estratégia de CRM da empresa",
     "Ação Executada": "Construir régua de comunicação para CRM",
     "Modelo do teste": "20% dos leads SSI recebidos",
     "Métrica de Sucesso": "Conversão Self", "Links": "", "Resultado": "", "Leads": "Self Sign-in"
+  },
+  {
+    "Nome da Ação": "Nova Jornada Trial",
+    "Canal": "Trial", "Status": "Em Desenvolvimento",
+    "Data de Início": "09/06/2026", "Data de Fim": "30/06/2026", "Duração": "21 dias",
+    "Hipótese Testada": "Estabelecer uma jornada mais linear para o lead, guiando para as etapas que mais agregam valor ao lead pode impactar positivamente na jornada do Trial.",
+    "Ação Executada": "Construção da Jornada completa do lead, mapeando a dor que precisa resolver ao acessar a Anota, mapear o tipo de culinária, incentivar o cadastro de cardápio pré-pronto, incentivo a utilização do robô e simulação do pedido teste. Em seguida o usuário acessa o sistema.",
+    "Modelo do teste": "50% dos leads Trial no período",
+    "Métrica de Sucesso": "Conversão Self",
+    "Links": "Jornada Proposta: https://www.figma.com/design/EaGbbLax4aYAGaK2VW10o9/-JORSELF---Capta%C3%A7%C3%A3o--PoC-Jornada-trial---Fluxo-completo?node-id=22001-1920",
+    "Resultado": "", "Leads": "Inbound Anota"
   }
 ];
-const ULTIMA_ATUALIZACAO = '25/05/2026 19:21 (Brasília)';
+const ULTIMA_ATUALIZACAO = '25/05/2026 20:18 (Brasília)';
 
 // ===== MAPEAMENTO CATEGORIA → CANAIS (derivado dos dados) =====
 function buildCategoryMap() {
@@ -1107,6 +1125,9 @@ function buildCategoryMap() {
   return result;
 }
 const CATEGORY_MAP = buildCategoryMap();
+
+// Normalizar status uma vez na carga — evita chamar normalizeStatus() em cada render
+INICIATIVAS_DATA.forEach(i => { i['Status'] = normalizeStatus(i['Status']); });
 
 function canalToSlug(canal) {
   return canal.trim().toLowerCase()
@@ -1128,7 +1149,7 @@ function toggleCategory(catSlug) {
 function openCategoryContaining(canalSlug) {
   // Abre a categoria que contém o canal ativo
   Object.keys(CATEGORY_MAP).forEach(cat => {
-    const catSlug = cat.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+    const catSlug = canalToSlug(cat);
     const canaisSlug = CATEGORY_MAP[cat].map(c => canalToSlug(c));
     if (canaisSlug.includes(canalSlug)) {
       const el = document.getElementById('cat-' + catSlug);
@@ -1145,7 +1166,7 @@ function openCategoryContaining(canalSlug) {
 function buildSidebarCategories() {
   let html = '';
   Object.keys(CATEGORY_MAP).forEach(cat => {
-    const catSlug = cat.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+    const catSlug = canalToSlug(cat);
     const canais = CATEGORY_MAP[cat];
     html += `<div class="nav-category-header" onclick="toggleCategory('${catSlug}')">
   ${cat}
@@ -1182,24 +1203,9 @@ const STATUS_ORDER = [
   "Concluído",
   "Arquivadas"
 ];
-const STATUS_ICONS = {
-  "Em Testes":           "",
-  "Em Desenvolvimento":  "",
-  "Aguardando Testes":   "",
-  "Iniciativas Mapeadas":"",
-  "Concluído":           "",
-  "Arquivadas":          ""
-};
 
-// Mapeia status para chave de classe CSS de tab ativa
-const STATUS_ACTIVE_CLASS = {
-  "Em Testes":           "active-em-testes",
-  "Em Desenvolvimento":  "active-em-desenvolvimento",
-  "Aguardando Testes":   "active-aguardando-testes",
-  "Iniciativas Mapeadas":"active-iniciativas-mapeadas",
-  "Concluído":           "active-concluido",
-  "Arquivadas":          "active-arquivadas"
-};
+
+
 
 // ===== UTILITÁRIOS =====
 function normalizeStatus(s) {
@@ -1210,7 +1216,6 @@ function normalizeStatus(s) {
 }
 
 function getStatusBadgeClass(status) {
-  status = normalizeStatus(status);
   const map = {
     "Em Testes":           "badge-danger-soft",
     "Em Desenvolvimento":  "badge-primary-soft",
@@ -1264,35 +1269,32 @@ let currentView = 'home';
 let filterCanal = '';
 let filterMes = '';
 let accordionOpen = true;
-// Estado das tabs de canal: { [canalKey]: statusSelecionado }
 const canalTabState = {};
 let activeLeadsFilter = null;       // categoria vinda do clique no sidebar
 const canalLeadsFilterState = {};   // filtro de leads persistido por canal
 
 // ===== NAVEGAÇÃO =====
-const HASH_MAP = {
-  '':                   'home',
-  '#':                  'home',
-  '#home':              'home',
-  '#trial':             'canal-trial',
-  '#self-checkout':     'canal-self-checkout',
-  '#contratar-agora':   'canal-contratar-agora',
-  '#ssi':               'canal-ssi',
-  '#mozart':            'canal-mozart',
-  '#livechat':          'canal-livechat',
-  '#middleware':        'canal-middleware'
+// Mapeamento canônico canal → slug
+const CANAL_SLUG_MAP = {
+  'Trial':           'trial',
+  'Self Checkout':   'self-checkout',
+  'Contratar Agora': 'contratar-agora',
+  'SSI':             'ssi',
+  'Mozart':          'mozart',
+  'Livechat':        'livechat',
+  'Middleware':      'middleware'
 };
 
-const VIEW_HASH = {
-  'home':               '#home',
-  'canal-trial':        '#trial',
-  'canal-self-checkout': '#self-checkout',
-  'canal-contratar-agora': '#contratar-agora',
-  'canal-ssi':          '#ssi',
-  'canal-mozart':       '#mozart',
-  'canal-livechat':     '#livechat',
-  'canal-middleware':   '#middleware'
-};
+// Derivados automaticamente
+const HASH_MAP = Object.fromEntries([
+  ['', 'home'], ['#', 'home'], ['#home', 'home'],
+  ...Object.entries(CANAL_SLUG_MAP).map(([canal, slug]) => [`#${slug}`, `canal-${slug}`])
+]);
+
+const VIEW_HASH = Object.fromEntries([
+  ['home', '#home'],
+  ...Object.entries(CANAL_SLUG_MAP).map(([canal, slug]) => [`canal-${slug}`, `#${slug}`])
+]);
 
 function getViewFromHash() {
   const hash = window.location.hash.toLowerCase();
@@ -1356,22 +1358,14 @@ function render() {
 }
 
 function getCanalFromView(view) {
-  const map = {
-    'canal-trial':           'Trial',
-    'canal-self-checkout':   'Self Checkout',
-    'canal-contratar-agora': 'Contratar Agora',
-    'canal-ssi':             'SSI',
-    'canal-mozart':          'Mozart',
-    'canal-livechat':        'Livechat',
-    'canal-middleware':      'Middleware'
-  };
-  return map[view] || '';
+  if (!view.startsWith('canal-')) return '';
+  const slug = view.replace('canal-', '');
+  return Object.keys(CANAL_SLUG_MAP).find(c => CANAL_SLUG_MAP[c] === slug) || '';
 }
 
 // ===== PÁGINA HOME =====
-// MELHORIA 2: filtros não navegam — apenas filtram a tabela
 function renderHome() {
-  const ativas = INICIATIVAS_DATA.filter(i => normalizeStatus(i['Status']) === 'Em Testes');
+  const ativas = INICIATIVAS_DATA.filter(i => i['Status'] === 'Em Testes');
   const acoesAtivas = applyFilters(ativas, filterCanal, filterMes);
 
   return `
@@ -1462,8 +1456,9 @@ function renderAtivasTable(rows) {
         </tr>
       </thead>
       <tbody>
-        ${rows.map((row) => `
-          <tr onclick="openModal(${INICIATIVAS_DATA.indexOf(row)})" style="cursor:pointer;">
+        ${rows.map(row => {
+          const idx = INICIATIVAS_DATA.indexOf(row);
+          return `<tr onclick="openModal(${idx})" style="cursor:pointer;">
             <td><strong style="color:var(--text-primary);font-weight:600;">${row['Nome da Ação']}</strong></td>
             <td>${row['Leads'] || '—'}</td>
             <td>${renderBadge(row['Canal'], getCanalBadgeClass(row['Canal']), 'sm')}</td>
@@ -1472,13 +1467,12 @@ function renderAtivasTable(rows) {
             <td>${row['Duração'] || '—'}</td>
 
           </tr>
-        `).join('')}
+        `;}).join('')}
       </tbody>
     </table>
   `;
 }
 
-// MELHORIA 2: onCanalFilterChange — apenas filtra tabela, nunca navega
 function onCanalFilterChange(val) {
   filterCanal = val;
   // Apenas re-renderiza a home com os filtros aplicados
@@ -1490,7 +1484,6 @@ function onMesFilterChange(val) {
   render();
 }
 
-// ===== PÁGINA CANAL (MELHORIA 3 — tabs de status) =====
 function renderCanal(canal) {
   const canalKey = canal;
   const allCanalData = INICIATIVAS_DATA.filter(i => i['Canal'] === canal);
@@ -1516,7 +1509,7 @@ function renderCanal(canal) {
   // Conta por status
   const countByStatus = {};
   STATUS_ORDER.forEach(s => {
-    countByStatus[s] = canalData.filter(i => normalizeStatus(i['Status']) === s).length;
+    countByStatus[s] = canalData.filter(i => i['Status'] === s).length;
   });
 
   // Determina tab selecionada: manter estado ou primeiro com count > 0
@@ -1541,7 +1534,6 @@ function renderCanal(canal) {
         onclick="selectCanalTab('${canalKey}', '${status}')"
         title="${status} (${count})"
       >
-        ${STATUS_ICONS[status] ? `<span>${STATUS_ICONS[status]}</span>` : ``}
         <span>${status}</span>
         <span class="status-tab-badge">${count}</span>
       </div>
@@ -1549,9 +1541,11 @@ function renderCanal(canal) {
   }).join('');
 
   // Cards do status selecionado
-  const selectedItems = canalData.filter(i => i['Status'] === selectedStatus);
+  const selectedItemsWithIdx = canalData
+    .map((item, _) => ({ item, idx: INICIATIVAS_DATA.indexOf(item) }))
+    .filter(({ item }) => item['Status'] === selectedStatus);
   let contentHTML;
-  if (selectedItems.length === 0) {
+  if (selectedItemsWithIdx.length === 0) {
     contentHTML = `
       <div class="empty-state">
         <div class="empty-state-icon"></div>
@@ -1559,7 +1553,7 @@ function renderCanal(canal) {
       </div>
     `;
   } else {
-    contentHTML = `<div class="cards-grid">${selectedItems.map(item => renderInitiativeCard(item)).join('')}</div>`;
+    contentHTML = `<div class="cards-grid">${selectedItemsWithIdx.map(({ item, idx }) => renderInitiativeCard(item, idx)).join('')}</div>`;
   }
 
   const hasAny = canalData.length > 0;
@@ -1599,34 +1593,29 @@ function renderCanal(canal) {
   `;
 }
 
+function _rerenderCanal() {
+  const canal = getCanalFromView(currentView);
+  if (canal) document.getElementById('main-content').innerHTML = renderCanal(canal);
+}
+
 function selectLeadsFilter(canalKey, leadsFilter) {
   canalLeadsFilterState[canalKey] = leadsFilter;
-  // Reset tab state para este canal (para pegar o primeiro com items no novo filtro)
   delete canalTabState[canalKey];
-  // Re-renderizar a view completa do canal
-  const canal = getCanalFromView(currentView);
-  if (canal) {
-    document.getElementById('main-content').innerHTML = renderCanal(canal);
-  }
+  _rerenderCanal();
 }
 
 function selectCanalTab(canalKey, status) {
   canalTabState[canalKey] = status;
-  // Re-renderiza a view completa do canal (mais confiável que manipulação DOM)
-  const canal = getCanalFromView(currentView);
-  if (canal) {
-    document.getElementById('main-content').innerHTML = renderCanal(canal);
-  }
+  _rerenderCanal();
 }
 
-function renderInitiativeCard(item) {
-  const idx = INICIATIVAS_DATA.indexOf(item);
+function renderInitiativeCard(item, idx) {
   const metrica = item['Métrica de Sucesso'];
   return `
     <div class="initiative-card" onclick="openModal(${idx})">
       <div class="initiative-card-title">${item['Nome da Ação']}</div>
       <div class="initiative-card-badges">
-        ${renderBadge(normalizeStatus(item['Status']), getStatusBadgeClass(item['Status']), 'sm')}
+        ${renderBadge(item['Status'], getStatusBadgeClass(item['Status']), 'sm')}
         ${renderBadge(item['Canal'], getCanalBadgeClass(item['Canal']), 'sm')}
       </div>
       ${item['Data de Início'] ? `
@@ -1651,7 +1640,7 @@ function openModal(idx) {
   // Header — sem vermelho, usa cores do DS
   document.getElementById('modal-title').textContent = item['Nome da Ação'];
   document.getElementById('modal-badges').innerHTML =
-    renderBadge(normalizeStatus(item['Status']), getStatusBadgeClass(item['Status']), 'md') +
+    renderBadge(item['Status'], getStatusBadgeClass(item['Status']), 'md') +
     renderBadge(item['Canal'], getCanalBadgeClass(item['Canal']), 'md');
 
   // Body
@@ -1708,17 +1697,11 @@ function openModal(idx) {
       <div class="modal-section-title">DETALHES DO TESTE</div>
 
       <div class="modal-field-label">HIPÓTESE TESTADA</div>
-      <div class="modal-icon-field mb-m">
-        
-        <div class="modal-field-value ${!hipotese ? 'empty' : ''}">${hipotese || 'Não informado'}</div>
-      </div>
+      <div class="modal-field-value ${!hipotese ? 'empty' : ''} mb-m">${hipotese || 'Não informado'}</div>
 
       <div class="modal-field-label">AÇÃO EXECUTADA</div>
-      <div class="modal-icon-field">
-        
-        <div class="modal-bordered-field" style="flex:1;">
-          <div class="modal-field-value ${!acao ? 'empty' : ''}">${acao || 'Não informado'}</div>
-        </div>
+      <div class="modal-bordered-field">
+        <div class="modal-field-value ${!acao ? 'empty' : ''}">${acao || 'Não informado'}</div>
       </div>
 
       ${resultado ? `
