@@ -237,6 +237,33 @@
       transform: rotate(180deg);
     }
 
+    .nav-category-header {
+      padding: var(--space-s) var(--space-xl);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: rgba(255,255,255,0.5);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      user-select: none;
+      margin-top: var(--space-s);
+    }
+    .nav-category-header:hover {
+      color: rgba(255,255,255,0.8);
+    }
+    .nav-category-items {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.25s ease;
+    }
+    .nav-category-items.open {
+      max-height: 500px;
+    }
+
+
     /* ─── MAIN CONTENT ───────────────────────────────────────── */
     .main-content {
       flex: 1;
@@ -883,13 +910,7 @@
         </div>
 
         <div class="nav-accordion-content open" id="nav-canais-content">
-          <div class="nav-sub-item" id="nav-trial"           onclick="navigate('canal-trial')">Trial</div>
-          <div class="nav-sub-item" id="nav-self-checkout"   onclick="navigate('canal-self-checkout')">Self Checkout</div>
-          <div class="nav-sub-item" id="nav-mozart"          onclick="navigate('canal-mozart')">Mozart</div>
-          <div class="nav-sub-item" id="nav-livechat"        onclick="navigate('canal-livechat')">Livechat</div>
-          <div class="nav-sub-item" id="nav-contratar-agora" onclick="navigate('canal-contratar-agora')">Contratar Agora</div>
-          <div class="nav-sub-item" id="nav-ssi"             onclick="navigate('canal-ssi')">SSI</div>
-          <div class="nav-sub-item" id="nav-middleware"      onclick="navigate('canal-middleware')">Middleware</div>
+          <div id="nav-categories-container"></div>
         </div>
       </div>
     </nav>
@@ -918,179 +939,232 @@
 
 <script>
 // ===== BASE DE DADOS =====
-// Última atualização: 21/05/2026 — Fonte: Google Sheets "[FY27] Anota AI - Iniciativas de Self"
+// Última atualização: 25/05/2026 15:49 (Brasília)
+// Fonte: Google Sheets "[FY27] Anota AI - Iniciativas de Self"
 const INICIATIVAS_DATA = [
   {
     "Nome da Ação": "Recuperação de PIX gerado e expirado",
-    "Canal": "Mozart",
-    "Status": "Em Testes",
-    "Data de Início": "23/04/2026",
-    "Data de Fim": "30/04/2026",
-    "Duração": "16 dias",
-    "Hipótese Testada": "Pix expirou — o QR Code do Pix tem validade de 8 minutos. O lead pode ter gerado e não pago a tempo. Abandono intencional temporário — gerou o Pix, saiu para 'pagar depois' e esqueceu.",
+    "Canal": "Mozart", "Status": "Em Testes",
+    "Data de Início": "23/04/2026", "Data de Fim": "05/06/2026", "Duração": "43 dias",
+    "Hipótese Testada": "Pix expirou — o QR Code do Pix tem validade de 8 minutos. O lead pode ter gerado e não pago a tempo. Abandono intencional temporário — gerou o Pix, saiu para \'pagar depois\' e esqueceu.",
     "Ação Executada": "O disparo ocorrerá 38 minutos após a geração do PIX, pois hoje o PIX expira em 8 minutos e temos até 30 minutos para liquidar o pagamento do parceiro.",
     "Modelo do teste": "100% dos leads que gerarem o PIX no período.",
-    "Métrica de Sucesso": "Conversão Self",
-    "Links": "",
-    "Resultado": ""
+    "Métrica de Sucesso": "Conversão Self", "Links": "", "Resultado": "", "Leads": "Inbound Anota"
   },
   {
     "Nome da Ação": "Middleware do Livechat para todos os leads \"Livechat\"",
-    "Canal": "Livechat",
-    "Status": "Concluído",
-    "Data de Início": "14/04/2026",
-    "Data de Fim": "30/04/2026",
-    "Duração": "16 dias",
+    "Canal": "Livechat", "Status": "Concluído",
+    "Data de Início": "14/04/2026", "Data de Fim": "30/04/2026", "Duração": "16 dias",
     "Hipótese Testada": "Possibilitar novas frentes de captação self para leads Livechat impacta positivamente o total de captados sem diminuir a captação de leads em SofIA.",
-    "Ação Executada": "",
+    "Ação Executada": "Inclusão do Middleware Livechat para todos os leads.",
     "Modelo do teste": "50% dos leads Livechat alocados para a SofIA",
     "Métrica de Sucesso": "Conversão Global, Conversão Self e % Ativados",
     "Links": "Rollout do Teste: https://docs.google.com/presentation/d/1J2P7aGtBIeRRGSfwfEcQHHjTbmPNYu4MPYprje33q1A/edit?slide=id.g3e19be31dc3_1_0",
-    "Resultado": "Rollout Realizado. O teste foi um sucesso, gerando 1,6% de conversão (0.6pps acima no MTD) gerando novas captações para a área de Self. Rollout realizado."
+    "Resultado": "Rollout Realizado. O teste foi um sucesso, gerando 1,6% de conversão (0.6pps acima no MTD) gerando novas captações para a área de Self. A previsão de incremento é de 33 novas captações no mês, totalizando 330 novas captações nos próximos 10 meses, gerando um incremento mensal de 46% da meta de Livechat.",
+    "Leads": "Inbound Anota"
   },
   {
     "Nome da Ação": "Represamento de Leads Contrate Agora pelo sistema de Pontuação (Teste 1)",
-    "Canal": "Self Checkout",
-    "Status": "Concluído",
-    "Data de Início": "08/04/2026",
-    "Data de Fim": "25/05/2026",
-    "Duração": "22 dias",
+    "Canal": "Self Checkout", "Status": "Em Testes",
+    "Data de Início": "08/04/2026", "Data de Fim": "25/05/2026", "Duração": "47 dias",
     "Hipótese Testada": "Quanto maior a qualidade dos leads, maior o indicativo em converter de maneira self.",
     "Ação Executada": "Represamento dos leads P0 e P1 em 5horas, P2 em 30 minutos e P3 sempre represado. O AS-IS do represamento é 30 minutos para todos os leads do Tipo Self Checkout.",
     "Modelo do teste": "50% dos leads no novo período de represamento e 50% no AS-IS.",
     "Métrica de Sucesso": "Conversão Global, Conversão Self e % Ativados",
     "Links": "https://docs.google.com/presentation/d/1J2P7aGtBIeRRGSfwfEcQHHjTbmPNYu4MPYprje33q1A/edit?slide=id.g38b3a6a77ee_4_11",
-    "Resultado": ""
+    "Resultado": "", "Leads": "Inbound Anota"
   },
   {
     "Nome da Ação": "Represamento de Leads Testar Grátis pelo sistema de Pontuação (Teste 1)",
-    "Canal": "Trial",
-    "Status": "Concluído",
-    "Data de Início": "08/04/2026",
-    "Data de Fim": "25/05/2026",
-    "Duração": "22 dias",
+    "Canal": "Trial", "Status": "Em Testes",
+    "Data de Início": "08/04/2026", "Data de Fim": "25/05/2026", "Duração": "47 dias",
     "Hipótese Testada": "Quanto maior a qualidade dos leads, maior o indicativo em converter de maneira self.",
     "Ação Executada": "Represamento dos leads P0 em 120horas, P1 e P2 em 5 horas e P3 sempre represado. O AS-IS do represamento é 120 minutos (2h) para todos os leads do Tipo Contratar Agora.",
     "Modelo do teste": "50% dos leads no novo período de represamento e 50% no AS-IS.",
     "Métrica de Sucesso": "Conversão Global, Conversão Self e % Ativados",
     "Links": "https://docs.google.com/presentation/d/1J2P7aGtBIeRRGSfwfEcQHHjTbmPNYu4MPYprje33q1A/edit?slide=id.g38b3a6a77ee_4_11",
-    "Resultado": ""
+    "Resultado": "", "Leads": "Inbound Anota"
   },
   {
     "Nome da Ação": "Personalização da apresentação dos planos de acordo com o perfil",
-    "Canal": "Self Checkout",
-    "Status": "Concluído",
-    "Data de Início": "14/04/2026",
-    "Data de Fim": "30/04/2026",
-    "Duração": "16 dias",
+    "Canal": "Self Checkout", "Status": "Concluído",
+    "Data de Início": "14/04/2026", "Data de Fim": "30/04/2026", "Duração": "16 dias",
     "Hipótese Testada": "Personalizar a recomendação para o parceiro de acordo com o seu perfil terá impacto positivo na conversão ao direcionar o lead para o plano correto, evitando possíveis objeções de preço e funcionalidades.",
     "Ação Executada": "Personalização da apresentação dos planos de acordo com o preenchimento do formulário. Leads receberão a recomendação de planos de Start caso preencham o faturamento no formulário de até R$20.000,00. Faturamento acima de R$20,000,00 receberão o plano Gestão Avançada como recomendação.",
     "Modelo do teste": "50% dos leads que passarem pelo fluxo de Selfcheckout",
     "Métrica de Sucesso": "Conversão Self e Share de Leads de Gestão Avançada",
-    "Links": "",
-    "Resultado": "1,4pps de conversão abaixo no modelo de conversão. Teste interrompido."
+    "Links": "", "Resultado": "1,4pps de conversão abaixo no modelo de conversão. Teste interrompido.", "Leads": "Inbound Anota"
   },
   {
     "Nome da Ação": "Incentivo ao Pedido Real Trial",
-    "Canal": "Trial",
-    "Status": "Concluído",
-    "Data de Início": "23/03/2026",
-    "Data de Fim": "14/04/2026",
-    "Duração": "22 dias",
+    "Canal": "Trial", "Status": "Concluído",
+    "Data de Início": "23/03/2026", "Data de Fim": "14/04/2026", "Duração": "22 dias",
     "Hipótese Testada": "Exibir um modal de incentivo logo após o onboarding inicial aumentará a taxa de usuários que recebem o primeiro pedido real, pois: (i) Reduz fricção ao dar próximos passos claros, (ii) Cria urgência e foco imediato e (iii) Oferece suporte/incentivo no momento de maior engajamento",
     "Ação Executada": "",
     "Modelo do teste": "50% dos leads que criam conta receberão o banner construído via UserPilot",
     "Métrica de Sucesso": "Conversão Self e Conversão Global",
-    "Links": "https://docs.google.com/presentation/d/1J2P7aGtBIeRRGSfwfEcQHHjTbmPNYu4MPYprje33q1A/edit?slide=id.g3d5109d2a72_2_1613",
-    "Resultado": "Rollout Realizado.\n\nPedido Trial: 15,3% Controle vs 8,6% Variante (-6,7p.p)\nCaptação Geral: 34,9% Controle vs 69,1% Variante (+34,3p.p)\nCaptação Self: 23,7% Controle vs 27,2% Variante (+3,4p.p)\n1º pdd pós ganho: 88% Controle vs 94,6% Variante (+6,6p.p).\n\nNão identificamos impacto na realização de pedidos trial, porém um aumento expressivo na conversão."
+    "Links": "Incremento Esperado: [Anota AI] Jornadas | Produto MB1FY27",
+    "Resultado": "Rollout Realizado.\n\nPedido Trial: 15,3% Controle vs 8,6% Variante (-6,7p.p)\nCaptação Geral: 34,9% Controle vs 69,1% Variante (+34,3p.p)\nCaptação Self: 23,7% Controle vs 27,2% Variante (+3,4p.p)\n1º pdd pós ganho: 88% Controle vs 94,6% Variante (+6,6p.p).\n\nNão identificamos impacto na realização de pedidos trial, porém um aumento expressivo na conversão. Por isso, testaremos uma versão nativa para confirmar o teste",
+    "Leads": "Inbound Anota"
   },
   {
     "Nome da Ação": "Incentivo a acesso de planos via Menu do Admin",
-    "Canal": "Trial",
-    "Status": "Em Testes",
-    "Data de Início": "04/05/2026",
-    "Data de Fim": "19/05/2026",
-    "Duração": "15 dias",
+    "Canal": "Trial", "Status": "Em Testes",
+    "Data de Início": "04/05/2026", "Data de Fim": "29/05/2026", "Duração": "25 dias",
     "Hipótese Testada": "A tela de planos da Anota está atualmente escondida no Menu, dificultando o acesso dos leads para visualização de planos.",
-    "Ação Executada": "",
+    "Ação Executada": "Implantação do incentivo a visualização da tela de planos com um contador diário de finalização do período do Trial",
     "Modelo do teste": "Teste A/B com 50% dos leads que criam conta",
     "Métrica de Sucesso": "Conversão após o clique no botão + Conversão Geral",
     "Links": "https://docs.google.com/presentation/d/1J2P7aGtBIeRRGSfwfEcQHHjTbmPNYu4MPYprje33q1A/edit?slide=id.g38b3a6a77ee_4_17",
-    "Resultado": ""
+    "Resultado": "", "Leads": "Inbound Anota"
   },
   {
     "Nome da Ação": "Incentivo a utilização do Robô em Desktop & Mobile",
-    "Canal": "Trial",
-    "Status": "Em Testes",
-    "Data de Início": "15/05/2026",
-    "Data de Fim": "29/05/2026",
-    "Duração": "8 dias",
-    "Hipótese Testada": "",
-    "Ação Executada": "",
+    "Canal": "Trial", "Status": "Em Testes",
+    "Data de Início": "25/05/2026", "Data de Fim": "08/06/2026", "Duração": "14 dias",
+    "Hipótese Testada": "A visualização de como o robô funciona tem impacto positivo na conversão self do parceiro, pois consegue entender como a Anota resolve a sua dor de atendimento e consequentemente a proposta de valor é percebida",
+    "Ação Executada": "Visualização do funcionamento do Robô após o lead passar na etapa de Simulação do Pedido Real",
     "Modelo do teste": "50% dos leads que acessarem a jornada de Trial",
-    "Métrica de Sucesso": "Conversão Self",
-    "Links": "",
-    "Resultado": ""
+    "Métrica de Sucesso": "Conversão Self", "Links": "", "Resultado": "", "Leads": "Inbound Anota"
   },
   {
     "Nome da Ação": "Implementar Recomendação de Plano Personalizada",
-    "Canal": "Trial",
-    "Status": "Em Testes",
-    "Data de Início": "15/05/2026",
-    "Data de Fim": "29/05/2026",
-    "Duração": "18 dias",
+    "Canal": "Trial", "Status": "Em Testes",
+    "Data de Início": "15/05/2026", "Data de Fim": "29/05/2026", "Duração": "14 dias",
     "Hipótese Testada": "Personalizar a recomendação para o parceiro de acordo com o seu perfil terá impacto positivo na conversão ao direcionar o lead para o plano correto, evitando possíveis objeções de preço e funcionalidades.",
     "Ação Executada": "Personalização da apresentação dos planos de acordo com o preenchimento do formulário. Leads receberão a recomendação de planos de Start caso preencham o faturamento no formulário de até R$20.000,00. Faturamento acima de R$20,000,00 receberão o plano Gestão Avançada como recomendação.",
     "Modelo do teste": "50% dos leads cadastrados no sistema",
-    "Métrica de Sucesso": "Conversão Self",
-    "Links": "",
-    "Resultado": ""
+    "Métrica de Sucesso": "Conversão Self", "Links": "", "Resultado": "", "Leads": "Inbound Anota"
   },
   {
     "Nome da Ação": "Retirada da etapa de Download do Cadastro",
-    "Canal": "Self Checkout",
-    "Status": "Em Testes",
-    "Data de Início": "15/05/2026",
-    "Data de Fim": "29/05/2026",
-    "Duração": "9 dias",
-    "Hipótese Testada": "",
-    "Ação Executada": "",
+    "Canal": "Self Checkout", "Status": "Em Testes",
+    "Data de Início": "15/05/2026", "Data de Fim": "29/05/2026", "Duração": "14 dias",
+    "Hipótese Testada": "A retirada da etapa de Download proporciona um volume maior de lead que acessam a ferramenta da Anota, proporcionando mais leads acessando o sistema da Anota.",
+    "Ação Executada": "Retirada da etapa de Download do sistema na jornada Trial",
     "Modelo do teste": "50% dos leads que se cadastrarem no período",
-    "Métrica de Sucesso": "Taxa de 1º Login",
-    "Links": "",
-    "Resultado": ""
+    "Métrica de Sucesso": "Taxa de 1º Login", "Links": "", "Resultado": "", "Leads": "Inbound Anota"
   },
   {
     "Nome da Ação": "Perguntas iniciais na Jornada Trial",
-    "Canal": "Trial",
-    "Status": "Concluído",
-    "Data de Início": "20/04/2026",
-    "Data de Fim": "05/05/2026",
-    "Duração": "15 dias",
-    "Hipótese Testada": "Atualmente, todos os novos restaurantes parceiros passam pelo mesmo fluxo de onboarding, sem personalização baseada no tipo de negócio ou necessidade específica. Isso resulta em uma experiência genérica que não demonstra o valor imediato do sistema para cada perfil de estabelecimento. Sem entender o contexto e objetivo do parceiro desde o início, perdemos a oportunidade de: (i) Personalizar a jornada de captação e ativação do usuário; (ii) Direcionar funcionalidades mais relevantes para cada perfil com foco em conversão; (iii) Reduzir o tempo até o 1pdd real e conversão em pagante.",
+    "Canal": "Trial", "Status": "Concluído",
+    "Data de Início": "20/04/2026", "Data de Fim": "05/05/2026", "Duração": "15 dias",
+    "Hipótese Testada": "Atualmente, todos os novos restaurantes parceiros passam pelo mesmo fluxo de onboarding, sem personalização baseada no tipo de negócio ou necessidade específica.",
     "Ação Executada": "",
     "Modelo do teste": "50% dos leads cadastrados no período",
     "Métrica de Sucesso": "Medir taxa de abandono e engajamento comparando as bases",
     "Links": "",
-    "Resultado": ""
+    "Resultado": "Interrompemos o teste para realizarmos uma nova tentativa utilizando toda a jornada Trial do parceiro. Vimos uma queda de conversão de 0.9%, mas entendemos que a confiança para o teste era baixa.",
+    "Leads": "Inbound Anota"
   },
   {
     "Nome da Ação": "Incentivar a contratação do Plano Anual para o parceiro",
-    "Canal": "Self Checkout",
-    "Status": "Iniciativas Mapeadas",
-    "Data de Início": "",
-    "Data de Fim": "",
-    "Duração": "",
-    "Hipótese Testada": "",
-    "Ação Executada": "",
-    "Modelo do teste": "",
-    "Métrica de Sucesso": "",
-    "Links": "",
-    "Resultado": ""
+    "Canal": "Self Checkout", "Status": "Iniciativas Mapeadas",
+    "Data de Início": "", "Data de Fim": "", "Duração": "",
+    "Hipótese Testada": "", "Ação Executada": "", "Modelo do teste": "",
+    "Métrica de Sucesso": "", "Links": "", "Resultado": "", "Leads": "Inbound Anota"
+  },
+  {
+    "Nome da Ação": "Inclusão dos disparos de Mozart após o represamento",
+    "Canal": "Mozart", "Status": "Concluído",
+    "Data de Início": "01/05/2026", "Data de Fim": "10/05/2026", "Duração": "9 dias",
+    "Hipótese Testada": "Incremento de conversões no D0 devido ao disparo de Mozart incentivando a contratação. Atualmente estamos com esse disparo apenas para leads fora do horário comercial.",
+    "Ação Executada": "Inclusão de Mozart como prioridade de canal self antes de transbordo para a SofIA ou para o Comercial",
+    "Modelo do teste": "100% dos leads no período",
+    "Métrica de Sucesso": "Conversão Self",
+    "Links": "Incremento Esperado: [Anota AI] Jornadas | Produto MB1FY27",
+    "Resultado": "Melhora de conversão MoM e vs plano (+0,2p.p). Expectativa de 25 novas captações por mês, totalizando 250 captações em 10 meses.",
+    "Leads": "Inbound Anota"
+  },
+  {
+    "Nome da Ação": "Incentivar a contratação via Régua de Comunicação",
+    "Canal": "Mozart", "Status": "Iniciativas Mapeadas",
+    "Data de Início": "11/05/2026", "Data de Fim": "30/06/2026", "Duração": "50 dias",
+    "Hipótese Testada": "Utilizar o Mozart como um Plano B para a estratégia de CRM da empresa",
+    "Ação Executada": "Construir régua de comunicação para CRM",
+    "Modelo do teste": "20% dos leads SSI recebidos",
+    "Métrica de Sucesso": "Conversão Self", "Links": "", "Resultado": "", "Leads": "Self Sign-in"
   }
 ];
+const ULTIMA_ATUALIZACAO = '25/05/2026 18:45 (Brasília)';
 
-const ULTIMA_ATUALIZACAO = '25/05/2026 14:33 (Brasília)';
+// ===== MAPEAMENTO CATEGORIA → CANAIS (derivado dos dados) =====
+function buildCategoryMap() {
+  const map = {}; // { categoria: Set(canais) }
+  INICIATIVAS_DATA.forEach(i => {
+    const cat = (i['Leads'] || '').trim();
+    const canal = (i['Canal'] || '').trim();
+    if (!cat || !canal) return;
+    if (!map[cat]) map[cat] = new Set();
+    map[cat].add(canal);
+  });
+  // Converter Sets para arrays ordenados
+  const result = {};
+  Object.keys(map).sort().forEach(cat => {
+    result[cat] = Array.from(map[cat]).sort();
+  });
+  return result;
+}
+const CATEGORY_MAP = buildCategoryMap();
+
+function canalToSlug(canal) {
+  return canal.trim().toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '');
+}
+
+const categoryOpenState = {};
+
+function toggleCategory(catSlug) {
+  const el = document.getElementById('cat-' + catSlug);
+  const chevron = document.getElementById('chevron-' + catSlug);
+  if (!el) return;
+  categoryOpenState[catSlug] = !categoryOpenState[catSlug];
+  el.classList.toggle('open', categoryOpenState[catSlug]);
+  if (chevron) chevron.textContent = categoryOpenState[catSlug] ? '▾' : '▸';
+}
+
+function openCategoryContaining(canalSlug) {
+  // Abre a categoria que contém o canal ativo
+  Object.keys(CATEGORY_MAP).forEach(cat => {
+    const catSlug = cat.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+    const canaisSlug = CATEGORY_MAP[cat].map(c => canalToSlug(c));
+    if (canaisSlug.includes(canalSlug)) {
+      const el = document.getElementById('cat-' + catSlug);
+      const chevron = document.getElementById('chevron-' + catSlug);
+      if (el && !el.classList.contains('open')) {
+        categoryOpenState[catSlug] = true;
+        el.classList.add('open');
+        if (chevron) chevron.textContent = '▾';
+      }
+    }
+  });
+}
+
+function buildSidebarCategories() {
+  let html = '';
+  Object.keys(CATEGORY_MAP).forEach(cat => {
+    const catSlug = cat.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+    const canais = CATEGORY_MAP[cat];
+    html += `<div class="nav-category-header" onclick="toggleCategory('${catSlug}')">
+  ${cat}
+  <span class="nav-chevron" id="chevron-${catSlug}">▸</span>
+</div>
+<div class="nav-category-items" id="cat-${catSlug}">
+`;
+    canais.forEach(canal => {
+      const cSlug = canalToSlug(canal);
+      html += `  <div class="nav-sub-item" onclick="navigateToCanal('${cSlug}')" id="nav-${cSlug}-${catSlug}">${canal}</div>\n`;
+    });
+    html += `</div>\n`;
+  });
+  return html;
+}
+
+function navigateToCanal(canalSlug) {
+  navigate('canal-' + canalSlug);
+  openCategoryContaining(canalSlug);
+}
 
 // ===== CONFIGURAÇÃO =====
 const CANAIS = ["Trial", "Self Checkout", "Mozart", "Livechat", "Contratar Agora", "SSI", "Middleware"];
@@ -1247,12 +1321,18 @@ function updateSidebarActive() {
     document.getElementById('nav-home')?.classList.add('active');
   } else if (currentView.startsWith('canal-')) {
     document.getElementById('nav-canais-toggle')?.classList.add('active');
-    const canalId = 'nav-' + currentView.replace('canal-', '');
-    document.getElementById(canalId)?.classList.add('active');
+    const canalSlug = currentView.replace('canal-', '');
+    // Mark all matching nav-sub-items active (there may be one per category)
+    document.querySelectorAll(`[id^="nav-${canalSlug}-"]`).forEach(el => el.classList.add('active'));
+    // Fallback for legacy IDs
+    const legacyId = 'nav-' + canalSlug;
+    document.getElementById(legacyId)?.classList.add('active');
     // Abre accordion
     accordionOpen = true;
     document.getElementById('nav-canais-content')?.classList.add('open');
     document.getElementById('nav-canais-chevron')?.classList.add('rotated');
+    // Abre a categoria correspondente
+    openCategoryContaining(canalSlug);
   }
 }
 
@@ -1365,6 +1445,7 @@ function renderAtivasTable(rows) {
       <thead>
         <tr>
           <th>Nome da Ação</th>
+          <th>Leads</th>
           <th>Canal</th>
           <th>Data de Início</th>
           <th>Data de Fim</th>
@@ -1376,6 +1457,7 @@ function renderAtivasTable(rows) {
         ${rows.map((row) => `
           <tr onclick="openModal(${INICIATIVAS_DATA.indexOf(row)})" style="cursor:pointer;">
             <td><strong style="color:var(--text-primary);font-weight:600;">${row['Nome da Ação']}</strong></td>
+            <td>${row['Leads'] || '—'}</td>
             <td>${renderBadge(row['Canal'], getCanalBadgeClass(row['Canal']), 'sm')}</td>
             <td>${row['Data de Início'] || '—'}</td>
             <td>${row['Data de Fim'] || '—'}</td>
@@ -1674,6 +1756,9 @@ document.addEventListener('keydown', e => {
 // ===== INICIALIZAÇÃO =====
 (function init() {
   currentView = getViewFromHash() || 'home';
+  // Gerar sidebar de categorias dinamicamente
+  const container = document.getElementById('nav-categories-container');
+  if (container) container.innerHTML = buildSidebarCategories();
   render();
   updateSidebarActive();
 })();
