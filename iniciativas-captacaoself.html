@@ -936,8 +936,7 @@
 
 <script>
 // ===== BASE DE DADOS =====
-// Última atualização: 20/05/2026 00:09 (Brasília)
-// Fonte: Google Sheets "[FY27] Anota AI - Iniciativas de Self"
+// Última atualização: 21/05/2026 — Fonte: Google Sheets "[FY27] Anota AI - Iniciativas de Self"
 const INICIATIVAS_DATA = [
   {
     "Nome da Ação": "Recuperação de PIX gerado e expirado",
@@ -946,16 +945,17 @@ const INICIATIVAS_DATA = [
     "Data de Início": "23/04/2026",
     "Data de Fim": "30/04/2026",
     "Duração": "16 dias",
-    "Hipótese Testada": "Pix expirou — o QR Code do Pix tem validade de 8 minutos. O lead pode ter gerado e não pago a tempo. Abandono intencional temporário — gerou o Pix, saiu para \'pagar depois\' e esqueceu.",
+    "Hipótese Testada": "Pix expirou — o QR Code do Pix tem validade de 8 minutos. O lead pode ter gerado e não pago a tempo. Abandono intencional temporário — gerou o Pix, saiu para 'pagar depois' e esqueceu.",
     "Ação Executada": "O disparo ocorrerá 38 minutos após a geração do PIX, pois hoje o PIX expira em 8 minutos e temos até 30 minutos para liquidar o pagamento do parceiro.",
     "Modelo do teste": "100% dos leads que gerarem o PIX no período.",
     "Métrica de Sucesso": "Conversão Self",
-    "Links": ""
+    "Links": "",
+    "Resultado": ""
   },
   {
     "Nome da Ação": "Middleware do Livechat para todos os leads \"Livechat\"",
     "Canal": "Livechat",
-    "Status": "Em Testes",
+    "Status": "Concluído",
     "Data de Início": "14/04/2026",
     "Data de Fim": "30/04/2026",
     "Duração": "16 dias",
@@ -963,38 +963,41 @@ const INICIATIVAS_DATA = [
     "Ação Executada": "",
     "Modelo do teste": "50% dos leads Livechat alocados para a SofIA",
     "Métrica de Sucesso": "Conversão Global, Conversão Self e % Ativados",
-    "Links": ""
+    "Links": "Rollout do Teste: https://docs.google.com/presentation/d/1J2P7aGtBIeRRGSfwfEcQHHjTbmPNYu4MPYprje33q1A/edit?slide=id.g3e19be31dc3_1_0",
+    "Resultado": "Rollout Realizado. O teste foi um sucesso, gerando 1,6% de conversão (0.6pps acima no MTD) gerando novas captações para a área de Self. Rollout realizado."
   },
   {
-    "Nome da Ação": "Represamento de Leads Contrate Agora pelo sistema de Pontuação",
+    "Nome da Ação": "Represamento de Leads Contrate Agora pelo sistema de Pontuação (Teste 1)",
     "Canal": "Self Checkout",
-    "Status": "Em Testes",
+    "Status": "Concluído",
     "Data de Início": "08/04/2026",
-    "Data de Fim": "30/04/2026",
+    "Data de Fim": "25/05/2026",
     "Duração": "22 dias",
     "Hipótese Testada": "Quanto maior a qualidade dos leads, maior o indicativo em converter de maneira self.",
     "Ação Executada": "Represamento dos leads P0 e P1 em 5horas, P2 em 30 minutos e P3 sempre represado. O AS-IS do represamento é 30 minutos para todos os leads do Tipo Self Checkout.",
     "Modelo do teste": "50% dos leads no novo período de represamento e 50% no AS-IS.",
     "Métrica de Sucesso": "Conversão Global, Conversão Self e % Ativados",
-    "Links": "https://docs.google.com/presentation/d/1J2P7aGtBIeRRGSfwfEcQHHjTbmPNYu4MPYprje33q1A/edit?slide=id.g38b3a6a77ee_4_11"
+    "Links": "https://docs.google.com/presentation/d/1J2P7aGtBIeRRGSfwfEcQHHjTbmPNYu4MPYprje33q1A/edit?slide=id.g38b3a6a77ee_4_11",
+    "Resultado": ""
   },
   {
-    "Nome da Ação": "Represamento de Leads Testar Grátis pelo sistema de Pontuação",
+    "Nome da Ação": "Represamento de Leads Testar Grátis pelo sistema de Pontuação (Teste 1)",
     "Canal": "Trial",
-    "Status": "Em Testes",
+    "Status": "Concluído",
     "Data de Início": "08/04/2026",
-    "Data de Fim": "30/04/2026",
+    "Data de Fim": "25/05/2026",
     "Duração": "22 dias",
     "Hipótese Testada": "Quanto maior a qualidade dos leads, maior o indicativo em converter de maneira self.",
     "Ação Executada": "Represamento dos leads P0 em 120horas, P1 e P2 em 5 horas e P3 sempre represado. O AS-IS do represamento é 120 minutos (2h) para todos os leads do Tipo Contratar Agora.",
     "Modelo do teste": "50% dos leads no novo período de represamento e 50% no AS-IS.",
     "Métrica de Sucesso": "Conversão Global, Conversão Self e % Ativados",
-    "Links": "https://docs.google.com/presentation/d/1J2P7aGtBIeRRGSfwfEcQHHjTbmPNYu4MPYprje33q1A/edit?slide=id.g38b3a6a77ee_4_11"
+    "Links": "https://docs.google.com/presentation/d/1J2P7aGtBIeRRGSfwfEcQHHjTbmPNYu4MPYprje33q1A/edit?slide=id.g38b3a6a77ee_4_11",
+    "Resultado": ""
   },
   {
     "Nome da Ação": "Personalização da apresentação dos planos de acordo com o perfil",
     "Canal": "Self Checkout",
-    "Status": "Em Testes",
+    "Status": "Concluído",
     "Data de Início": "14/04/2026",
     "Data de Fim": "30/04/2026",
     "Duração": "16 dias",
@@ -1002,12 +1005,13 @@ const INICIATIVAS_DATA = [
     "Ação Executada": "Personalização da apresentação dos planos de acordo com o preenchimento do formulário. Leads receberão a recomendação de planos de Start caso preencham o faturamento no formulário de até R$20.000,00. Faturamento acima de R$20,000,00 receberão o plano Gestão Avançada como recomendação.",
     "Modelo do teste": "50% dos leads que passarem pelo fluxo de Selfcheckout",
     "Métrica de Sucesso": "Conversão Self e Share de Leads de Gestão Avançada",
-    "Links": ""
+    "Links": "",
+    "Resultado": "1,4pps de conversão abaixo no modelo de conversão. Teste interrompido."
   },
   {
     "Nome da Ação": "Incentivo ao Pedido Real Trial",
     "Canal": "Trial",
-    "Status": "Em Testes",
+    "Status": "Concluído",
     "Data de Início": "23/03/2026",
     "Data de Fim": "14/04/2026",
     "Duração": "22 dias",
@@ -1015,7 +1019,8 @@ const INICIATIVAS_DATA = [
     "Ação Executada": "",
     "Modelo do teste": "50% dos leads que criam conta receberão o banner construído via UserPilot",
     "Métrica de Sucesso": "Conversão Self e Conversão Global",
-    "Links": "https://docs.google.com/presentation/d/1J2P7aGtBIeRRGSfwfEcQHHjTbmPNYu4MPYprje33q1A/edit?slide=id.g3d5109d2a72_2_1613"
+    "Links": "https://docs.google.com/presentation/d/1J2P7aGtBIeRRGSfwfEcQHHjTbmPNYu4MPYprje33q1A/edit?slide=id.g3d5109d2a72_2_1613",
+    "Resultado": "Rollout Realizado.\n\nPedido Trial: 15,3% Controle vs 8,6% Variante (-6,7p.p)\nCaptação Geral: 34,9% Controle vs 69,1% Variante (+34,3p.p)\nCaptação Self: 23,7% Controle vs 27,2% Variante (+3,4p.p)\n1º pdd pós ganho: 88% Controle vs 94,6% Variante (+6,6p.p).\n\nNão identificamos impacto na realização de pedidos trial, porém um aumento expressivo na conversão."
   },
   {
     "Nome da Ação": "Incentivo a acesso de planos via Menu do Admin",
@@ -1028,64 +1033,55 @@ const INICIATIVAS_DATA = [
     "Ação Executada": "",
     "Modelo do teste": "Teste A/B com 50% dos leads que criam conta",
     "Métrica de Sucesso": "Conversão após o clique no botão + Conversão Geral",
-    "Links": "https://docs.google.com/presentation/d/1J2P7aGtBIeRRGSfwfEcQHHjTbmPNYu4MPYprje33q1A/edit?slide=id.g38b3a6a77ee_4_17"
-  },
-  {
-    "Nome da Ação": "Incentivo à Contratação após o Onboarding",
-    "Canal": "Trial",
-    "Status": "Aguardando Testes",
-    "Data de Início": "15/04/2026",
-    "Data de Fim": "30/04/2026",
-    "Duração": "15 dias",
-    "Hipótese Testada": "O final do Onboarding é o período que o lead identificou o momento \'AHA\' do parceiro e é nesse momento que precisamos incentivar o parceiro a contratar e, com isso, aumentar a conversão self desse canal.",
-    "Ação Executada": "",
-    "Modelo do teste": "50% dos leads que criarem conta.",
-    "Métrica de Sucesso": "Conversão Self",
-    "Links": ""
+    "Links": "https://docs.google.com/presentation/d/1J2P7aGtBIeRRGSfwfEcQHHjTbmPNYu4MPYprje33q1A/edit?slide=id.g38b3a6a77ee_4_17",
+    "Resultado": ""
   },
   {
     "Nome da Ação": "Incentivo a utilização do Robô em Desktop & Mobile",
     "Canal": "Trial",
-    "Status": "Em Desenvolvimento",
-    "Data de Início": "12/05/2026",
-    "Data de Fim": "20/05/2026",
+    "Status": "Em Testes",
+    "Data de Início": "15/05/2026",
+    "Data de Fim": "29/05/2026",
     "Duração": "8 dias",
     "Hipótese Testada": "",
     "Ação Executada": "",
     "Modelo do teste": "50% dos leads que acessarem a jornada de Trial",
     "Métrica de Sucesso": "Conversão Self",
-    "Links": ""
+    "Links": "",
+    "Resultado": ""
   },
   {
     "Nome da Ação": "Implementar Recomendação de Plano Personalizada",
     "Canal": "Trial",
-    "Status": "Em Desenvolvimento",
-    "Data de Início": "12/05/2026",
-    "Data de Fim": "30/05/2026",
+    "Status": "Em Testes",
+    "Data de Início": "15/05/2026",
+    "Data de Fim": "29/05/2026",
     "Duração": "18 dias",
     "Hipótese Testada": "Personalizar a recomendação para o parceiro de acordo com o seu perfil terá impacto positivo na conversão ao direcionar o lead para o plano correto, evitando possíveis objeções de preço e funcionalidades.",
     "Ação Executada": "Personalização da apresentação dos planos de acordo com o preenchimento do formulário. Leads receberão a recomendação de planos de Start caso preencham o faturamento no formulário de até R$20.000,00. Faturamento acima de R$20,000,00 receberão o plano Gestão Avançada como recomendação.",
     "Modelo do teste": "50% dos leads cadastrados no sistema",
     "Métrica de Sucesso": "Conversão Self",
-    "Links": ""
+    "Links": "",
+    "Resultado": ""
   },
   {
     "Nome da Ação": "Retirada da etapa de Download do Cadastro",
     "Canal": "Self Checkout",
-    "Status": "Em Desenvolvimento",
-    "Data de Início": "11/05/2026",
-    "Data de Fim": "20/05/2026",
+    "Status": "Em Testes",
+    "Data de Início": "15/05/2026",
+    "Data de Fim": "29/05/2026",
     "Duração": "9 dias",
     "Hipótese Testada": "",
     "Ação Executada": "",
     "Modelo do teste": "50% dos leads que se cadastrarem no período",
     "Métrica de Sucesso": "Taxa de 1º Login",
-    "Links": ""
+    "Links": "",
+    "Resultado": ""
   },
   {
     "Nome da Ação": "Perguntas iniciais na Jornada Trial",
     "Canal": "Trial",
-    "Status": "Em Testes",
+    "Status": "Concluído",
     "Data de Início": "20/04/2026",
     "Data de Fim": "05/05/2026",
     "Duração": "15 dias",
@@ -1093,7 +1089,22 @@ const INICIATIVAS_DATA = [
     "Ação Executada": "",
     "Modelo do teste": "50% dos leads cadastrados no período",
     "Métrica de Sucesso": "Medir taxa de abandono e engajamento comparando as bases",
-    "Links": ""
+    "Links": "",
+    "Resultado": ""
+  },
+  {
+    "Nome da Ação": "Incentivar a contratação do Plano Anual para o parceiro",
+    "Canal": "Self Checkout",
+    "Status": "Iniciativas Mapeadas",
+    "Data de Início": "",
+    "Data de Fim": "",
+    "Duração": "",
+    "Hipótese Testada": "",
+    "Ação Executada": "",
+    "Modelo do teste": "",
+    "Métrica de Sucesso": "",
+    "Links": "",
+    "Resultado": ""
   }
 ];
 
@@ -1127,7 +1138,15 @@ const STATUS_ACTIVE_CLASS = {
 };
 
 // ===== UTILITÁRIOS =====
+function normalizeStatus(s) {
+  if (!s) return s;
+  if (s === 'Iniciativa Mapeada') return 'Iniciativas Mapeadas';
+  if (s === 'Aguardando Teste') return 'Aguardando Testes';
+  return s;
+}
+
 function getStatusBadgeClass(status) {
+  status = normalizeStatus(status);
   const map = {
     "Em Testes":           "badge-danger-soft",
     "Em Desenvolvimento":  "badge-primary-soft",
@@ -1280,7 +1299,7 @@ function getCanalFromView(view) {
 // ===== PÁGINA HOME =====
 // MELHORIA 2: filtros não navegam — apenas filtram a tabela
 function renderHome() {
-  const ativas = INICIATIVAS_DATA.filter(i => i['Status'] === 'Em Testes');
+  const ativas = INICIATIVAS_DATA.filter(i => normalizeStatus(i['Status']) === 'Em Testes');
   const acoesAtivas = applyFilters(ativas, filterCanal, filterMes);
 
   return `
@@ -1402,7 +1421,7 @@ function renderCanal(canal) {
   // Conta por status
   const countByStatus = {};
   STATUS_ORDER.forEach(s => {
-    countByStatus[s] = canalData.filter(i => i['Status'] === s).length;
+    countByStatus[s] = canalData.filter(i => normalizeStatus(i['Status']) === s).length;
   });
 
   // Determina tab selecionada: manter estado ou primeiro com count > 0
@@ -1480,7 +1499,7 @@ function selectCanalTab(canalKey, status) {
 
   const countByStatus = {};
   STATUS_ORDER.forEach(s => {
-    countByStatus[s] = canalData.filter(i => i['Status'] === s).length;
+    countByStatus[s] = canalData.filter(i => normalizeStatus(i['Status']) === s).length;
   });
 
   const safeKey = canalKey.replace(/\s+/g, '-');
@@ -1526,7 +1545,7 @@ function renderInitiativeCard(item) {
     <div class="initiative-card" onclick="openModal(${idx})">
       <div class="initiative-card-title">${item['Nome da Ação']}</div>
       <div class="initiative-card-badges">
-        ${renderBadge(item['Status'], getStatusBadgeClass(item['Status']), 'sm')}
+        ${renderBadge(normalizeStatus(item['Status']), getStatusBadgeClass(item['Status']), 'sm')}
         ${renderBadge(item['Canal'], getCanalBadgeClass(item['Canal']), 'sm')}
       </div>
       ${item['Data de Início'] ? `
@@ -1551,7 +1570,7 @@ function openModal(idx) {
   // Header — sem vermelho, usa cores do DS
   document.getElementById('modal-title').textContent = item['Nome da Ação'];
   document.getElementById('modal-badges').innerHTML =
-    renderBadge(item['Status'], getStatusBadgeClass(item['Status']), 'md') +
+    renderBadge(normalizeStatus(item['Status']), getStatusBadgeClass(item['Status']), 'md') +
     renderBadge(item['Canal'], getCanalBadgeClass(item['Canal']), 'md');
 
   // Body
@@ -1622,6 +1641,8 @@ function openModal(idx) {
   `;
 
   // Footer
+  const resultado = safeText(item['Resultado']);
+
   document.getElementById('modal-footer').innerHTML = `
     <div class="modal-footer-title">LINKS IMPORTANTES</div>
     ${links
@@ -1630,6 +1651,13 @@ function openModal(idx) {
         </a>`
       : `<p class="body-m" style="color:var(--text-tertiary);">Nenhum link disponível</p>`
     }
+    ${resultado ? `
+    <div class="modal-section" style="margin-top: 16px;">
+      <div class="modal-section-title" style="color: var(--success-default);">RESULTADO</div>
+      <hr class="modal-divider"/>
+      <div class="modal-field-value" style="border-left: 3px solid var(--success-default); padding-left: 12px; white-space: pre-line;">${safeText(item['Resultado'])}</div>
+    </div>
+    ` : ''}
   `;
 
   document.getElementById('modal-overlay').classList.add('visible');
