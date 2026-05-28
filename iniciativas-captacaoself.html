@@ -1440,7 +1440,7 @@ const INICIATIVAS_DATA = [
     "Leads": "Inbound Anota"
   }
 ];
-const ULTIMA_ATUALIZACAO = '27/05/2026 às 21:09 (Brasília)';
+const ULTIMA_ATUALIZACAO = '27/05/2026 às 21:28 (Brasília)';
 
 // ===== MAPEAMENTO CATEGORIA → CANAIS (derivado dos dados) =====
 function buildCategoryMap() {
@@ -1582,12 +1582,32 @@ function parseMonthYear(dataInicio) {
   return { month: parseInt(parts[1], 10), year: parseInt(parts[2], 10) };
 }
 
-function monthYearMatchesFilter(dataInicio, filterValue) {
+function monthYearMatchesFilter(dataInicio, dataFim, filterValue) {
   if (!filterValue) return true;
-  const parsed = parseMonthYear(dataInicio);
-  if (!parsed) return false;
+  
   const [filterMonth, filterYear] = filterValue.split('-').map(Number);
-  return parsed.month === filterMonth && parsed.year === filterYear;
+  
+  // Converter data para número comparável: ano*12 + mês
+  function toMonthIndex(dateStr) {
+    if (!dateStr) return null;
+    const parts = dateStr.split('/');
+    if (parts.length < 3) return null;
+    const month = parseInt(parts[1], 10);
+    const year  = parseInt(parts[2], 10);
+    return year * 12 + month;
+  }
+  
+  const filterIdx = filterYear * 12 + filterMonth;
+  const startIdx  = toMonthIndex(dataInicio);
+  const endIdx    = toMonthIndex(dataFim);
+  
+  // Se não tiver data de início, não mostrar no filtro de mês
+  if (startIdx === null) return false;
+  
+  // Se não tiver data de fim, usar apenas a data de início
+  const effectiveEnd = endIdx !== null ? endIdx : startIdx;
+  
+  return filterIdx >= startIdx && filterIdx <= effectiveEnd;
 }
 
 function renderBadge(text, cls, size = 'md') {
@@ -1699,7 +1719,7 @@ function getCanalFromView(view) {
 
 // ===== PÁGINA HOME =====
 function renderHome() {
-  const HOME_STATUS_LIST = ['Em Testes', 'Em Andamento', 'Em desenvolvimento', 'Iniciativa Mapeada', 'Concluído'];
+  const HOME_STATUS_LIST = ['Em Testes', 'Em desenvolvimento', 'Iniciativa Mapeada', 'Concluído'];
 
   // Count per status from full dataset (no canal/mes filter)
   const statusCounts = {};
@@ -1709,20 +1729,19 @@ function renderHome() {
 
   // Filter by homeStatusFilter + canal + mes
   const filteredByStatus = INICIATIVAS_DATA.filter(i => i['Status'] === homeStatusFilter);
-  const acoesAtivas = applyFilters(filteredByStatus, filterCanal, filterMes);
+  const filteredRows = applyFilters(filteredByStatus, filterCanal, filterMes);
+  const acoesAtivas = filteredRows; // alias para compatibilidade com renderAtivasTable
 
-  // Build status tabs HTML
+  // Build status tabs HTML (sem contadores individuais)
   const statusTabsHTML = HOME_STATUS_LIST.map(status => {
-    const count = statusCounts[status];
     const isActive = status === homeStatusFilter;
     return `
       <div
         class="status-tab ${isActive ? 'active' : ''}"
         onclick="selectHomeStatusTab('${status}')"
-        title="${status} (${count})"
+        title="${status}"
       >
         <span>${status}</span>
-        <span class="status-tab-badge">${count}</span>
       </div>
     `;
   }).join('');
@@ -1772,7 +1791,7 @@ function renderHome() {
     <div class="section-block">
       <div class="table-section-header">
         <h2 class="heading-h2">Resumo de Iniciativas</h2>
-        ${renderBadge(acoesAtivas.length, 'badge-danger-soft')}
+        ${renderBadge(filteredRows.length, 'badge-primary-soft')}
       </div>
 
       <div class="status-tabs-bar">
@@ -1789,7 +1808,7 @@ function renderHome() {
 function applyFilters(data, canal, mes) {
   return data.filter(i => {
     const canalOk = !canal || i['Canal'] === canal;
-    const mesOk   = !mes   || monthYearMatchesFilter(i['Data de Início'], mes);
+    const mesOk   = !mes   || monthYearMatchesFilter(i['Data de Início'], i['Data de Fim'], mes);
     return canalOk && mesOk;
   });
 }
@@ -2078,19 +2097,48 @@ function openModal(idx) {
   `;
 
   // Footer
+  const extractedLinks = extractLinks(links);
+
   document.getElementById('modal-footer').innerHTML = `
     <div class="modal-footer-title">LINKS IMPORTANTES</div>
-    ${links
-      ? `<a class="modal-link-btn" href="${isURL(links) ? links : '#'}" target="_blank" rel="noopener">
-          ${links.length > 60 ? links.substring(0, 57) + '...' : links} &rarr;
-        </a>`
-      : `<p class="body-m" style="color:var(--text-tertiary);">Nenhum link disponível</p>`
+    ${extractedLinks.length > 0
+      ? extractedLinks.map(l => `
+          <a class="modal-link-btn" href="${l.url}" target="_blank" rel="noopener" style="margin-right: 8px; margin-bottom: 8px; display: inline-flex;">
+            ${l.label} &rarr;
+          </a>
+        `).join('')
+      : links
+        ? `<p class="body-m" style="color:var(--text-secondary); padding: 8px 0;">${links}</p>`
+        : `<p class="body-m" style="color:var(--text-tertiary);">Nenhum link disponível</p>`
     }
-
   `;
 
   document.getElementById('modal-overlay').classList.add('visible');
   document.body.style.overflow = 'hidden';
+}
+
+function extractLinks(linksStr) {
+  if (!linksStr || linksStr.trim() === '') return [];
+
+  // Encontrar todas as URLs http/https na string
+  const urlRegex = /https?:\/\/[^\s"'<>]+/g;
+  const urls = linksStr.match(urlRegex) || [];
+
+  // Para cada URL, tentar extrair um label do texto antes dela
+  return urls.map((url, idx) => {
+    // Pegar o texto antes da URL (na mesma "linha" ou segmento)
+    const beforeUrl = linksStr.substring(0, linksStr.indexOf(url));
+    // Pegar o último segmento de texto antes da URL como label
+    const segments = beforeUrl.split(/[\n\r]/).filter(s => s.trim());
+    const lastSegment = segments[segments.length - 1] || '';
+    // Limpar o label: remover numeração, dois-pontos, espaços
+    const label = lastSegment.replace(/^\d+\.\s*/, '').trim().replace(/:$/, '').trim();
+
+    return {
+      url: url,
+      label: label || `Link ${idx + 1}`
+    };
+  });
 }
 
 function isURL(str) {
