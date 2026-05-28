@@ -940,7 +940,7 @@
 
 <script>
 // ===== BASE DE DADOS =====
-// Última atualização: 27/05/2026 07:03 (Brasília)
+// Última atualização: 27/05/2026 21:00 (Brasília)
 // Fonte: Google Sheets "[FY27] Anota AI - Iniciativas de Self"
 const INICIATIVAS_DATA = [
   {
@@ -979,7 +979,7 @@ const INICIATIVAS_DATA = [
     "ID": "3",
     "Nome da Ação": "Represamento de Leads Contrate Agora pelo sistema de Pontuação (Teste 1)",
     "Canal": "Self Checkout",
-    "Status": "Em Testes",
+    "Status": "Concluído",
     "Data de Início": "08/04/2026",
     "Data de Fim": "25/05/2026",
     "Duração": "47 dias",
@@ -995,7 +995,7 @@ const INICIATIVAS_DATA = [
     "ID": "4",
     "Nome da Ação": "Represamento de Leads Testar Grátis pelo sistema de Pontuação (Teste 1)",
     "Canal": "Trial",
-    "Status": "Em Testes",
+    "Status": "Concluído",
     "Data de Início": "08/04/2026",
     "Data de Fim": "25/05/2026",
     "Duração": "47 dias",
@@ -1406,9 +1406,41 @@ const INICIATIVAS_DATA = [
     "Links": "",
     "Resultado": "",
     "Leads": "Inbound Anota"
+  },
+  {
+    "ID": "30",
+    "Nome da Ação": "Represamento de Leads Contrate Agora pelo sistema de Pontuação (Teste 2)",
+    "Canal": "Self Checkout",
+    "Status": "Em Testes",
+    "Data de Início": "27/05/2026",
+    "Data de Fim": "30/06/2026",
+    "Duração": "34 dias",
+    "Hipótese Testada": "Quanto maior a qualidade dos leads, maior o indicativo em converter de maneira self.",
+    "Ação Executada": "Represamento dos leads P0 e P1 em 24 horass, P2 em 30 minutos e P3 sempre represado. O AS-IS do represamento pe P0 e P1 em 5 horas enquanto P2 para 30 minutos.",
+    "Modelo do teste": "50% dos leads no novo período de represamento e 50% no AS-IS.",
+    "Métrica de Sucesso": "Conversão Global, Conversão Self e % Ativados",
+    "Links": "https://docs.google.com/presentation/d/1J2P7aGtBIeRRGSfwfEcQHHjTbmPNYu4MPYprje33q1A/edit?slide=id.g38b3a6a77ee_4_11#slide=id.g38b3a6a77ee_4_11",
+    "Resultado": "",
+    "Leads": "Inbound Anota"
+  },
+  {
+    "ID": "31",
+    "Nome da Ação": "Represamento de Leads Testar Grátis pelo sistema de Pontuação (Teste 2)",
+    "Canal": "Trial",
+    "Status": "Em Testes",
+    "Data de Início": "27/05/2026",
+    "Data de Fim": "30/06/2026",
+    "Duração": "34 dias",
+    "Hipótese Testada": "Quanto maior a qualidade dos leads, maior o indicativo em converter de maneira self.",
+    "Ação Executada": "Represamento dos leads P0 em 120horas, P1 em 120 horas e P2 em 5 horas. O AS-IS do represamento é P1 em 120 horas e P1 e P2 em 5 horas.",
+    "Modelo do teste": "50% dos leads no novo período de represamento e 50% no AS-IS.",
+    "Métrica de Sucesso": "Conversão Global, Conversão Self e % Ativados",
+    "Links": "https://docs.google.com/presentation/d/1J2P7aGtBIeRRGSfwfEcQHHjTbmPNYu4MPYprje33q1A/edit?slide=id.g38b3a6a77ee_4_11#slide=id.g38b3a6a77ee_4_11",
+    "Resultado": "",
+    "Leads": "Inbound Anota"
   }
 ];
-const ULTIMA_ATUALIZACAO = '04/06/2026 (Brasília)';
+const ULTIMA_ATUALIZACAO = '27/05/2026 às 21:00 (Brasília)';
 
 // ===== MAPEAMENTO CATEGORIA → CANAIS (derivado dos dados) =====
 function buildCategoryMap() {
@@ -1571,6 +1603,7 @@ function safeText(val) {
 let currentView = 'home';
 let filterCanal = '';
 let filterMes = '';
+let homeStatusFilter = 'Em Testes';
 let accordionOpen = true;
 const canalTabState = {};
 let activeLeadsFilter = null;       // categoria vinda do clique no sidebar
@@ -1666,8 +1699,33 @@ function getCanalFromView(view) {
 
 // ===== PÁGINA HOME =====
 function renderHome() {
-  const ativas = INICIATIVAS_DATA.filter(i => i['Status'] === 'Em Testes' || i['Status'] === 'Em Andamento');
-  const acoesAtivas = applyFilters(ativas, filterCanal, filterMes);
+  const HOME_STATUS_LIST = ['Em Testes', 'Em Andamento', 'Em desenvolvimento', 'Iniciativa Mapeada', 'Concluído'];
+
+  // Count per status from full dataset (no canal/mes filter)
+  const statusCounts = {};
+  HOME_STATUS_LIST.forEach(s => {
+    statusCounts[s] = INICIATIVAS_DATA.filter(i => i['Status'] === s).length;
+  });
+
+  // Filter by homeStatusFilter + canal + mes
+  const filteredByStatus = INICIATIVAS_DATA.filter(i => i['Status'] === homeStatusFilter);
+  const acoesAtivas = applyFilters(filteredByStatus, filterCanal, filterMes);
+
+  // Build status tabs HTML
+  const statusTabsHTML = HOME_STATUS_LIST.map(status => {
+    const count = statusCounts[status];
+    const isActive = status === homeStatusFilter;
+    return `
+      <div
+        class="status-tab ${isActive ? 'active' : ''}"
+        onclick="selectHomeStatusTab('${status}')"
+        title="${status} (${count})"
+      >
+        <span>${status}</span>
+        <span class="status-tab-badge">${count}</span>
+      </div>
+    `;
+  }).join('');
 
   return `
     <div class="page-header">
@@ -1713,10 +1771,13 @@ function renderHome() {
 
     <div class="section-block">
       <div class="table-section-header">
-        <h2 class="heading-h2">Ações Ativas</h2>
+        <h2 class="heading-h2">Resumo de Iniciativas</h2>
         ${renderBadge(acoesAtivas.length, 'badge-danger-soft')}
       </div>
-      <p class="table-caption">Iniciativas com status Em Testes</p>
+
+      <div class="status-tabs-bar">
+        ${statusTabsHTML}
+      </div>
 
       <div class="table-wrapper">
         ${renderAtivasTable(acoesAtivas)}
@@ -1731,6 +1792,12 @@ function applyFilters(data, canal, mes) {
     const mesOk   = !mes   || monthYearMatchesFilter(i['Data de Início'], mes);
     return canalOk && mesOk;
   });
+}
+
+function selectHomeStatusTab(status) {
+  homeStatusFilter = status;
+  const main = document.getElementById('main-content');
+  if (main) main.innerHTML = renderHome();
 }
 
 function renderAtivasTable(rows) {
@@ -1752,8 +1819,6 @@ function renderAtivasTable(rows) {
           <th>Canal</th>
           <th>Data de Início</th>
           <th>Data de Fim</th>
-          <th>Duração</th>
-          <th>Resultado</th>
         </tr>
       </thead>
       <tbody>
@@ -1765,8 +1830,6 @@ function renderAtivasTable(rows) {
             <td>${renderBadge(row['Canal'], getCanalBadgeClass(row['Canal']), 'sm')}</td>
             <td>${row['Data de Início'] || '—'}</td>
             <td>${row['Data de Fim'] || '—'}</td>
-            <td>${row['Duração'] || '—'}</td>
-            <td>\${row['Resultado'] ? '<span class="badge badge-sm badge-success-soft">✓ Ver resultado</span>' : '—'}</td>
           </tr>
         `;}).join('')}
       </tbody>
