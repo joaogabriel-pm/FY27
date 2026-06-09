@@ -940,7 +940,7 @@
 
 <script>
 // ===== BASE DE DADOS =====
-// Última atualização: 08/06/2026 07:03 (Brasília)
+// Última atualização: 09/06/2026 07:03 (Brasília)
 // Fonte: Google Sheets "[FY27] Anota AI - Iniciativas de Self"
 const INICIATIVAS_DATA = [
   {
@@ -1036,14 +1036,14 @@ const INICIATIVAS_DATA = [
     "Modelo do teste": "50% dos leads que criam conta receberão o banner construído via UserPilot",
     "Métrica de Sucesso": "Conversão Self e Conversão Global",
     "Links": "Incremento Esperado: [Anota AI] Jornadas | Produto MB1FY27",
-    "Resultado": "Rollout Realizado.   Pedido Trial: 15,3% Controle vs 8,6% Variante (-6,7p.p) Captação Geral: 34,9% Controle vs 69,1% Variante (+34,3p.p) Captação Self: 23,7% Controle vs 27,2% Variante (+3,4p.p) 1º pdd pós ganho: 88% Controle vs 94,6% Variante (+6,6p.p).  Não identificamos impacto na realização de pedidos trial, porém um aumento expressivo na conversão. Por isso, testaremos uma versão nativa para confirmar o teste",
+    "Resultado": "Rollout Realizado. \n\nPedido Trial: 15,3% Controle vs 8,6% Variante (-6,7p.p)\nCaptação Geral: 34,9% Controle vs 69,1% Variante (+34,3p.p)\nCaptação Self: 23,7% Controle vs 27,2% Variante (+3,4p.p)\n1º pdd pós ganho: 88% Controle vs 94,6% Variante (+6,6p.p).\n\nNão identificamos impacto na realização de pedidos trial, porém um aumento expressivo na conversão. Por isso, testaremos uma versão nativa para confirmar o teste",
     "Leads": "Inbound Anota"
   },
   {
     "ID": "7",
     "Nome da Ação": "Incentivo a acesso de planos via Menu do Admin",
     "Canal": "Trial",
-    "Status": "Em Testes",
+    "Status": "Concluído",
     "Data de Início": "04/05/2026",
     "Data de Fim": "29/05/2026",
     "Duração": "25 dias",
@@ -1052,14 +1052,14 @@ const INICIATIVAS_DATA = [
     "Modelo do teste": "Teste A/B com 50% dos leads que criam conta",
     "Métrica de Sucesso": "Conversão após o clique no botão + Conversão Geral",
     "Links": "https://docs.google.com/presentation/d/1J2P7aGtBIeRRGSfwfEcQHHjTbmPNYu4MPYprje33q1A/edit?slide=id.g38b3a6a77ee_4_17#slide=id.g38b3a6a77ee_4_17",
-    "Resultado": "",
+    "Resultado": "Seguiremos com o Rollout apenas na versão Desktop, pois tivemos uma conversão de 5,85% Vs 2,29% no Mobile. Quando olhamos todos os leads trial que acessaram a tela de planos e realizaram a contratação, independente de qual CTA que foi clicado no Admin, temos uma conversão de 5,25% considerando Desktop + Mobile. Isolando, o Desktop temos uma conversão de 3,24%. \nCom isso, entendemos que incentivar o botão no Menu Lateral é positivo para quando o parceiro estiver no período de Trial para o Desktop.",
     "Leads": "Inbound Anota"
   },
   {
     "ID": "8",
     "Nome da Ação": "Incentivo a utilização do Robô em Desktop & Mobile",
     "Canal": "Trial",
-    "Status": "Em Testes",
+    "Status": "Concluído",
     "Data de Início": "25/05/2026",
     "Data de Fim": "08/06/2026",
     "Duração": "14 dias",
@@ -1068,23 +1068,23 @@ const INICIATIVAS_DATA = [
     "Modelo do teste": "50% dos leads que acessarem a jornada de Trial",
     "Métrica de Sucesso": "Conversão Self",
     "Links": "",
-    "Resultado": "",
+    "Resultado": "Em avaliação de resultados. Informaremos até 11/06.",
     "Leads": "Inbound Anota"
   },
   {
     "ID": "9",
     "Nome da Ação": "Implementar Recomendação de Plano Personalizada",
     "Canal": "Trial",
-    "Status": "Em Testes",
+    "Status": "Concluído",
     "Data de Início": "15/05/2026",
-    "Data de Fim": "29/05/2026",
-    "Duração": "14 dias",
+    "Data de Fim": "07/06/2026",
+    "Duração": "23 dias",
     "Hipótese Testada": "Personalizar a recomendação para o parceiro de acordo com o seu perfil terá impacto positivo na conversão ao direcionar o lead para o plano correto, evitando possíveis objeções de preço e funcionalidades.",
     "Ação Executada": "Personalização da apresentação dos planos de acordo com o preenchimento do formulário. Leads receberão a recomendação de planos de Start caso preencham o faturamento no formulário de até R$20.000,00. Faturamento acima de R$20,000,00 receberão o plano Gestão Avançada como recomendação",
     "Modelo do teste": "50% dos leads cadastrados no sistema",
     "Métrica de Sucesso": "Conversão Self",
     "Links": "",
-    "Resultado": "",
+    "Resultado": "A conversão dos leads para ambos modelos é de 3,61%. Sabendo disso e corroborando com o teste no Selfcheckout, não vimos a personalização da recomendação de planos seguindo os critérios atuais como fator determinante para aumento da conversão em fluxo self sem interação humana ou com a SofIA. Nesse material aqui vocês conseguem ver o Funil no Amplitude com o teste.",
     "Leads": "Inbound Anota"
   },
   {
@@ -1275,7 +1275,7 @@ const INICIATIVAS_DATA = [
     "Ação Executada": "Oferecer Trial de Anota AI no Self Sign In redirecionando para o Trial",
     "Modelo do teste": "20% passando pelo fluxo",
     "Métrica de Sucesso": "Conversão em interesse, captações e quantidade de pedidos",
-    "Links": "Jornada da Experiência do Usuário: https://www.figma.com/design/9eNi2EmgEu462ldcDKH5SV/-JORSELF---Capta%C3%A7%C3%A3o--SSI-%3C%3E-Trial?node-id=0-1 Jornada Técnica: https://www.figma.com/board/tP3TQ5P8VJrpNqOQJwiii7/-Jornadas--Fluxos-da-SQUAD?node-id=875-1937&t=WI1jvN91JnyGMCSr-4",
+    "Links": "Jornada da Experiência do Usuário: https://www.figma.com/design/9eNi2EmgEu462ldcDKH5SV/-JORSELF---Capta%C3%A7%C3%A3o--SSI-%3C%3E-Trial?node-id=0-1\nJornada Técnica: https://www.figma.com/board/tP3TQ5P8VJrpNqOQJwiii7/-Jornadas--Fluxos-da-SQUAD?node-id=875-1937&t=WI1jvN91JnyGMCSr-4",
     "Resultado": "",
     "Leads": "Self Sign-in"
   },
@@ -1291,7 +1291,7 @@ const INICIATIVAS_DATA = [
     "Ação Executada": "Oferecer Trial de Anota AI no Self Sign redirecionando para a tela de serviços",
     "Modelo do teste": "20% passando pelo fluxo",
     "Métrica de Sucesso": "Conversão em interesse, captações e quantidade de pedidos",
-    "Links": "Jornada da Experiência do Usuário: https://www.figma.com/design/9eNi2EmgEu462ldcDKH5SV/-JORSELF---Capta%C3%A7%C3%A3o--SSI-%3C%3E-Trial?node-id=0-1 Jornada Técnica: https://www.figma.com/board/tP3TQ5P8VJrpNqOQJwiii7/-Jornadas--Fluxos-da-SQUAD?node-id=875-1937&t=WI1jvN91JnyGMCSr-4",
+    "Links": "Jornada da Experiência do Usuário: https://www.figma.com/design/9eNi2EmgEu462ldcDKH5SV/-JORSELF---Capta%C3%A7%C3%A3o--SSI-%3C%3E-Trial?node-id=0-1\nJornada Técnica: https://www.figma.com/board/tP3TQ5P8VJrpNqOQJwiii7/-Jornadas--Fluxos-da-SQUAD?node-id=875-1937&t=WI1jvN91JnyGMCSr-4",
     "Resultado": "",
     "Leads": "Self Sign-in"
   },
@@ -1472,7 +1472,7 @@ const INICIATIVAS_DATA = [
     "Leads": ""
   }
 ];
-const ULTIMA_ATUALIZACAO = '08/06/2026 às 10:02 (Brasília)';
+const ULTIMA_ATUALIZACAO = '09/06/2026 às 09:46 (Brasília)';
 
 // ===== MAPEAMENTO CATEGORIA → CANAIS (derivado dos dados) =====
 function buildCategoryMap() {
