@@ -940,7 +940,7 @@
 
 <script>
 // ===== BASE DE DADOS =====
-// Última atualização: 19/06/2026 06:59 (Brasília)
+// Última atualização: 26/06/2026 07:00 (Brasília)
 // Fonte: Google Sheets "[FY27] Anota AI - Iniciativas de Self"
 const INICIATIVAS_DATA = [
   {
@@ -1091,7 +1091,7 @@ const INICIATIVAS_DATA = [
     "ID": "10",
     "Nome da Ação": "Retirada da etapa de Download do Cadastro",
     "Canal": "Trial",
-    "Status": "Em Testes",
+    "Status": "Concluído",
     "Data de Início": "15/05/2026",
     "Data de Fim": "29/05/2026",
     "Duração": "14 dias",
@@ -1099,8 +1099,8 @@ const INICIATIVAS_DATA = [
     "Ação Executada": "Retirada da etapa de Download do sistema na jornada Trial",
     "Modelo do teste": "50% dos leada que se cadastrarem no período",
     "Métrica de Sucesso": "Taxa de 1º Login",
-    "Links": "",
-    "Resultado": "",
+    "Links": "Relatório de Teste: https://app.amplitude.com/analytics/ifood/chart/wzgms8m9?linkingDashboardId=0l7c4qpm&source=dashboard",
+    "Resultado": "Rollout Realizado. Leads que passam pelo teste tiveram 3,3% de conversão self Vs 2,7%.  Devido a isso, faremos a retirada da etapa de Download.",
     "Leads": "Inbound Anota"
   },
   {
@@ -1172,8 +1172,8 @@ const INICIATIVAS_DATA = [
     "Nome da Ação": "Nova Jornada Trial",
     "Canal": "Trial",
     "Status": "Em testes",
-    "Data de Início": "17/06/2026",
-    "Data de Fim": "01/07/2026",
+    "Data de Início": "23/06/2026",
+    "Data de Fim": "07/07/2026",
     "Duração": "14 dias",
     "Hipótese Testada": "Estabelecer uma jornada mais linear para o lead, guiando para as etapas que mais agregam valor ao lead pode impactar positivamente na jornada do Trial.",
     "Ação Executada": "Construção da Jornada completa do lead, mapeando a dor que precisa resolver ao acessar a Anota, mapear o tipo de culinária, incentivar o cadastro de cardápio pré-pronto, incentivo a utilização do robô e simulação do pedido teste. Em seguida o usuário acessa o sistema.",
@@ -1395,32 +1395,32 @@ const INICIATIVAS_DATA = [
     "ID": "29",
     "Nome da Ação": "Represamento de Leads Contrate Agora pelo sistema de Pontuação (Teste 2)",
     "Canal": "Self Checkout",
-    "Status": "Em Testes",
+    "Status": "Concluído",
     "Data de Início": "27/05/2026",
-    "Data de Fim": "30/06/2026",
-    "Duração": "34 dias",
+    "Data de Fim": "17/06/2026",
+    "Duração": "21 dias",
     "Hipótese Testada": "Quanto maior a qualidade dos leads, maior o indicativo em converter de maneira self.",
     "Ação Executada": "Represamento dos leads P0 e P1 em 24 horass, P2 em 30 minutos e P3 sempre represado. O AS-IS do represamento pe P0 e P1 em 5 horas enquanto P2 para 30 minutos.",
     "Modelo do teste": "50% dos leads no novo período de represamento e 50% no AS-IS.",
     "Métrica de Sucesso": "Conversão Global, Conversão Self e % Ativados",
     "Links": "https://docs.google.com/presentation/d/1J2P7aGtBIeRRGSfwfEcQHHjTbmPNYu4MPYprje33q1A/edit?slide=id.g38b3a6a77ee_4_11#slide=id.g38b3a6a77ee_4_11",
-    "Resultado": "",
+    "Resultado": "Teste concluído em 17/06. Foi iniciado um novo teste. O controle apresentou +8p.ps vs variante;",
     "Leads": "Inbound Anota"
   },
   {
     "ID": "30",
     "Nome da Ação": "Represamento de Leads Testar Grátis pelo sistema de Pontuação (Teste 2)",
     "Canal": "Trial",
-    "Status": "Em Testes",
+    "Status": "Concluído",
     "Data de Início": "27/05/2026",
-    "Data de Fim": "30/06/2026",
-    "Duração": "34 dias",
+    "Data de Fim": "17/06/2026",
+    "Duração": "21 dias",
     "Hipótese Testada": "Quanto maior a qualidade dos leads, maior o indicativo em converter de maneira self.",
     "Ação Executada": "Represamento dos leads P0 em 120horas, P1 em 120 horas e P2 em 5 horas. O AS-IS do represamento é P1 em 120 horas e P1 e P2 em 5 horas.",
     "Modelo do teste": "50% dos leads no novo período de represamento e 50% no AS-IS.",
     "Métrica de Sucesso": "Conversão Global, Conversão Self e % Ativados",
     "Links": "https://docs.google.com/presentation/d/1J2P7aGtBIeRRGSfwfEcQHHjTbmPNYu4MPYprje33q1A/edit?slide=id.g38b3a6a77ee_4_11#slide=id.g38b3a6a77ee_4_11",
-    "Resultado": "",
+    "Resultado": "Teste concluído em 17/06. Foi iniciado um novo teste. O controle apresentou +3p.ps vs variante.",
     "Leads": "Inbound Anota"
   },
   {
@@ -1440,7 +1440,7 @@ const INICIATIVAS_DATA = [
     "Leads": "Inbound Anota"
   }
 ];
-const ULTIMA_ATUALIZACAO = '19/06/2026 às 17:01 (Brasília)';
+const ULTIMA_ATUALIZACAO = '26/06/2026 às 19:33 (Brasília)';
 
 // ===== MAPEAMENTO CATEGORIA → CANAIS (derivado dos dados) =====
 function buildCategoryMap() {
